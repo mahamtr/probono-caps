@@ -1,0 +1,19 @@
+services:
+  webapi:
+    build:
+      context: ./caps
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - client
+
+  client:
+    build:
+      context: ../caps-client
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"

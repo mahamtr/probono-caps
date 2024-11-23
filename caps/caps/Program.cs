@@ -14,7 +14,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+// TODO add https support before deployment, should create docker compose override
 
 var summaries = new[]
 {
