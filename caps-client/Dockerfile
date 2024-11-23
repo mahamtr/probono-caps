@@ -1,9 +1,8 @@
-FROM node:18 AS build
-WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
-
-FROM nginx:alpine
-COPY --from=build /app/dist/caps-client /usr/share/nginx/html
-EXPOSE 80
+FROM node:lts
+RUN mkdir /home/node/app && chown node:node /home/node/app
+RUN mkdir /home/node/app/node_modules && chown node:node /home/node/app/node_modules
+WORKDIR  /home/node/app
+USER node
+COPY --chown=node:node package.json package-lock.json ./
+RUN npm ci --quiet
+COPY --chown=node:node . .

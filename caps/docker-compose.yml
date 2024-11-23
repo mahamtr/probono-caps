@@ -15,5 +15,12 @@ services:
     build:
       context: ../caps-client
       dockerfile: Dockerfile
+    command: sh -c "npm start"
+    volumes:
+      - ../caps-client:/home/node/app
+      - /home/node/app/node_modules #
     ports:
-      - "4200:80"
+      - "4200:4200"
+    working_dir: /home/node/app
+volumes:
+  node_modules:
