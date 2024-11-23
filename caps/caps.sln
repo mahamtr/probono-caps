@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "caps", "caps\caps.csproj", "{799A8873-F0E9-4EA0-8A57-BC720018621B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{799A8873-F0E9-4EA0-8A57-BC720018621B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799A8873-F0E9-4EA0-8A57-BC720018621B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799A8873-F0E9-4EA0-8A57-BC720018621B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799A8873-F0E9-4EA0-8A57-BC720018621B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
