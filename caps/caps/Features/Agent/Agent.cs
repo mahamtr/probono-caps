@@ -15,7 +15,7 @@ public class Agent
     public string? LastName { get; set; }
 
     [Required]
-    public int IDNumber { get; set; }
+    public string? IDNumber { get; set; }
 
     [Required]
     [EmailAddress]

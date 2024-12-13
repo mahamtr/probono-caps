@@ -11,6 +11,10 @@ services:
     depends_on:
       - client
 
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
   client:
     build:
       context: ../caps-client

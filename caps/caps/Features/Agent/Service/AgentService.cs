@@ -1,5 +1,4 @@
 using caps.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 
@@ -8,10 +7,10 @@ namespace caps.Features.Agent.Service;
 public class AgentService(CapsDbContext dbContext) : IAgentService
 {
     private CapsDbContext DbContext { get; } = dbContext;
-    
+
     public async Task<IEnumerable<Agent>> ListAgentsAsync()
     {
-        return await EntityFrameworkQueryableExtensions.ToListAsync(DbContext.Agents);
+        return await dbContext.Agents.ToListAsync();
     }
 
     public async Task<bool> ResetPasswordAsync(ObjectId id, string newPassword)
@@ -23,13 +22,13 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
 
             agent.Password = newPassword;
 
-            return await DbContext.SaveChangesAsync() > 1;
+            return await DbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
             throw new BadHttpRequestException(e.Message);
         }
-       
+
     }
 
 
@@ -38,7 +37,7 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
         try
         {
             DbContext.Agents.Add(agent);
-            return await DbContext.SaveChangesAsync() > 1;
+            return await DbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
@@ -50,11 +49,13 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
     {
         try
         {
+            var a = id.ToString();
+            // TODO implement delete, don't know how to parse a json to ObjectId, should we use another self created id?
             var agent = await MongoQueryable.FirstOrDefaultAsync(DbContext.Agents, a => a.Id == id);
             if (agent is null) throw new BadHttpRequestException("No Agent was found");
 
             DbContext.Agents.Remove(agent);
-            return await DbContext.SaveChangesAsync() > 1;
+            return await DbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
@@ -66,12 +67,17 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
     {
         try
         {
-            DbContext.Agents.Update(agent);
-            return await DbContext.SaveChangesAsync() > 1;
+            var agentInDb = dbContext.Agents.FirstOrDefault(a => a.FirstName == "maai");
+            if (agentInDb == null) throw new BadHttpRequestException("Agent not found");
+            // DbContext.Agents.Update(agent);
+            // TODO fix this with mapper, needs to be inyected.
+            // Mapper.Map<Agent,Agent>(agent, agentInDb);
+            agentInDb = agent;
+            return await DbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
             throw new BadHttpRequestException(e.Message);
-        }    
+        }
     }
 }

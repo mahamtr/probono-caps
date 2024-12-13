@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-var client = new MongoClient("");
+var client = new MongoClient("mongodb://mongodb:27017");
 CapsDbContext db = CapsDbContext.Create(client.GetDatabase("sample_planets"));
 
 builder.Services.AddSingleton(db);
