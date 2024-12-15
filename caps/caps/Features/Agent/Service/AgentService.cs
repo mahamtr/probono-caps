@@ -1,28 +1,32 @@
+using caps.Features.Agent.Model;
 using caps.Infrastructure.Data;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 
 namespace caps.Features.Agent.Service;
 
-public class AgentService(CapsDbContext dbContext) : IAgentService
+public class AgentService(CapsDbContext dbContext, IMapper mapper) : IAgentService
 {
-    private CapsDbContext DbContext { get; } = dbContext;
 
-    public async Task<IEnumerable<Agent>> ListAgentsAsync()
+
+    public async Task<IEnumerable<AgentDto>> ListAgentsAsync()
     {
-        return await dbContext.Agents.ToListAsync();
+        var agents =  dbContext.Agents;
+        return mapper.Map<List<AgentDto>>(agents.ToList());
     }
 
-    public async Task<bool> ResetPasswordAsync(ObjectId id, string newPassword)
+    public async Task<bool> ResetPasswordAsync(string id, string newPassword)
     {
         try
         {
-            var agent = await MongoQueryable.FirstOrDefaultAsync(DbContext.Agents, a => a.Id == id);
-            if (agent is null) throw new BadHttpRequestException("No Agent was found");
-
-            agent.Password = newPassword;
-
-            return await DbContext.SaveChangesAsync() > 0;
+            if(string.IsNullOrWhiteSpace(id)) throw new BadHttpRequestException("Id cannot be null or empty.");
+            if(string.IsNullOrWhiteSpace(newPassword)) throw new BadHttpRequestException("Password must be valid.");
+            
+            // TODO add validation for valid password. also hashing needs to be added
+            
+            var agentInDb = GetAgentInDb(id);
+            agentInDb.Password = newPassword;
+            return await dbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
@@ -32,12 +36,14 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
     }
 
 
-    public async Task<bool> CreateAgentAsync(Agent agent)
+    public async Task<bool> CreateAgentAsync(AgentDto agent)
     {
         try
         {
-            DbContext.Agents.Add(agent);
-            return await DbContext.SaveChangesAsync() > 0;
+            var newAgent = new Model.Agent();
+            mapper.Map(agent, newAgent);
+            dbContext.Agents.Add(newAgent);
+            return await dbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
@@ -45,17 +51,14 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
         }
     }
 
-    public async Task<bool> DeleteAgentAsync(ObjectId id)
+    public async Task<bool> DeleteAgentAsync(string id)
     {
         try
         {
-            var a = id.ToString();
-            // TODO implement delete, don't know how to parse a json to ObjectId, should we use another self created id?
-            var agent = await MongoQueryable.FirstOrDefaultAsync(DbContext.Agents, a => a.Id == id);
-            if (agent is null) throw new BadHttpRequestException("No Agent was found");
-
-            DbContext.Agents.Remove(agent);
-            return await DbContext.SaveChangesAsync() > 0;
+            if(string.IsNullOrWhiteSpace(id)) throw new BadHttpRequestException("Id cannot be null or empty.");
+            var agentInDb = GetAgentInDb(id);
+            dbContext.Agents.Remove(agentInDb);
+            return await dbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
@@ -63,21 +66,25 @@ public class AgentService(CapsDbContext dbContext) : IAgentService
         }
     }
 
-    public async Task<bool> UpdateAgentAsync(Agent agent)
+    public async Task<bool> UpdateAgentAsync(AgentDto agent)
     {
         try
         {
-            var agentInDb = dbContext.Agents.FirstOrDefault(a => a.FirstName == "maai");
-            if (agentInDb == null) throw new BadHttpRequestException("Agent not found");
-            // DbContext.Agents.Update(agent);
-            // TODO fix this with mapper, needs to be inyected.
-            // Mapper.Map<Agent,Agent>(agent, agentInDb);
-            agentInDb = agent;
-            return await DbContext.SaveChangesAsync() > 0;
+            if(string.IsNullOrWhiteSpace(agent.Id)) throw new BadHttpRequestException("Id cannot be null or empty.");
+            var agentInDb = GetAgentInDb(agent.Id);
+            mapper.Map(agent, agentInDb);
+            return await dbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)
         {
             throw new BadHttpRequestException(e.Message);
         }
+    }
+
+    private Model.Agent GetAgentInDb(string id)
+    {
+        var agentInDb = dbContext.Agents.FirstOrDefault(a => a.Id.ToString() == id);
+        if (agentInDb == null) throw new BadHttpRequestException("Agent not found");
+        return agentInDb;
     }
 }

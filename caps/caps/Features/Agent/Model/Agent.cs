@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 
-namespace caps.Features.Agent;
+namespace caps.Features.Agent.Model;
 
 public class Agent
 {

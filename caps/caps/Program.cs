@@ -21,6 +21,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAutoMapper(typeof(Program)); // Registriere Profile im selben Namespace
+
+
 var client = new MongoClient("mongodb://mongodb:27017");
 CapsDbContext db = CapsDbContext.Create(client.GetDatabase("sample_planets"));
 

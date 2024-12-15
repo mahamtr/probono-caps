@@ -1,3 +1,4 @@
+using caps.Features.Agent.Model;
 using MongoDB.Bson;
 
 namespace caps.Features.Agent.Service;
@@ -11,10 +12,10 @@ public interface IAgentService
 // - deleteAgent (adminOnly)
 // - updateAgent (adminOnly)
     
-    Task<IEnumerable<Agent>> ListAgentsAsync();
-    Task<bool> ResetPasswordAsync(ObjectId id,string newPassword);
-    Task<bool> CreateAgentAsync(Agent agent);
-    Task<bool> DeleteAgentAsync(ObjectId id);
-    Task<bool> UpdateAgentAsync(Agent agent);
+    Task<IEnumerable<AgentDto>> ListAgentsAsync();
+    Task<bool> ResetPasswordAsync(string id,string newPassword);
+    Task<bool> CreateAgentAsync(AgentDto agent);
+    Task<bool> DeleteAgentAsync(string id);
+    Task<bool> UpdateAgentAsync(AgentDto agent);
 
 }

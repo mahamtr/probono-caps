@@ -63,7 +63,7 @@ public class Appointment
     [ForeignKey("Agent")]
     public ObjectId AgentId { get; set; }
 
-    public Agent.Agent Agent { get; set; }
+    public Agent.Model.Agent Agent { get; set; }
 
     public List<string> BlobUrls { get; set; }
 }

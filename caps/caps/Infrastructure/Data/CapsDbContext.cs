@@ -1,4 +1,5 @@
 using caps.Features.Agent;
+using caps.Features.Agent.Model;
 using caps.Features.Appointment;
 using caps.Features.Patient;
 using Microsoft.EntityFrameworkCore;

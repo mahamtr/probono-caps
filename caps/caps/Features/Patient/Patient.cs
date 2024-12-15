@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using caps.Features.Agent;
+using caps.Features.Agent.Model;
 using MongoDB.Bson;
 
 namespace caps.Features.Patient;
