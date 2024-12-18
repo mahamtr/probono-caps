@@ -1,7 +1,9 @@
 using caps.Features.Agent;
 using caps.Features.Agent.Model;
 using caps.Features.Appointment;
+using caps.Features.Appointment.Model;
 using caps.Features.Patient;
+using caps.Features.Patient.Model;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;

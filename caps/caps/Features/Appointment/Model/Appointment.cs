@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MongoDB.Bson;
 
-namespace caps.Features.Appointment;
+namespace caps.Features.Appointment.Model;
 
 public class Appointment
 {
@@ -58,7 +57,7 @@ public class Appointment
     [ForeignKey("Patient")]
     public ObjectId PatientId { get; set; }
 
-    public Patient.Patient Patient { get; set; }
+    public Patient.Model.Patient Patient { get; set; }
 
     [ForeignKey("Agent")]
     public ObjectId AgentId { get; set; }
