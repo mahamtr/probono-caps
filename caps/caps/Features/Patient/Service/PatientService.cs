@@ -38,7 +38,8 @@ public class PatientService(CapsDbContext dbContext, IMapper mapper) : IPatientS
         catch (Exception e)
         {
             throw new BadHttpRequestException(e.Message);
-        }    }
+        }    
+    }
 
     public async Task<bool> DeletePatient(string id)
     {

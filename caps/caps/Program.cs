@@ -1,5 +1,6 @@
 using caps.Features.Agent;
 using caps.Features.Agent.Service;
+using caps.Features.Appointment.Service;
 using caps.Features.Patient.Service;
 using caps.Infrastructure.Data;
 using MongoDB.Bson;
@@ -31,6 +32,7 @@ CapsDbContext db = CapsDbContext.Create(client.GetDatabase("sample_planets"));
 builder.Services.AddSingleton(db);
 builder.Services.AddTransient<IAgentService, AgentService>();
 builder.Services.AddTransient<IPatientService, PatientService>();
+builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 
 builder.Services.AddControllers();
 
