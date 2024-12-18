@@ -9,32 +9,36 @@ namespace caps.Features.Agent.Controller;
 public class AgentController(IAgentService agentService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IEnumerable<AgentDto>> ListAgents()
+    //TODO add adminOnly auth
+    public Task<IEnumerable<AgentDto>> ListAgents()
     {
-        return await agentService.ListAgentsAsync();
+        return agentService.ListAgentsAsync();
     }
     
     [HttpPatch]
-    public async Task<bool> ResetPassword(string id, string newPassword)
+    public Task<bool> ResetPassword(string id, string newPassword)
     {
-        return await agentService.ResetPasswordAsync(id, newPassword);
+        return agentService.ResetPasswordAsync(id, newPassword);
     }
     
     [HttpPost]
-    public async Task<bool> CreateAgent(AgentDto agent)
+    //TODO add adminOnly auth
+    public Task<bool> CreateAgent(AgentDto agent)
     {
-        return await agentService.CreateAgentAsync(agent);
+        return agentService.CreateAgentAsync(agent);
     }
     
     [HttpPatch]
-    public async Task<bool> UpdateAgent(AgentDto agent)
+    //TODO add adminOnly auth
+    public Task<bool> UpdateAgent(AgentDto agent)
     {
-        return await agentService.UpdateAgentAsync(agent);
+        return agentService.UpdateAgentAsync(agent);
     }
     
     [HttpDelete]
-    public async Task<bool> DeleteAgent(string id)
+    //TODO add adminOnly auth
+    public Task<bool> DeleteAgent(string id)
     {
-        return await agentService.DeleteAgentAsync(id);
+        return agentService.DeleteAgentAsync(id);
     }
 }

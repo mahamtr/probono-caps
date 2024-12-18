@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Appointment\Service\" />
-      <Folder Include="Features\Patient\Service\" />
     </ItemGroup>
 
 </Project>

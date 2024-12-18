@@ -1,14 +1,12 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using caps.Features.Agent.Model;
-using MongoDB.Bson;
 
 namespace caps.Features.Patient.Model;
 
-public class Patient
+public class PatientDto
 {
-    [Key]
-    public ObjectId Id { get; set; }
-
+    // TODO add req fields
+    public string Id { get; set; }
+    
     [Required]
     public string FirstName { get; set; }
 
@@ -33,8 +31,8 @@ public class Patient
 
     public string HouseZone { get; set; }
 
-    [NotMapped] // Da `Age` berechnet wird
-    public int Age => DateTime.Now.Year - DateOfBirth.Year;
+    // [NotMapped] // Da `Age` berechnet wird
+    // public int Age => DateTime.Now.Year - DateOfBirth.Year;
 
     [EmailAddress]
     public string Email { get; set; }
@@ -51,18 +49,4 @@ public class Patient
     public string Gender { get; set; }
 
     public string Status { get; set; }
-}
-
-public class GuardianShipSection
-{
-    public string GuardianShipName { get; set; }
-
-    public long GuardianShipPhone { get; set; }
-}
-
-public class StudentSection
-{
-    public string Major { get; set; }
-
-    public int StudyYear { get; set; }
 }

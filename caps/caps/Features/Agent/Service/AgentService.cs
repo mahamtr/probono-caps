@@ -7,8 +7,6 @@ namespace caps.Features.Agent.Service;
 
 public class AgentService(CapsDbContext dbContext, IMapper mapper) : IAgentService
 {
-
-
     public async Task<IEnumerable<AgentDto>> ListAgentsAsync()
     {
         var agents =  dbContext.Agents;
