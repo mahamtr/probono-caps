@@ -5,7 +5,7 @@ using MongoDB.Driver.Linq;
 
 namespace caps.Features.Agent.Service;
 
-public class AgentService(CapsDbContext dbContext, IMapper mapper) : IAgentService
+public class AgentService(CapsDbContext dbContext,IHashService hashService, IMapper mapper) : IAgentService
 {
     public async Task<IEnumerable<AgentDto>> ListAgentsAsync()
     {
@@ -20,10 +20,12 @@ public class AgentService(CapsDbContext dbContext, IMapper mapper) : IAgentServi
             if(string.IsNullOrWhiteSpace(id)) throw new BadHttpRequestException("Id cannot be null or empty.");
             if(string.IsNullOrWhiteSpace(newPassword)) throw new BadHttpRequestException("Password must be valid.");
             
-            // TODO add validation for valid password. also hashing needs to be added
+            if(newPassword.Length < 8) throw new BadHttpRequestException("Password must be longer than 8 characters.");
+            
             
             var agentInDb = GetAgentInDb(id);
-            agentInDb.Password = newPassword;
+            
+            agentInDb.Password = hashService.GeneratePasswordHash(newPassword);
             return await dbContext.SaveChangesAsync() > 0;
         }
         catch (Exception e)

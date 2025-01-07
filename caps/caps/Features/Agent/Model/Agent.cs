@@ -24,8 +24,7 @@ public class Agent
     [Required]
     public DateTime? DateOfBirth { get; set; }
 
-    [Required]
-    public string? Privilege { get; set; }
+    [Required] public string? Privilege { get; set; } = "agent"; // TODO add const agent | admin
 
     public ContactInformation? ContactInformation { get; set; }
 

@@ -1,13 +1,22 @@
 using caps.Features.Agent.Model;
 using caps.Features.Agent.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
 namespace caps.Features.Agent.Controller;
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class AgentController(IAgentService agentService) : ControllerBase
+[Authorize]
+public class AgentController(IAgentService agentService, IAuthService authService) : ControllerBase
 {
+    [HttpPost]
+    [AllowAnonymous]
+    public string Authorize(AuthorizeRequest request)
+    {
+        return  authService.Authenticate(request);
+    }
+    
     [HttpGet]
     //TODO add adminOnly auth
     public Task<IEnumerable<AgentDto>> ListAgents()
