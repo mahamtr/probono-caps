@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text;
+using caps.Features.Agent.Authenticate;
 using caps.Features.Agent.Model;
 using caps.Infrastructure.Data;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -10,7 +11,7 @@ namespace caps.Features.Agent.Service;
 
 public class AuthService(CapsDbContext dbContext, IHashService hashService) : IAuthService
 {
-    public string Authenticate(AuthorizeRequest request)
+    public string Authenticate(Request request)
     {
         var agent = dbContext.Agents.FirstOrDefault(a => a.Email == request.Email);
         if (agent is null) throw new UnauthorizedAccessException();

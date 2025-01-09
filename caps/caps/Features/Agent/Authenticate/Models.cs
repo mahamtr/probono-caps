@@ -1,7 +1,7 @@
 
-namespace caps.Features.Agent.Model;
+namespace caps.Features.Agent.Authenticate;
 
-public class AuthorizeRequest
+public class Request
 {
     [EmailAddress]
     [Required]

@@ -1,3 +1,4 @@
+using caps.Features.Agent.Authenticate;
 using caps.Features.Agent.Model;
 using caps.Features.Agent.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ public class AgentController(IAgentService agentService, IAuthService authServic
 {
     [HttpPost]
     [AllowAnonymous]
-    public string Authorize(AuthorizeRequest request)
+    public string Authorize(Request request)
     {
         return  authService.Authenticate(request);
     }
