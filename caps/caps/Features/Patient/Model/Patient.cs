@@ -55,14 +55,14 @@ public class Patient
 
 public class GuardianShipSection
 {
-    public string GuardianShipName { get; set; }
+    public string? GuardianShipName { get; set; } 
 
     public long GuardianShipPhone { get; set; }
 }
 
 public class StudentSection
 {
-    public string Major { get; set; }
+    public string? Major { get; set; } 
 
     public int StudyYear { get; set; }
 }

@@ -42,7 +42,7 @@ public class ContactInformation
     public long PhoneNumber { get; set; }
 
     [Required]
-    public string? City { get; set; }
+    public string? City { get; set; } 
 
     [Required]
     public string? Address { get; set; }
