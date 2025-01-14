@@ -24,8 +24,7 @@ public class Agent
     [Required]
     public DateTime? DateOfBirth { get; set; }
 
-    [Required]
-    public string? Privilege { get; set; }
+    [Required] public string? Privilege { get; set; } = "agent"; // TODO add const agent | admin
 
     public ContactInformation? ContactInformation { get; set; }
 
@@ -43,7 +42,7 @@ public class ContactInformation
     public long PhoneNumber { get; set; }
 
     [Required]
-    public string? City { get; set; }
+    public string? City { get; set; } 
 
     [Required]
     public string? Address { get; set; }
