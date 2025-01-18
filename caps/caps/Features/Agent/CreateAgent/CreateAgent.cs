@@ -11,7 +11,8 @@ public class CreateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<Age
     public override void Configure()
     {
         Post("/api/agent/create");
-        Policies("AdminOnly");
+        // Policies("AdminOnly");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(AgentDto req, CancellationToken ct)

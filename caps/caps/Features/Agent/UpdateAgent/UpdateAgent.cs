@@ -10,7 +10,8 @@ public class UpdateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<Age
     public override void Configure()
     {
         Patch("/api/agent/update");
-        Policies("AdminOnly");
+        // Policies("AdminOnly");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(AgentDto req, CancellationToken ct)

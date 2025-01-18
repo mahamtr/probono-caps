@@ -1,4 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -29,7 +34,7 @@ export class ApiService {
     return this.http.patch<T>(`${this.baseUrl}/${url}`, body, options);
   }
 
-  // delete<T>(url: string, body: any): Observable<T> {
-  //   return this.http.delete<T>(`${this.baseUrl}/${url}`, body);
-  // }
+  delete<T>(url: string, body: any): Observable<HttpEvent<T>> {
+    return this.http.delete<T>(`${this.baseUrl}/${url}`, body);
+  }
 }

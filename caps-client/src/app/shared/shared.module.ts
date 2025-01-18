@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
+import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 var modules = [
   MatIconModule,
@@ -19,10 +21,11 @@ var modules = [
   CommonModule,
   AppRoutingModule,
   BrowserAnimationsModule,
+  MatDialogModule,
 ];
 
 @NgModule({
-  declarations: [SideNavComponent],
+  declarations: [SideNavComponent, DeleteConfirmationModalComponent],
   imports: [modules],
   providers: [provideHttpClient()],
 })

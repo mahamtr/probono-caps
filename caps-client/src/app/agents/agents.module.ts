@@ -9,8 +9,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { AgentCreateComponent } from './components/agent-create/agent-create.component';
+import { AgentEditComponent } from './components/agent-edit/agent-edit.component';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
-  declarations: [AgentsListComponent],
+  declarations: [AgentsListComponent, AgentCreateComponent, AgentEditComponent],
   imports: [
     CommonModule,
     AgentsRoutingModule,
@@ -21,6 +34,20 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatToolbarModule,
     MatMenuModule,
+
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    MatDividerModule,
+    MatSnackBarModule,
   ],
 })
 export class AgentsModule {}

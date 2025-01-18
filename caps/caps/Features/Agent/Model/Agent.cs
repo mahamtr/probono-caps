@@ -30,8 +30,7 @@ public class Agent
 
     public string? Biography { get; set; }
 
-    [Required]
-    public string? Password { get; set; }
+    [Required] public string? Password { get; set; } = string.Empty;
 
     public bool IsActive { get; set; }
 }

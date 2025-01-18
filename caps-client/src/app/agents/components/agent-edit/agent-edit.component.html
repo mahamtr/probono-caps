@@ -1,0 +1,168 @@
+<form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-title>Edit Profile</mat-card-title>
+    <mat-card-content>
+      <div class="profile-section">
+        <div class="avatar">
+          <img src="assets/avatar.png" alt="Avatar" />
+          <button mat-button>Edit</button>
+        </div>
+
+        <div class="profile-fields">
+          <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>ID Number</mat-label>
+            <input
+              matInput
+              formControlName="idNumber"
+              (input)="formatIdNumber()"
+              [disabled]="true"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" [disabled]="true" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Born Date</mat-label>
+            <input
+              matInput
+              type="date"
+              formControlName="dateOfBirth"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Privilege</mat-label>
+            <mat-select formControlName="privilege">
+              <mat-option value="Agent">Agent</mat-option>
+              <mat-option value="Admin">Admin</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+      <div formGroupName="contactInformation">
+        <h3>Contact Informations</h3>
+        <div class="form-group">
+          <mat-form-field>
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phoneNumber" required />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" required />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address" required />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state">
+              <mat-option *ngFor="let item of states" [value]="item">{{
+                item
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Short Biography</mat-label>
+        <textarea matInput formControlName="biography"></textarea>
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+
+      <h3>Security</h3>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <mat-grid-list
+        cols="1"
+        rowHeight="20px"
+        gutterSize="10px"
+        class="text-red-400 text-sm"
+        *ngIf="
+          agentForm.get('password')?.dirty &&
+          agentForm.get('password')?.hasError
+        "
+      >
+        <mat-grid-tile
+          class="block"
+          *ngIf="!agentForm.get('password')?.value.match('.{8,}')"
+          >At least 8 characters long.</mat-grid-tile
+        >
+
+        <mat-grid-tile
+          class="block"
+          *ngIf="!agentForm.get('password')?.value.match('(?=.*[!@#$%^&*])')"
+          >At least one special character.</mat-grid-tile
+        >
+
+        <mat-grid-tile
+          class="block"
+          *ngIf="!agentForm.get('password')?.value.match('^(?=.*[A-Z])')"
+          >At least one uppercase letter.</mat-grid-tile
+        >
+        <mat-grid-tile
+          class="block"
+          *ngIf="!agentForm.get('password')?.value.match('(?=.*[a-z])')"
+          >At least one lowercase letter.</mat-grid-tile
+        >
+        <mat-grid-tile
+          class="block"
+          *ngIf="!agentForm.get('password')?.value.match('(.*[0-9].*)')"
+          >At least one digit.</mat-grid-tile
+        >
+      </mat-grid-list>
+
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" />
+      </mat-form-field>
+
+      <div
+        class="text-red-400 text-sm"
+        *ngIf="
+          agentForm.get('confirmPassword')?.dirty &&
+          agentForm.hasError('passwordMismatch')
+        "
+      >
+        Passwords do not match.
+      </div>
+
+      <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="agentForm.invalid"
+      >
+        Save
+      </button>
+      <button mat-raised-button [routerLink]="['/agents']">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
