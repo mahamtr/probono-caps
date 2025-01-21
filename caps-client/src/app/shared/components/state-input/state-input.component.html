@@ -1,0 +1,11 @@
+<mat-form-field appearance="outline">
+  <mat-label>State</mat-label>
+  <mat-select
+    [value]="selectedState"
+    (selectionChange)="onSelectChange($event)"
+  >
+    <mat-option *ngFor="let state of states" [value]="state">
+      {{ state }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

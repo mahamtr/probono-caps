@@ -1,0 +1,59 @@
+<div class="form-container">
+  <h2>{{ isEditMode ? "Edit Patient" : "Create Patient" }}</h2>
+
+  <form [formGroup]="patientForm" (ngSubmit)="savePatient()">
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" required />
+      </mat-form-field>
+      <!-- 
+      <mat-form-field appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Number</mat-label>
+        <input matInput formControlName="idNumber" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateOfBirth"
+          required
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" required>
+          <mat-option value="Male">Male</mat-option>
+          <mat-option value="Female">Female</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="Active">Active</mat-option>
+          <mat-option value="Inactive">Inactive</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit">
+        Save Changes
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

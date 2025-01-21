@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline">
+  <mat-label>ID Number *</mat-label>
+  <input
+    matInput
+    [value]="formattedValue"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()"
+    maxlength="15"
+  />
+</mat-form-field>
