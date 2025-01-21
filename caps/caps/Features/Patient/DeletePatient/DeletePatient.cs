@@ -3,19 +3,20 @@ using FastEndpoints;
 
 namespace caps.Features.Patient.DeletePatient;
 
-public class DeletePatient(CapsDbContext dbContext) : Endpoint<string,bool>
+public class DeletePatient(CapsDbContext dbContext) : EndpointWithoutRequest<bool>
 {
     public override void Configure()
     {
-        Delete("/api/patient/delete");
+        Delete("/api/patient/{id}");
     }
     
-    public override async Task HandleAsync(string req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         try
         {
-            if(string.IsNullOrWhiteSpace(req)) throw new BadHttpRequestException("Id cannot be null or empty.");
-            var recordInDb = dbContext.Patients.FirstOrDefault(a => a.Id.ToString() == req);
+            var id = Route<string>("id");
+            if(string.IsNullOrWhiteSpace(id)) throw new BadHttpRequestException("Id cannot be null or empty.");
+            var recordInDb = dbContext.Patients.FirstOrDefault(a => a.Id.ToString() == id);
             if (recordInDb == null) throw new BadHttpRequestException("Patient not found");
             dbContext.Patients.Remove(recordInDb);
             await SendAsync(await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);

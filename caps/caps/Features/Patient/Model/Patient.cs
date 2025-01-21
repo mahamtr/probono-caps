@@ -16,7 +16,7 @@ public class Patient
     public string LastName { get; set; }
 
     [Required]
-    public int IDNumber { get; set; }
+    public double IDNumber { get; set; }
 
     [Required]
     public DateTime DateOfBirth { get; set; }
@@ -57,7 +57,7 @@ public class GuardianShipSection
 {
     public string? GuardianShipName { get; set; } 
 
-    public long GuardianShipPhone { get; set; }
+    public string GuardianShipPhone { get; set; }
 }
 
 public class StudentSection

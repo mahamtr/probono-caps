@@ -8,8 +8,7 @@ public class DeleteAgent(CapsDbContext dbContext) : EndpointWithoutRequest< bool
     public override void Configure()
     {
         Delete("/api/agent/{id}");
-        // Policies("AdminOnly");
-        AllowAnonymous();
+        Policies("AdminOnly");
     }
 
     public override async Task HandleAsync( CancellationToken ct)

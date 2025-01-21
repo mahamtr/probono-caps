@@ -3,7 +3,7 @@ using caps.Infrastructure.Data;
 using FastEndpoints;
 using IMapper = AutoMapper.IMapper;
 
-namespace caps.Features.Appointment.GetAllAppointments;
+namespace caps.Features.Appointment.GetMyAppointments;
 
 public class GetAllMyAppointments(CapsDbContext dbContext, IMapper mapper) : EndpointWithoutRequest<IEnumerable<AppointmentDto>>
 {

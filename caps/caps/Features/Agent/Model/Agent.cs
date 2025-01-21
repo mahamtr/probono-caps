@@ -38,7 +38,7 @@ public class Agent
 public class ContactInformation
 {
     [Required]
-    public long PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     [Required]
     public string? City { get; set; } 

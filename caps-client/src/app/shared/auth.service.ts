@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private apiService: ApiService, private router: Router) {}
 
-  login(credentials: { email: string; password: string }): Observable<any> {
+  login(credentials: { email: string; password: string }): Observable<string> {
     return this.apiService.post('api/agent/authenticate', credentials);
   }
 

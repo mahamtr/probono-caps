@@ -28,7 +28,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          this.authService.saveToken(response.token);
+          this.authService.saveToken(response);
           this.router.navigate(['/agents']);
         },
         error: () => {

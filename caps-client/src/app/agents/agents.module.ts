@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgentsRoutingModule } from './agents-routing.module';
-import { AgentsListComponent } from './components/agents-list/agents-list.component';
+import { AgentsListComponent } from './agents-list/agents-list.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,8 +19,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { AgentCreateComponent } from './components/agent-create/agent-create.component';
-import { AgentEditComponent } from './components/agent-edit/agent-edit.component';
+import { AgentCreateComponent } from './agent-create/agent-create.component';
+import { AgentEditComponent } from './agent-edit/agent-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AgentsListComponent, AgentCreateComponent, AgentEditComponent],
@@ -29,8 +29,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     AgentsRoutingModule,
     MatGridListModule,
     MatIconModule,
-    MatCardModule,
-    MatGridListModule,
     MatButtonModule,
     MatToolbarModule,
     MatMenuModule,

@@ -23,4 +23,5 @@ public class AgentDto
     public string? Biography { get; set; }
 
     public bool IsActive { get; set; }
+    public string? Password { get; set; }
 }

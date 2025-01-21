@@ -4,7 +4,6 @@ namespace caps.Features.Patient.Model;
 
 public class PatientDto
 {
-    // TODO add req fields
     public string Id { get; set; }
     
     [Required]
@@ -14,7 +13,7 @@ public class PatientDto
     public string LastName { get; set; }
 
     [Required]
-    public int IDNumber { get; set; }
+    public double IDNumber { get; set; }
 
     [Required]
     public DateTime DateOfBirth { get; set; }
@@ -30,9 +29,6 @@ public class PatientDto
     public ContactInformation ContactInformation { get; set; } = new();
 
     public string HouseZone { get; set; }
-
-    // [NotMapped] // Da `Age` berechnet wird
-    // public int Age => DateTime.Now.Year - DateOfBirth.Year;
 
     [EmailAddress]
     public string Email { get; set; }

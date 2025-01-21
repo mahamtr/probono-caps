@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SideNavComponent } from './shared/components/side-nav/side-nav.component';
+import { LoginComponent } from './shared/components/login/login.component';
 
 const routes: Routes = [
   {
@@ -12,17 +13,16 @@ const routes: Routes = [
         loadChildren: () =>
           import('./agents/agents.module').then((m) => m.AgentsModule),
       },
-      // {
-      //   path: 'bedroom',
-      //   loadChildren: () =>
-      //     import('./bedroom/bedroom.module').then((m) => m.BedroomModule),
-      // },
-      // {
-      //   path: 'kitchen',
-      //   loadChildren: () =>
-      //     import('./kitchen/kitchen.module').then((m) => m.KitchenModule),
-      // },
+      {
+        path: 'patients',
+        loadChildren: () =>
+          import('./patients/patients.module').then((m) => m.PatientsModule),
+      },
     ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
 ];
 

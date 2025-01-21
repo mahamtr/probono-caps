@@ -11,7 +11,6 @@ public class GetAgent(CapsDbContext dbContext, IMapper mapper) : EndpointWithout
     public override void Configure()
     {
         Get("/api/agent/{id}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync( CancellationToken ct)

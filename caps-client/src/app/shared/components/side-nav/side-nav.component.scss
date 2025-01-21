@@ -21,7 +21,7 @@ mat-sidenav {
       padding-top: 4rem;
     }
 
-    .entry{
+    .entry {
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -32,8 +32,9 @@ mat-sidenav {
   }
 
 // Move the content down so that it won't be hidden by the toolbar
-mat-sidenav-content{
+mat-sidenav-content {
     padding-top: 3.5rem;
+    height: calc(100vh - 64px);
     @media screen and (min-width: 600px) {
         padding-top: 4rem;
     }

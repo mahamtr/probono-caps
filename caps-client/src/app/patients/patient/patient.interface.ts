@@ -6,8 +6,8 @@ export interface Patient {
   dateOfBirth: string;
   civilStatus?: string;
   educationLevel?: string;
-  guardianShipSection?: any;
-  studentSection?: any;
+  guardianShipSection?: GuardianShipSection;
+  studentSection?: StudentSection;
   contactInformation?: ContactInformation;
   houseZone?: string;
   email?: string;
@@ -20,6 +20,16 @@ export interface Patient {
 }
 
 export interface ContactInformation {
-  phone?: string;
+  phoneNumber?: string;
   email?: string;
+}
+
+export interface StudentSection {
+  major?: string;
+  studyYear?: string;
+}
+
+export interface GuardianShipSection {
+  GuardianShipName?: string;
+  GuardianShipPhone?: string;
 }

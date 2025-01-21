@@ -8,11 +8,14 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -32,8 +35,13 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
-          if (error.status === 403) {
+          if (error.status === 401) {
             this.authService.logout();
+          } else if (error.status === 403) {
+            this.snackBar.open(
+              'Agent has no permissions for this operation',
+              'Close'
+            );
           }
         }
         return throwError(() => error);

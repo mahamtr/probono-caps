@@ -7,7 +7,7 @@ export function matchPasswordsValidator(
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const password = formGroup.get(passwordKey)?.value;
     const confirmPassword = formGroup.get(confirmPasswordKey)?.value;
-
+    if (password == null) return null;
     return password === confirmPassword ? null : { passwordMismatch: true };
   };
 }
