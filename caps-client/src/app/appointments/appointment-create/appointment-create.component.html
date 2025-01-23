@@ -1,0 +1,71 @@
+<div class="create-appointment-container">
+  <h2>Add Appointment</h2>
+
+  <form [formGroup]="appointmentForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Patient Name</mat-label>
+      <input
+        matInput
+        #patientInput
+        formControlName="patientId"
+        [matAutocomplete]="autoPatient"
+        [value]="selectedPatient?.firstName + ' ' + selectedPatient?.lastName"
+      />
+      <mat-autocomplete
+        #autoPatient="matAutocomplete"
+        (optionSelected)="onPatientSelected($event)"
+      >
+        <mat-option
+          *ngFor="let patient of filteredPatients"
+          [value]="patient.id"
+        >
+          {{ patient.firstName }} {{ patient.lastName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Agent Name</mat-label>
+      <input
+        matInput
+        #agentInput
+        formControlName="agentId"
+        [matAutocomplete]="autoAgent"
+        [value]="selectedAgent?.firstName + ' ' + selectedAgent?.lastName"
+      />
+      <mat-autocomplete
+        #autoAgent="matAutocomplete"
+        (optionSelected)="onAgentSelected($event)"
+      >
+        <mat-option *ngFor="let agent of filteredAgents" [value]="agent.id">
+          {{ agent.firstName }} {{ agent.lastName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Scheduled Date</mat-label>
+      <input matInput type="date" formControlName="scheduledDate" required />
+      <!-- <mat-datetimepicker #picker type="datetime"></mat-datetimepicker> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Reason</mat-label>
+      <textarea matInput formControlName="reason" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!appointmentForm.valid"
+      >
+        Create Appointment
+      </button>
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -5,11 +5,11 @@ using IMapper = AutoMapper.IMapper;
 
 namespace caps.Features.Appointment.CreateAppointment;
 
-public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoint<AppointmentDto, bool>
+public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoint<AppointmentDto, string>
 {
     public override void Configure()
     {
-        Patch("/api/appointment/create");
+        Post("/api/appointment/create");
     }
 
     public override async Task HandleAsync(AppointmentDto req, CancellationToken ct)
@@ -19,8 +19,15 @@ public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoi
             var newAppointment = new Model.Appointment();
             mapper.Map(req, newAppointment);
             dbContext.Appointments.Add(newAppointment);
-            await SendAsync(
-                await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);
+            if (await dbContext.SaveChangesAsync(ct) > 0)
+            {
+                await SendAsync(newAppointment.Id.ToString(), cancellation: ct);
+
+            }else
+
+            {
+                ThrowError("Error creating appointment.");
+            }
         }
         catch (Exception e)
         {
