@@ -2,6 +2,12 @@
     padding: 20px;
   }
   
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
   .filters {
     display: flex;
     gap: 10px;
@@ -16,8 +22,4 @@
   .status.complete { background: lightgreen; }
   .status.cancelled { background: lightcoral; }
 
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  

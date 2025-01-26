@@ -1,12 +1,15 @@
-.container {
+.patients-container {
     padding: 20px;
   }
-  
-  button {
-    margin-bottom: 15px;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  
+
   table {
+    margin-top: 20px;
     width: 100%;
     background: white;
     border-radius: 8px;

@@ -11,49 +11,46 @@
     [opened]="isMobile ? 'false' : 'true'"
   >
     <mat-nav-list>
-      <a mat-list-item>
-        <span class="entry">
-          <div routerLink="/agents">
-            <mat-icon class="row">house</mat-icon>
-            <span *ngIf="!isCollapsed">Agents</span>
-          </div>
-        </span>
-      </a>
-      <a mat-list-item>
-        <span class="entry">
-          <div routerLink="/patients">
-            <mat-icon class="row">house</mat-icon>
-            <span *ngIf="!isCollapsed">Patients</span>
-          </div>
-        </span>
-      </a>
-      <a mat-list-item>
-        <span class="entry">
-          <div routerLink="/appointments">
-            <mat-icon class="row">house</mat-icon>
-            <span *ngIf="!isCollapsed">Appointments</span>
-          </div>
-        </span>
-      </a>
-      <a mat-list-item>
-        <span class="entry">
-          <div routerLink="/calendar">
-            <mat-icon class="row">house</mat-icon>
-            <span *ngIf="!isCollapsed">Calendar</span>
-          </div>
-        </span>
-      </a>
-
-      <a mat-list-item>
-        <span class="entry">
-          <div routerLink="/dasboard">
+      <div routerLink="/dasboard">
+        <a mat-list-item>
+          <span class="entry">
             <mat-icon class="row">house</mat-icon>
             <span *ngIf="!isCollapsed">Dashboard</span>
-          </div>
-        </span>
-      </a>
-
-      TODO FIX style
+          </span>
+        </a>
+      </div>
+      <div routerLink="/agents">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">person</mat-icon>
+            <span *ngIf="!isCollapsed">Agents</span>
+          </span>
+        </a>
+      </div>
+      <div routerLink="/patients">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">accessible</mat-icon>
+            <span *ngIf="!isCollapsed">Patients</span>
+          </span>
+        </a>
+      </div>
+      <div routerLink="/appointments">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">edit_calendar</mat-icon>
+            <span *ngIf="!isCollapsed">Appointments</span>
+          </span>
+        </a>
+      </div>
+      <div routerLink="/calendar">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">event</mat-icon>
+            <span *ngIf="!isCollapsed">Calendar</span>
+          </span>
+        </a>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

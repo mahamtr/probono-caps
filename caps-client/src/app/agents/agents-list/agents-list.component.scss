@@ -1,6 +1,13 @@
-.container {
-    padding: 10px;
-  }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+
+}
+
+
+
   
   .spacer {
     flex: 1 1 auto;
@@ -15,7 +22,7 @@
 
   .scrollable-container {
     margin-bottom: 10px; /* Höhe der Toolbar */
-    height: calc(100vh - 64px); /* Gesamthöhe minus Toolbar */
+    // height: calc(100vh - 64px); 
     overflow-y: auto;
   }
 

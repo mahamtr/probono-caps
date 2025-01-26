@@ -14,6 +14,14 @@ export class AppointmentService {
     return this.apiService.get<Appointment[]>('api/appointment/getAll');
   }
 
+  getAppointmentById(id: string): Observable<Appointment> {
+    return this.apiService.get<Appointment>('api/appointment/' + id);
+  }
+
+  updateAppointment(appt: Appointment): Observable<boolean> {
+    return this.apiService.patch<boolean>('api/appointment/update', appt);
+  }
+
   deleteAppointment(id: string): Observable<HttpEvent<boolean>> {
     return this.apiService.delete<boolean>(`api/appointment/${id}`, null);
   }

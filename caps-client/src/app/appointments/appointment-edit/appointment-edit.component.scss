@@ -1,0 +1,76 @@
+.edit-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .patient-card, .edit-card {
+    width: calc(100% - 40px); // 20px gap on each side
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .patient-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // Two columns
+    gap: 16px;
+
+    .detail-row {
+      display: flex;
+      flex-direction: column;
+
+      .detail-label {
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      .detail-value {
+        color: #555;
+      }
+    }
+  }
+
+  .form-row {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .form-columns {
+    display: flex;
+    gap: 20px;
+
+    .form-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+    
+    }
+  }
+
+  .button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+}

@@ -1,11 +1,14 @@
-<div class="container">
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="router.navigate(['/patients/create'])"
-  >
-    + Add Patient
-  </button>
+<div class="patients-container">
+  <div class="header-container">
+    <h2>Patients</h2>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="router.navigate(['/patients/create'])"
+    >
+      + Create
+    </button>
+  </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="name">

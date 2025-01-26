@@ -54,7 +54,7 @@ export class AppointmentListComponent {
   }
 
   editAppointment(id: string) {
-    this.router.navigate([`/appointment/edit/${id}`]);
+    this.router.navigate([`/appointments/edit/${id}`]);
   }
 
   confirmDelete(id: string) {
