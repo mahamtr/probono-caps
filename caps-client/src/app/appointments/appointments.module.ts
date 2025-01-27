@@ -21,11 +21,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 @NgModule({
   declarations: [
     AppointmentListComponent,
     AppointmentEditComponent,
     AppointmentCreateComponent,
+    AppointmentCalendarComponent,
   ],
   imports: [
     CommonModule,

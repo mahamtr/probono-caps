@@ -1,0 +1,201 @@
+.calendar-container {
+  padding: 16px;
+  max-width: 100%; // Set a maximum width for the entire calendar
+  margin: 0 auto; // Center the calendar on the page
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  button {
+    margin-left: 8px;
+  }
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 16px;
+
+  .view-buttons {
+    button {
+      margin-right: 8px;
+    }
+  }
+
+  .navigation-buttons {
+    button {
+      margin-left: 8px;
+    }
+  }
+}
+
+.week-view {
+  padding: 10px;
+  min-height: 500px; // Set a minimum height for the week view
+  max-width: 100%; // Ensure the view doesn't exceed the container width
+  overflow-x: auto; // Add horizontal scroll for smaller screens
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr); // 60px for time labels, 7 columns for days
+    gap: 8px;
+
+    .day-header-spacer {
+      grid-column: 1; // Spacer for the time label column
+    }
+
+    .day-header {
+      grid-column: span 1; // Each day header spans one column
+      text-align: center;
+      padding: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+
+      .day-name {
+        font-weight: 500;
+      }
+
+      .day-date {
+        font-size: 14px;
+      }
+    }
+
+    .time-slots {
+      grid-column: 1 / -1; // Span all columns
+      display: grid;
+      grid-template-columns: 60px repeat(7, 1fr); // Match the grid layout
+      gap: 8px;
+
+      .time-slot {
+        display: contents; // Use contents to align children with the grid
+
+        .time-label {
+          grid-column: 1; // Place time labels in the first column
+          text-align: right;
+          padding-right: 8px;
+          font-size: 14px;
+        }
+
+        .day-column {
+          grid-column: span 1; // Each day column spans one column
+          border: 1px solid #e0e0e0;
+          border-radius: 4px;
+          padding: 4px;
+          min-height: 20px; // Minimum height for empty cells
+          max-height: 300px; // Maximum height for appointment containers
+          overflow-y: auto; // Add scroll for overflow appointments
+
+          .appointment {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 4px;
+            margin-bottom: 4px;
+            max-height: 300px; // Maximum height for individual appointments
+            overflow-y: auto; // Add scroll for overflow content
+
+            .appointment-details {
+              .appointment-reason {
+                font-weight: 500;
+              }
+
+              .appointment-hover {
+                background-color: red;
+              }
+
+              // .appointment-info {
+              //   font-size: 12px;
+              // }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.month-view {
+  padding: 10px;
+  min-height: 600px; // Set a minimum height for the month view
+  max-width: 100%; // Ensure the view doesn't exceed the container width
+  overflow-x: auto; // Add horizontal scroll for smaller screens
+
+  .month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+
+    .day-header {
+      text-align: center;
+      padding: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .day-cell {
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 8px;
+      min-height: 100px; // Minimum height for empty cells
+      max-height: 300px; // Maximum height for appointment containers
+      overflow-y: auto; // Add scroll for overflow appointments
+
+      .day-number {
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .appointments {
+        max-height: 120px; // Maximum height for appointments container
+        overflow-y: auto; // Add scroll for overflow appointments
+
+        .appointment {
+          background-color: #f5f5f5;
+          border-radius: 4px;
+          padding: 4px;
+          margin-bottom: 4px;
+
+          .appointment-details {
+            .appointment-reason {
+              font-weight: 500;
+            }
+
+            .appointment-hover {
+              background-color: red;
+            }
+
+            // .appointment-info {
+            //   font-size: 12px;
+            // }
+          }
+        }
+      }
+    }
+  }
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px; // Add spacing between elements
+
+  .range-label {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 16px;
+  }
+}

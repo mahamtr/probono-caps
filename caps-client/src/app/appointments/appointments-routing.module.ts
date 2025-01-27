@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppointmentListComponent } from './appointment-list/appointment-list.component';
 import { AppointmentCreateComponent } from './appointment-create/appointment-create.component';
 import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
+import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: AppointmentEditComponent,
+  },
+  {
+    path: 'calendar',
+    component: AppointmentCalendarComponent,
   },
 ];
 

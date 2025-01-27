@@ -1,0 +1,132 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h2>Calendar</h2>
+    <button mat-raised-button color="primary" (click)="navigateToCreate()">
+      + New
+    </button>
+  </div>
+  <mat-card>
+    <div class="calendar-controls">
+      <button mat-icon-button (click)="navigate('prev')">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button color="primary" mat-raised-button (click)="goToToday()">
+        Today
+      </button>
+      <button mat-icon-button (click)="navigate('next')">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <div>
+        <button
+          mat-button
+          (click)="changeView('week')"
+          [color]="view === 'week' ? 'primary' : ''"
+        >
+          Week
+        </button>
+        <button
+          mat-button
+          (click)="changeView('month')"
+          [color]="view === 'month' ? 'primary' : ''"
+        >
+          Month
+        </button>
+      </div>
+
+      <div class="range-label">
+        {{ getRangeLabel() }}
+      </div>
+    </div>
+
+    <div *ngIf="view === 'week'" class="week-view">
+      <div class="week-grid">
+        <!-- Day Headers -->
+        <div class="day-header-spacer"></div>
+        <!-- Spacer for the time label column -->
+        <div class="day-header" *ngFor="let day of weekDays">
+          <div class="day-name">{{ day.name }}</div>
+          <div class="day-date">{{ day.date }}</div>
+        </div>
+
+        <!-- Time Slots -->
+        <div class="time-slots">
+          <div class="time-slot" *ngFor="let time of timeSlots">
+            <div class="time-label">{{ time }}</div>
+            <div class="day-column" *ngFor="let day of weekDays">
+              <div
+                class="appointment"
+                *ngFor="
+                  let appointment of getAppointmentsForDayAndTime(
+                    day.date,
+                    time
+                  )
+                "
+              >
+                <div
+                  class="appointment-details"
+                  hover-class="appointment-hover"
+                >
+                  <div class="appointment-reason" [matMenuTriggerFor]="menu">
+                    {{ appointment.reason }}
+                    {{ appointment.scheduledDate }}
+                  </div>
+                  <!-- <div class="appointment-info">
+                    Patient: {{ appointment.patientId }}
+                  </div>
+                  <div class="appointment-info">
+                    Agent: {{ appointment.agentId }}
+                  </div> -->
+                </div>
+
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="openDeleteModal(appointment)">
+                    Delete
+                  </button>
+                  <button mat-menu-item (click)="openDeleteModal(appointment)">
+                    Edit
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month View -->
+    <div *ngIf="view === 'month'" class="month-view">
+      <div class="month-grid">
+        <div class="day-header" *ngFor="let day of dayNames">
+          {{ day }}
+        </div>
+        <div class="day-cell" *ngFor="let day of monthDays">
+          <div class="day-number">{{ day.date }}</div>
+          <div class="appointments">
+            <div
+              class="appointment"
+              *ngFor="let appointment of getAppointmentsForDay(day.date)"
+            >
+              <div class="appointment-details">
+                <div class="appointment-reason">{{ appointment.reason }}</div>
+                <div class="appointment-info">
+                  Patient: {{ appointment.patientId }}
+                </div>
+                <div class="appointment-info">
+                  Agent: {{ appointment.agentId }}
+                </div>
+              </div>
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openDeleteModal(appointment)">
+                  Delete
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
