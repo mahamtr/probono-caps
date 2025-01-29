@@ -67,22 +67,16 @@
                   hover-class="appointment-hover"
                 >
                   <div class="appointment-reason" [matMenuTriggerFor]="menu">
+                    {{ getFormatedDate(appointment.scheduledDate) }}
                     {{ appointment.reason }}
-                    {{ appointment.scheduledDate }}
                   </div>
-                  <!-- <div class="appointment-info">
-                    Patient: {{ appointment.patientId }}
-                  </div>
-                  <div class="appointment-info">
-                    Agent: {{ appointment.agentId }}
-                  </div> -->
                 </div>
 
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="openDeleteModal(appointment)">
                     Delete
                   </button>
-                  <button mat-menu-item (click)="openDeleteModal(appointment)">
+                  <button mat-menu-item (click)="onEdit(appointment)">
                     Edit
                   </button>
                 </mat-menu>
@@ -106,18 +100,11 @@
               class="appointment"
               *ngFor="let appointment of getAppointmentsForDay(day.date)"
             >
-              <div class="appointment-details">
-                <div class="appointment-reason">{{ appointment.reason }}</div>
-                <div class="appointment-info">
-                  Patient: {{ appointment.patientId }}
-                </div>
-                <div class="appointment-info">
-                  Agent: {{ appointment.agentId }}
-                </div>
+              <div class="appointment-reason" [matMenuTriggerFor]="menu">
+                {{ getFormatedDate(appointment.scheduledDate) }}
+                {{ appointment.reason }}
               </div>
-              <button mat-icon-button [matMenuTriggerFor]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
+
               <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="openDeleteModal(appointment)">
                   Delete

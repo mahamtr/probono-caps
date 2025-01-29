@@ -35,9 +35,7 @@ export class AppointmentCalendarComponent {
     const startDate = this.getStartDate();
     const endDate = this.getEndDate();
     this.appointmentService
-      //TODO this endpoint needs to filter by start and endDate
-      // .getAppointments(startDate, endDate)
-      .getAppointments()
+      .getAppointmentsCalendar(startDate, endDate)
       .subscribe((data) => {
         this.appointments = data;
         this.updateCalendar();
@@ -140,12 +138,6 @@ export class AppointmentCalendarComponent {
     const lastDayOfMonth = new Date(year, month + 1, 0);
     this.monthDays = [];
 
-    // Add empty days for the start of the month
-    for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
-      // this.monthDays.push({ date: 0, fullDate: new Date() }); // Placeholder for empty days
-    }
-
-    // Add days of the month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       const fullDate = new Date(year, month, i);
       this.monthDays.push({ date: i, fullDate });
@@ -155,8 +147,8 @@ export class AppointmentCalendarComponent {
   getAppointmentsForDay(day: any): Appointment[] {
     return this.appointments.filter((appointment) => {
       const appointmentDate = new Date(appointment.scheduledDate);
-      const appointmentDay = appointmentDate.getDate(); // Extract the day of the month (1-31)
-      return appointmentDay === day; // Compare the day of the month
+      const appointmentDay = appointmentDate.getDate();
+      return appointmentDay === day;
     });
   }
 
@@ -171,6 +163,14 @@ export class AppointmentCalendarComponent {
         calendarDay == appointmentDay
       );
     });
+  }
+
+  getFormatedDate(scheduledDate: any) {
+    const date = new Date(scheduledDate);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${hours}:${minutes}`;
   }
 
   openDeleteModal(appointment: Appointment): void {
@@ -188,6 +188,10 @@ export class AppointmentCalendarComponent {
           });
       }
     });
+  }
+
+  onEdit(appointment: Appointment): void {
+    this.router.navigate(['appointments/edit/' + appointment.id]);
   }
   getRangeLabel(): string {
     if (this.view === 'week') {

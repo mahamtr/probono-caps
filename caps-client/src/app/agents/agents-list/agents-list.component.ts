@@ -18,15 +18,9 @@ export class AgentsListComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  // ngOnInit(): void {
-  //   this.agents$ = this.agentService.getAgents().pipe(
-  //     tap((agents) => console.log('Agents fetched:', agents)),
-  //     catchError((error) => {
-  //       console.error('Error fetching users:', error);
-  //       return of([]); // Rückgabe eines leeren Arrays im Fehlerfall
-  //     })
-  //   );a
-  // }
+  getInitials(firstName: string, lastName: string): string {
+    return (firstName?.charAt(0) || '') + (lastName?.charAt(0) || '');
+  }
 
   ngOnInit(): void {
     this.loadAgents();

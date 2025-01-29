@@ -36,7 +36,7 @@ public class Authenticate(CapsDbContext dbContext, IHashService hashService) : E
                 o.SigningKey = secretKey;
                 o.ExpireAt = DateTime.UtcNow.AddMinutes(expireInMinute);
                 o.User.Roles.Add(agent.Privilege);
-                o.User.Claims.Add(("UserName", req.Email));
+                o.User.Claims.Add(("UserId", agent.Id.ToString()));
                 // o.User["UserId"] = "001"; //indexer based claim setting
             });
 

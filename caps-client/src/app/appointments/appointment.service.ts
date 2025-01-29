@@ -11,9 +11,17 @@ export class AppointmentService {
   constructor(private apiService: ApiService) {}
 
   getAppointments(): Observable<Appointment[]> {
-    return this.apiService.get<Appointment[]>('api/appointment/getAll');
+    return this.apiService.get<Appointment[]>('api/appointment/list');
   }
 
+  getAppointmentsCalendar(
+    startDate: string,
+    endDate: string
+  ): Observable<Appointment[]> {
+    return this.apiService.get<Appointment[]>(
+      `api/appointment/calendar?startDate=${startDate}&endDate=${endDate}`
+    );
+  }
   getAppointmentById(id: string): Observable<Appointment> {
     return this.apiService.get<Appointment>('api/appointment/' + id);
   }

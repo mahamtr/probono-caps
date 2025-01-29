@@ -19,6 +19,10 @@ public class CreateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<Age
         try
         {
             var newAgent = new Model.Agent();
+            if (dbContext.Agents.FirstOrDefault(a => a.Email == req.Email) != null)
+            {
+                ThrowError("Please use another email.");
+            }
             mapper.Map(req, newAgent);
             dbContext.Agents.Add(newAgent);
             await SendAsync(await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);

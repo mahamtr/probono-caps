@@ -19,6 +19,22 @@
           </span>
         </a>
       </div>
+      <div routerLink="/appointments/calendar">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">event</mat-icon>
+            <span *ngIf="!isCollapsed">Calendar</span>
+          </span>
+        </a>
+      </div>
+      <div routerLink="/appointments">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">edit_calendar</mat-icon>
+            <span *ngIf="!isCollapsed">Appointments</span>
+          </span>
+        </a>
+      </div>
       <div routerLink="/agents">
         <a mat-list-item>
           <span class="entry">
@@ -32,22 +48,6 @@
           <span class="entry">
             <mat-icon class="row">accessible</mat-icon>
             <span *ngIf="!isCollapsed">Patients</span>
-          </span>
-        </a>
-      </div>
-      <div routerLink="/appointments">
-        <a mat-list-item>
-          <span class="entry">
-            <mat-icon class="row">edit_calendar</mat-icon>
-            <span *ngIf="!isCollapsed">Appointments</span>
-          </span>
-        </a>
-      </div>
-      <div routerLink="/appointments/calendar">
-        <a mat-list-item>
-          <span class="entry">
-            <mat-icon class="row">event</mat-icon>
-            <span *ngIf="!isCollapsed">Calendar</span>
           </span>
         </a>
       </div>

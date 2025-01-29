@@ -1,7 +1,7 @@
 .calendar-container {
   padding: 16px;
-  max-width: 100%; // Set a maximum width for the entire calendar
-  margin: 0 auto; // Center the calendar on the page
+  max-width: 100%; 
+  margin: 0 auto; 
 }
 
 .calendar-header {
@@ -12,7 +12,7 @@
 
   h2 {
     margin: 0;
-    font-size: 24px;
+    // font-size: 24px;
     font-weight: 500;
   }
 
@@ -41,86 +41,82 @@
       margin-left: 8px;
     }
   }
+
+  .range-label {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 16px;
+  }
+}
+
+.week-view,
+.month-view {
+  padding: 10px;
+  max-width: 100%; 
+  overflow-x: auto; 
+  .day-header {
+    text-align: center;
+    padding: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .appointment {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 4px;
+
+    &:hover {
+      background-color: darken(#f5f5f5, 10%); 
+    }
+
+    .appointment-reason {
+      font-weight: 500;
+      cursor: pointer; 
+
+     
+    }
+  }
 }
 
 .week-view {
-  padding: 10px;
-  min-height: 500px; // Set a minimum height for the week view
-  max-width: 100%; // Ensure the view doesn't exceed the container width
-  overflow-x: auto; // Add horizontal scroll for smaller screens
+  min-height: 500px; 
 
   .week-grid {
     display: grid;
-    grid-template-columns: 60px repeat(7, 1fr); // 60px for time labels, 7 columns for days
+    grid-template-columns: 60px repeat(7, 1fr); 
     gap: 8px;
 
     .day-header-spacer {
-      grid-column: 1; // Spacer for the time label column
-    }
-
-    .day-header {
-      grid-column: span 1; // Each day header spans one column
-      text-align: center;
-      padding: 8px;
-      background-color: #e0e0e0;
-      border-radius: 4px;
-
-      .day-name {
-        font-weight: 500;
-      }
-
-      .day-date {
-        font-size: 14px;
-      }
+      grid-column: 1; 
     }
 
     .time-slots {
-      grid-column: 1 / -1; // Span all columns
+      grid-column: 1 / -1; 
       display: grid;
-      grid-template-columns: 60px repeat(7, 1fr); // Match the grid layout
+      grid-template-columns: 60px repeat(7, 1fr); 
       gap: 8px;
 
       .time-slot {
-        display: contents; // Use contents to align children with the grid
+        display: contents;
 
         .time-label {
-          grid-column: 1; // Place time labels in the first column
+          grid-column: 1; 
           text-align: right;
           padding-right: 8px;
           font-size: 14px;
         }
 
         .day-column {
-          grid-column: span 1; // Each day column spans one column
+          grid-column: span 1; 
           border: 1px solid #e0e0e0;
           border-radius: 4px;
           padding: 4px;
-          min-height: 20px; // Minimum height for empty cells
-          max-height: 300px; // Maximum height for appointment containers
-          overflow-y: auto; // Add scroll for overflow appointments
-
-          .appointment {
-            background-color: #f5f5f5;
-            border-radius: 4px;
-            padding: 4px;
-            margin-bottom: 4px;
-            max-height: 300px; // Maximum height for individual appointments
-            overflow-y: auto; // Add scroll for overflow content
-
-            .appointment-details {
-              .appointment-reason {
-                font-weight: 500;
-              }
-
-              .appointment-hover {
-                background-color: red;
-              }
-
-              // .appointment-info {
-              //   font-size: 12px;
-              // }
-            }
-          }
+          min-height: 20px; 
+          max-height: 300px; 
+          overflow-y: auto; 
         }
       }
     }
@@ -128,31 +124,20 @@
 }
 
 .month-view {
-  padding: 10px;
-  min-height: 600px; // Set a minimum height for the month view
-  max-width: 100%; // Ensure the view doesn't exceed the container width
-  overflow-x: auto; // Add horizontal scroll for smaller screens
+  min-height: 600px;
 
   .month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
 
-    .day-header {
-      text-align: center;
-      padding: 8px;
-      background-color: #e0e0e0;
-      border-radius: 4px;
-      font-weight: 500;
-    }
-
     .day-cell {
       border: 1px solid #e0e0e0;
       border-radius: 4px;
       padding: 8px;
-      min-height: 100px; // Minimum height for empty cells
-      max-height: 300px; // Maximum height for appointment containers
-      overflow-y: auto; // Add scroll for overflow appointments
+      min-height: 100px; 
+      max-height: 300px; 
+      overflow-y: auto; 
 
       .day-number {
         font-weight: 500;
@@ -160,42 +145,9 @@
       }
 
       .appointments {
-        max-height: 120px; // Maximum height for appointments container
-        overflow-y: auto; // Add scroll for overflow appointments
-
-        .appointment {
-          background-color: #f5f5f5;
-          border-radius: 4px;
-          padding: 4px;
-          margin-bottom: 4px;
-
-          .appointment-details {
-            .appointment-reason {
-              font-weight: 500;
-            }
-
-            .appointment-hover {
-              background-color: red;
-            }
-
-            // .appointment-info {
-            //   font-size: 12px;
-            // }
-          }
-        }
+        max-height: 120px; 
+        overflow-y: auto; 
       }
     }
-  }
-}
-
-.calendar-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px; // Add spacing between elements
-
-  .range-label {
-    font-size: 16px;
-    font-weight: 500;
-    margin: 0 16px;
   }
 }
