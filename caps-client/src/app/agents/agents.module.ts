@@ -22,6 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AgentCreateComponent } from './agent-create/agent-create.component';
 import { AgentEditComponent } from './agent-edit/agent-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [AgentsListComponent, AgentCreateComponent, AgentEditComponent],
   imports: [
@@ -46,6 +47,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatDividerModule,
     MatSnackBarModule,
+    SharedModule,
   ],
 })
 export class AgentsModule {}

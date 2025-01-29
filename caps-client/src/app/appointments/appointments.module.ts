@@ -4,7 +4,6 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
 import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
 import { AppointmentCreateComponent } from './appointment-create/appointment-create.component';
 import { AppointmentsRoutingModule } from './appointments-routing.module';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
     AppointmentListComponent,
@@ -32,13 +32,9 @@ import { AppointmentCalendarComponent } from './appointment-calendar/appointment
   imports: [
     CommonModule,
     AppointmentsRoutingModule,
-
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-
-    // Angular Material Modules
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -48,7 +44,6 @@ import { AppointmentCalendarComponent } from './appointment-calendar/appointment
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
@@ -57,6 +52,7 @@ import { AppointmentCalendarComponent } from './appointment-calendar/appointment
     MatNativeDateModule,
     MatCardModule,
     MatToolbarModule,
+    SharedModule,
   ],
 })
 export class AppointmentsModule {}

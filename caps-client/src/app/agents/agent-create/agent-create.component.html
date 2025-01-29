@@ -3,7 +3,7 @@
     <mat-card-title>Add Agent</mat-card-title>
     <mat-card-content>
       <div class="form-group">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>First Name</mat-label>
           <input matInput formControlName="firstName" required />
           <mat-error *ngIf="agentForm.get('firstName')?.invalid"
@@ -11,38 +11,31 @@
           >
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Last Name</mat-label>
           <input matInput formControlName="lastName" required />
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>ID Number</mat-label>
-          <input
-            matInput
-            formControlName="idNumber"
-            required
-            (input)="formatIdNumber()"
-            maxlength="15"
-          />
-          <mat-error *ngIf="agentForm.get('idNumber')?.hasError('pattern')">
-            Must be a valid ID (13 digits).
-          </mat-error>
-        </mat-form-field>
+        <app-id-input formControlName="idNumber"></app-id-input>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email" required />
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Date of Birth</mat-label>
-          // TODO dates no older than 1900 and no younger than one year younger
-          than today
-          <input matInput type="date" formControlName="dateOfBirth" required />
+          <input
+            matInput
+            type="date"
+            formControlName="dateOfBirth"
+            required
+            min="1940-01-01"
+            max="2023-01-01"
+          />
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Privilege</mat-label>
           <mat-select formControlName="privilege">
             <mat-option value="Agent">Agent</mat-option>
@@ -51,30 +44,28 @@
         </mat-form-field>
 
         <div formGroupName="contactInformation">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
             <input matInput formControlName="phoneNumber" required />
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>City</mat-label>
             <input matInput formControlName="city" required />
           </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Address</mat-label>
             <input matInput formControlName="address" required />
           </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>State</mat-label>
-            //TODO make this select, with all the 18 departments of the country
-            Honduras
-            <input matInput formControlName="state" required />
-          </mat-form-field>
+          <app-state-input
+            ngDefaultControl
+            formControlName="state"
+          ></app-state-input>
         </div>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Short Biography</mat-label>
           <textarea matInput formControlName="biography"></textarea>
         </mat-form-field>
@@ -82,7 +73,7 @@
         <mat-divider></mat-divider>
 
         <h3>Security</h3>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>New Password</mat-label>
           <input matInput type="password" formControlName="password" />
         </mat-form-field>
@@ -126,7 +117,7 @@
           >
         </mat-grid-list>
 
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Confirm Password</mat-label>
           <input matInput type="password" formControlName="confirmPassword" />
         </mat-form-field>

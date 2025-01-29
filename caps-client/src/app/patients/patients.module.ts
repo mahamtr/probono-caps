@@ -18,16 +18,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
-import { IdInputComponent } from '../shared/components/id-input/id-input.component';
-import { StateInputComponent } from '../shared/components/state-input/state-input.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    PatientsListComponent,
-    PatientFormComponent,
-    IdInputComponent,
-    StateInputComponent,
-  ],
+  declarations: [PatientsListComponent, PatientFormComponent],
   imports: [
     CommonModule,
     PatientsRoutingModule,
@@ -47,6 +41,7 @@ import { StateInputComponent } from '../shared/components/state-input/state-inpu
     MatDividerModule,
     MatGridListModule,
     MatRadioModule,
+    SharedModule,
   ],
 })
 export class PatientsModule {}

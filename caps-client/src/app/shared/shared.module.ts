@@ -6,49 +6,36 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from '../app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginComponent } from './components/login/login.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthInterceptor } from './auth.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { IdInputComponent } from './components/id-input/id-input.component';
 import { StateInputComponent } from './components/state-input/state-input.component';
 import { MatSelectModule } from '@angular/material/select';
-
-//TODO check which modules are not needed
+import { IdInputComponent } from './components/id-input/id-input.component';
 
 var modules = [
   MatIconModule,
-  MatButtonModule,
   MatToolbarModule,
   MatSidenavModule,
   MatListModule,
   CommonModule,
-  AppRoutingModule,
-  BrowserAnimationsModule,
   MatDialogModule,
   ReactiveFormsModule,
   HttpClientModule,
   MatSelectModule,
-
   MatCardModule,
   MatFormFieldModule,
-  MatInputModule, //
-  MatButtonModule, //
-  MatIconModule, //
-
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule,
   RouterModule,
   MatSnackBarModule,
 ];
@@ -58,8 +45,11 @@ var modules = [
     SideNavComponent,
     DeleteConfirmationModalComponent,
     LoginComponent,
+    StateInputComponent,
+    IdInputComponent,
   ],
   imports: [modules],
+  exports: [StateInputComponent, IdInputComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
