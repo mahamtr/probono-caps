@@ -12,32 +12,43 @@
 
   <!-- Filters -->
   <div class="filters">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="selectedStatus">
+      <mat-select
+        [(ngModel)]="selectedStatus"
+        (selectionChange)="onFilterChange()"
+      >
         <mat-option *ngFor="let status of statuses" [value]="status">
           {{ status }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Room</mat-label>
-      <mat-select [(ngModel)]="selectedRoom">
+      <mat-select
+        [(ngModel)]="selectedRoom"
+        (selectionChange)="onFilterChange()"
+      >
         <mat-option *ngFor="let room of rooms" [value]="room">
           {{ room }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Program</mat-label>
-      <mat-select [(ngModel)]="selectedProgram">
+      <mat-select
+        [(ngModel)]="selectedProgram"
+        (selectionChange)="onFilterChange()"
+      >
         <mat-option *ngFor="let program of programs" [value]="program">
           {{ program }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <button mat-stroked-button (click)="resetFilters()">Reset Filters</button>
   </div>
 
   <!-- Table -->
@@ -53,6 +64,14 @@
     </ng-container>
 
     <!-- Patient Name -->
+
+    <ng-container matColumnDef="reason">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason</th>
+      <td mat-cell *matCellDef="let appointment">
+        {{ appointment.reason }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="patientName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient Name</th>
       <td mat-cell *matCellDef="let appointment">
@@ -78,7 +97,7 @@
         Appointment Date
       </th>
       <td mat-cell *matCellDef="let appointment">
-        {{ appointment.scheduledDate | date : "dd MMM yyyy" }}
+        {{ appointment.appointmentDate }}
       </td>
     </ng-container>
 

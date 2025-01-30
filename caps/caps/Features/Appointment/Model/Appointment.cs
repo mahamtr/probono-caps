@@ -57,7 +57,7 @@ public class Appointment
     [ForeignKey("Patient")]
     public ObjectId PatientId { get; set; }
 
-    public Patient.Model.Patient Patient { get; set; }
+    public Patient.Model.Patient? Patient { get; set; }
 
     [ForeignKey("Agent")]
     public ObjectId AgentId { get; set; }

@@ -6,7 +6,7 @@ namespace caps.Features.Agent.Model;
 public class Agent
 {
     [Key]
-    public ObjectId Id { get; set; } // MongoDB verwendet häufig einen string?-Id-Typ.
+    public ObjectId Id { get; set; } 
 
     [Required]
     public string? FirstName { get; set; }

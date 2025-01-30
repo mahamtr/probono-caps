@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
-import { Appointment } from '../appointment/appointment.interface';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
 
@@ -15,6 +14,7 @@ import { AppointmentService } from '../appointment.service';
 export class AppointmentListComponent {
   displayedColumns: string[] = [
     'appointmentId',
+    'reason',
     'patientName',
     'age',
     'program',
@@ -26,7 +26,7 @@ export class AppointmentListComponent {
   ];
   dataSource = new MatTableDataSource();
 
-  statuses = ['Active', 'Cancelled', 'Complete'];
+  statuses = ['Scheduled', 'Canceled', 'Complete', 'Pending'];
   rooms = ['Room 1', 'Room 2', 'Room 3'];
   programs = ['World Vision', 'UNAH-VS'];
 
@@ -47,10 +47,40 @@ export class AppointmentListComponent {
   }
 
   loadAppointments() {
-    this.appointmentService.getAppointments().subscribe((appointments) => {
-      this.dataSource.data = appointments;
+    this.appointmentService.getAppointmentsTable().subscribe((appointments) => {
+      let filteredAppointments = appointments;
+
+      this.dataSource.data = filteredAppointments;
       this.dataSource.paginator = this.paginator;
     });
+  }
+  applyFilters() {
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const filters = JSON.parse(filter);
+      const statusMatch = !filters.status || data.status === filters.status;
+      const roomMatch = !filters.room || data.location === filters.room;
+      const programMatch = !filters.program || data.program === filters.program;
+      return statusMatch && roomMatch && programMatch;
+    };
+
+    const filter = {
+      status: this.selectedStatus,
+      room: this.selectedRoom,
+      program: this.selectedProgram,
+    };
+
+    this.dataSource.filter = JSON.stringify(filter);
+  }
+
+  onFilterChange() {
+    this.applyFilters();
+  }
+
+  resetFilters() {
+    this.selectedStatus = '';
+    this.selectedRoom = '';
+    this.selectedProgram = '';
+    this.applyFilters();
   }
 
   editAppointment(id: string) {

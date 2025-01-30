@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/api.service';
 import { Observable } from 'rxjs';
-import { Appointment } from './appointment/appointment.interface';
+import {
+  Appointment,
+  AppointmentTableDto,
+} from './appointment/appointment.interface';
 import { HttpEvent } from '@angular/common/http';
 
 @Injectable({
@@ -14,6 +17,9 @@ export class AppointmentService {
     return this.apiService.get<Appointment[]>('api/appointment/list');
   }
 
+  getAppointmentsTable(): Observable<AppointmentTableDto[]> {
+    return this.apiService.get<AppointmentTableDto[]>('api/appointment/table');
+  }
   getAppointmentsCalendar(
     startDate: string,
     endDate: string

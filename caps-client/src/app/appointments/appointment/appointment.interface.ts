@@ -26,3 +26,15 @@ export interface Appointment {
   agentId: string;
   blobUrls?: string[];
 }
+
+export interface AppointmentTableDto {
+  id: string;
+  reason: string;
+  patientName: string;
+  age: number;
+  program: string;
+  appointmentDate: Date;
+  mode?: string;
+  location?: string;
+  status?: string;
+}

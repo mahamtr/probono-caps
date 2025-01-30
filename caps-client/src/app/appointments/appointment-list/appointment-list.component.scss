@@ -11,7 +11,7 @@
   .filters {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .status {
@@ -23,3 +23,8 @@
   .status.cancelled { background: lightcoral; }
 
   
+  button[mat-stroked-button] {
+    height: 56px; 
+    font-size: 14px;
+    margin-left: 10px; 
+  }
