@@ -44,9 +44,22 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Scheduled Date</mat-label>
-      <input matInput type="date" formControlName="scheduledDate" required />
-      <!-- <mat-datetimepicker #picker type="datetime"></mat-datetimepicker> -->
+      <mat-label>Appointment Date</mat-label>
+      <input matInput [matDatepicker]="datepicker" formControlName="datePart" />
+      <mat-datepicker #datepicker></mat-datepicker>
+      <mat-datepicker-toggle
+        [for]="datepicker"
+        matSuffix
+      ></mat-datepicker-toggle>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Appointment Time</mat-label>
+      <mat-select formControlName="timePart">
+        <mat-option *ngFor="let time of availableTimes" [value]="time">{{
+          time
+        }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">

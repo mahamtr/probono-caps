@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { SharedModule } from '../shared/shared.module';
+
 @NgModule({
   declarations: [
     AppointmentListComponent,
@@ -48,11 +49,11 @@ import { SharedModule } from '../shared/shared.module';
     MatInputModule,
     MatAutocompleteModule,
     MatButtonModule,
-    MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
     MatToolbarModule,
     SharedModule,
+    MatDatepickerModule,
   ],
 })
 export class AppointmentsModule {}
