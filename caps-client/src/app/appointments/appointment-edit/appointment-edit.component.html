@@ -30,13 +30,13 @@
         <div class="detail-row">
           <span class="detail-label">Guardian:</span>
           <span class="detail-value">{{
-            patient.guardianShipSection?.GuardianShipName
+            patient.guardianShipSection?.guardianShipName
           }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Guardian Phone:</span>
           <span class="detail-value">{{
-            patient.guardianShipSection?.GuardianShipPhone
+            patient.guardianShipSection?.guardianShipPhone
           }}</span>
         </div>
         <div class="detail-row">
@@ -57,9 +57,7 @@
         </div>
         <div class="detail-row">
           <span class="detail-label">Email:</span>
-          <span class="detail-value">{{
-            patient.contactInformation?.email
-          }}</span>
+          <span class="detail-value">{{ patient.email }}</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">House Zone:</span>

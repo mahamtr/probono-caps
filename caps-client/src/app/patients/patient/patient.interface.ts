@@ -30,6 +30,6 @@ export interface StudentSection {
 }
 
 export interface GuardianShipSection {
-  GuardianShipName?: string;
-  GuardianShipPhone?: string;
+  guardianShipName?: string;
+  guardianShipPhone?: string;
 }
