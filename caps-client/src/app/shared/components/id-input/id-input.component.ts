@@ -16,7 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class IdInputComponent implements ControlValueAccessor {
   private rawValue: string = '';
   formattedValue: string = '';
-  onChange = (_: number) => {};
+  onChange = (_: string) => {};
   onTouched = () => {};
 
   writeValue(value: number | null): void {
@@ -29,7 +29,7 @@ export class IdInputComponent implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: (value: number) => void): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
@@ -40,14 +40,11 @@ export class IdInputComponent implements ControlValueAccessor {
   onInputChange(event: any): void {
     const inputValue = event.target.value;
 
-    // Remove non-numeric characters
     this.rawValue = inputValue.replace(/\D/g, '').slice(0, 13);
 
-    // Update the displayed value
     this.formattedValue = this.formatIdNumber(this.rawValue);
 
-    // Emit only the number value
-    this.onChange(this.rawValue ? parseInt(this.rawValue, 10) : 0);
+    this.onChange(this.rawValue);
   }
 
   formatIdNumber(value: string): string {

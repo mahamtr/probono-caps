@@ -134,3 +134,12 @@ export const INTERVENTION_OPTIONS = [
   'Programa de funciones ejecutivas',
   'Other Intervention',
 ];
+
+export const PROGRAMS = [
+  'Otro',
+  'Glasswing',
+  'Club Rotario',
+  'World Vision',
+  'UNAH-VS',
+  'Red Inter Salud Mental',
+];

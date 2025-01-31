@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../patient.service';
+import { PROGRAMS } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-patient-form',
@@ -15,6 +16,7 @@ export class PatientFormComponent {
   patientId: string | null = null;
   today = new Date();
   showGuardianSection = false;
+  programs = PROGRAMS;
   showStudentSection = false;
 
   constructor(
@@ -109,16 +111,18 @@ export class PatientFormComponent {
 
   toggleStudentSection(program: string) {
     this.showStudentSection = program === 'UNAH-VS';
-    const studentGroup = this.patientForm.get('studentSection');
+    const majorForm = this.patientForm.get('studentSection')?.get('major');
+    const studyYear = this.patientForm.get('studentSection')?.get('studyYear');
 
     if (this.showStudentSection) {
-      studentGroup?.get('major')?.setValidators(Validators.required);
-      studentGroup?.get('studyYear')?.setValidators(Validators.required);
+      // majorForm?.setValidators(Validators.required);
+      // studyYear?.setValidators(Validators.required);
+      //TODO FIX THIS. REMOVRE VALIDATORS ARE NOT WORKING
     } else {
-      studentGroup?.get('major')?.clearValidators();
-      studentGroup?.get('studyYear')?.clearValidators();
+      majorForm?.get('major')?.setValidators([]);
+      studyYear?.get('studyYear')?.setValidators([]);
     }
-    studentGroup?.updateValueAndValidity();
+    this.patientForm.updateValueAndValidity({ onlySelf: false });
   }
 
   calculateAge(dob: string) {
@@ -130,12 +134,13 @@ export class PatientFormComponent {
     const guardianGroup = this.patientForm.get('guardianShipSection');
 
     if (this.showGuardianSection) {
-      guardianGroup
-        ?.get('guardianShipName')
-        ?.setValidators(Validators.required);
-      guardianGroup
-        ?.get('guardianShipPhone')
-        ?.setValidators(Validators.required);
+      //TODO FIX THIS. REMOVRE VALIDATORS ARE NOT WORKING
+      // guardianGroup
+      //   ?.get('guardianShipName')
+      //   ?.setValidators(Validators.required);
+      // guardianGroup
+      //   ?.get('guardianShipPhone')
+      //   ?.setValidators(Validators.required);
     } else {
       guardianGroup?.get('guardianShipName')?.clearValidators();
       guardianGroup?.get('guardianShipPhone')?.clearValidators();

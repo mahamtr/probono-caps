@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
+import { PROGRAMS } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-appointment-list',
@@ -28,7 +29,7 @@ export class AppointmentListComponent {
 
   statuses = ['Scheduled', 'Canceled', 'Complete', 'Pending'];
   rooms = ['Room 1', 'Room 2', 'Room 3'];
-  programs = ['World Vision', 'UNAH-VS'];
+  programs = PROGRAMS;
 
   selectedStatus = '';
   selectedRoom = '';

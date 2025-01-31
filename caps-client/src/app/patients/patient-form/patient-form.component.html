@@ -78,9 +78,9 @@
           <mat-form-field appearance="outline">
             <mat-label>Program</mat-label>
             <mat-select formControlName="program">
-              <mat-option value="UNAH-VS">UNAH-VS</mat-option>
-              <mat-option value="Glasswing">Glasswing</mat-option>
-              <mat-option value="Glasswing">Glasswing</mat-option>
+              <mat-option *ngFor="let program of programs" [value]="program">{{
+                program
+              }}</mat-option>
             </mat-select>
           </mat-form-field>
 
