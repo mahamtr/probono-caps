@@ -1,54 +1,40 @@
-// Style for the main card container
 mat-card {
     padding: 20px;
-    max-width: 1000px;
+    max-width: 800px;
     margin: auto;
     background: #fff;
   }
+
+form{
+  margin: 15px;
+}
   
-  // Full-width input fields
+mat-card-title{
+  padding: 0 0 15px 0;
+}
   .full-width {
     width: 100%;
   }
-  
-  // Adjust spacing for the grid items
+
+  mat-card-actions{
+    padding: 0 0 0 20px;
+    display: grid;
+    grid-template-columns: repeat(8,12.5%);
+    gap: 10px;
+  }
+
   mat-grid-tile {
     padding: 10px;
   }
   
-  // Style the avatar and edit button
-  .avatar-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
   
-    .edit-button {
-      font-size: 14px;
-      cursor: pointer;
-      color: #1976d2;
-      font-weight: bold;
-    }
-  }
-  
-  // Section titles (Contact Information, Security, etc.)
-  .section-title {
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-  }
-  
-  // Align switch and label properly
+
   .switch-container {
     display: flex;
     align-items: center;
     gap: 10px;
   }
   
-  // Center the submit button
   .button-container {
     display: flex;
     justify-content: center;
@@ -62,7 +48,6 @@ mat-card {
     }
   }
   
-  // Responsive fixes for mobile
   @media (max-width: 768px) {
     mat-grid-list {
       display: flex;
@@ -73,3 +58,16 @@ mat-card {
       width: 100%;
     }
   }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }  
+  .section-title {
+    font-weight: 400;
+    font-size: 18px;
+    border-top: 1px solid #ddd;
+    padding: 10px 0 5px 0;
+  }
+  

@@ -1,8 +1,31 @@
 mat-card {
   padding: 20px;
-  max-width: 900px;
+  max-width: 800px;
   margin: auto;
   background: #fff;
+}
+mat-card-title{
+  padding: 0 0 15px 0;
+}
+
+mat-card-actions{
+  padding: 0 0 0 20px;
+  display: grid;
+  grid-template-columns: 15% 15% 70%;
+  gap: 10px;
+}
+
+.section-title {
+  font-weight: 400;
+  font-size: 18px;
+  border-top: 1px solid #ddd;
+  padding: 10px 0 5px 0;
+}
+
+
+
+form {
+  padding: 15px;
 }
 
 .full-width {
@@ -18,11 +41,11 @@ mat-grid-tile {
 }
 
 .text-red-400 {
-  color: #f87171; /* Tailwind's red-400 */
+  color: #f87171; 
 }
 
 .text-sm {
-  font-size: 0.875rem; /* Tailwind's text-sm */
+  font-size: 0.875rem; 
 }
 
 .button-container {
@@ -38,17 +61,15 @@ mat-grid-tile {
   }
 }
 
-/* Uniform row height and gap adjustments */
 mat-grid-list {
-  --row-height: 100px; /* Adjust this value to set a uniform row height */
-  --gutter-size: 20px; /* Adjust this value to set the gap between fields */
+  --row-height: 100px; 
+  --gutter-size: 20px; 
 }
 
 mat-grid-tile {
   height: var(--row-height);
 }
 
-/* Adjustments for smaller screens */
 @media (max-width: 768px) {
   mat-grid-list {
     display: flex;
@@ -57,7 +78,14 @@ mat-grid-tile {
 
   mat-grid-tile {
     width: 100%;
-    height: auto; /* Allow height to adjust based on content */
-    margin-bottom: var(--gutter-size); /* Add gap between fields */
+    height: auto; 
+    margin-bottom: var(--gutter-size); 
   }
+}
+
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

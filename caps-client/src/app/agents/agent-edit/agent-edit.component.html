@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-title>Edit Profile</mat-card-title>
     <mat-card-content>
-      <div class="profile-fields">
+      <div class="profile-fields row">
         <mat-form-field appearance="outline">
           <mat-label>First Name</mat-label>
           <input matInput formControlName="firstName" required />
@@ -34,10 +34,9 @@
         </mat-form-field>
       </div>
 
-      <mat-divider></mat-divider>
+      <h3 class="section-title">Contact Information</h3>
       <div formGroupName="contactInformation">
-        <h3>Contact Information</h3>
-        <div class="form-group">
+        <div class="row">
           <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
             <input matInput formControlName="phoneNumber" required />
@@ -64,74 +63,29 @@
         </div>
       </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Short Biography</mat-label>
-        <textarea matInput formControlName="biography"></textarea>
-      </mat-form-field>
-
-      <mat-divider></mat-divider>
-
-      <h3>Security</h3>
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
-
-      <mat-grid-list
-        cols="1"
-        rowHeight="20px"
-        gutterSize="10px"
-        class="text-red-400 text-sm"
-        *ngIf="
-          agentForm.get('password')?.dirty &&
-          agentForm.get('password')?.hasError
-        "
-      >
-        <mat-grid-tile
-          class="block"
-          *ngIf="!agentForm.get('password')?.value.match('.{8,}')"
-          >At least 8 characters long.</mat-grid-tile
-        >
-
-        <mat-grid-tile
-          class="block"
-          *ngIf="!agentForm.get('password')?.value.match('(?=.*[!@#$%^&*])')"
-          >At least one special character.</mat-grid-tile
-        >
-
-        <mat-grid-tile
-          class="block"
-          *ngIf="!agentForm.get('password')?.value.match('^(?=.*[A-Z])')"
-          >At least one uppercase letter.</mat-grid-tile
-        >
-        <mat-grid-tile
-          class="block"
-          *ngIf="!agentForm.get('password')?.value.match('(?=.*[a-z])')"
-          >At least one lowercase letter.</mat-grid-tile
-        >
-        <mat-grid-tile
-          class="block"
-          *ngIf="!agentForm.get('password')?.value.match('(.*[0-9].*)')"
-          >At least one digit.</mat-grid-tile
-        >
-      </mat-grid-list>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput type="password" formControlName="confirmPassword" />
-      </mat-form-field>
-
-      <div
-        class="text-red-400 text-sm"
-        *ngIf="
-          agentForm.get('confirmPassword')?.dirty &&
-          agentForm.hasError('passwordMismatch')
-        "
-      >
-        Passwords do not match.
+      <div class="row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Short Biography</mat-label>
+          <textarea matInput formControlName="biography"></textarea>
+        </mat-form-field>
       </div>
 
-      <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+      <h3 class="section-title">Security</h3>
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" />
+        </mat-form-field>
+
+        <div class="switch-container">
+          <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+        </div>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button

@@ -2,153 +2,105 @@
   <mat-card>
     <mat-card-title>Add Agent</mat-card-title>
     <mat-card-content>
-      <!-- Grid for the form fields -->
-      <mat-grid-list cols="3" rowHeight="70px" gutterSize="20px">
-        <!-- First Name -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName" required />
-            <mat-error *ngIf="agentForm.get('firstName')?.invalid"
-              >Required</mat-error
-            >
-          </mat-form-field>
-        </mat-grid-tile>
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" required />
+          <mat-error *ngIf="agentForm.get('firstName')?.invalid"
+            >Required</mat-error
+          >
+        </mat-form-field>
 
-        <!-- Last Name -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName" required />
-          </mat-form-field>
-        </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" required />
+        </mat-form-field>
 
-        <!-- ID Number -->
-        <mat-grid-tile colspan="1">
-          <app-id-input
-            formControlName="idNumber"
-            class="full-width"
-          ></app-id-input>
-        </mat-grid-tile>
+        <app-id-input formControlName="idNumber"></app-id-input>
 
-        <!-- Email -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" required />
-          </mat-form-field>
-        </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+        </mat-form-field>
 
-        <!-- Date of Birth -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Date of Birth</mat-label>
-            <input
-              matInput
-              type="date"
-              formControlName="dateOfBirth"
-              required
-              min="1940-01-01"
-              max="2023-01-01"
-            />
-          </mat-form-field>
-        </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            matInput
+            type="date"
+            formControlName="dateOfBirth"
+            required
+            min="1940-01-01"
+            max="2023-01-01"
+          />
+        </mat-form-field>
 
-        <!-- Privilege -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Privilege</mat-label>
-            <mat-select formControlName="privilege">
-              <mat-option value="Agent">Agent</mat-option>
-              <mat-option value="Admin">Admin</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
+        <mat-form-field appearance="outline">
+          <mat-label>Privilege</mat-label>
+          <mat-select formControlName="privilege">
+            <mat-option value="Agent">Agent</mat-option>
+            <mat-option value="Admin">Admin</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <h3 class="section-title">Contact Information</h3>
 
-      <mat-grid-list cols="4" rowHeight="70px" gutterSize="20px">
-        <!-- Contact Information -->
-        <div formGroupName="contactInformation" class="full-width">
-          <!-- Phone Number -->
-          <mat-grid-tile colspan="1">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Phone Number</mat-label>
-              <input matInput formControlName="phoneNumber" required />
-            </mat-form-field>
-          </mat-grid-tile>
+      <div class="row" formGroupName="contactInformation">
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" required />
+        </mat-form-field>
 
-          <!-- City -->
-          <mat-grid-tile colspan="1">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>City</mat-label>
-              <input matInput formControlName="city" required />
-            </mat-form-field>
-          </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city" required />
+        </mat-form-field>
 
-          <!-- Address -->
-          <mat-grid-tile colspan="1">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Address</mat-label>
-              <input matInput formControlName="address" required />
-            </mat-form-field>
-          </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" required />
+        </mat-form-field>
 
-          <!-- State -->
-          <mat-grid-tile colspan="1">
-            <app-state-input
-              ngDefaultControl
-              formControlName="state"
-              class="full-width"
-            ></app-state-input>
-          </mat-grid-tile>
-        </div>
+        <app-state-input
+          ngDefaultControl
+          formControlName="state"
+        ></app-state-input>
+      </div>
 
-        <!-- Biography -->
-        <mat-grid-tile colspan="4" rowspan="2">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Short Biography</mat-label>
-            <textarea
-              matInput
-              formControlName="biography"
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="5"
-              cdkAutosizeMaxRows="5"
-            ></textarea>
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <div class="row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Short Biography</mat-label>
+          <textarea
+            matInput
+            formControlName="biography"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <h3 class="section-title">Security</h3>
 
-      <mat-grid-list cols="2" rowHeight="70px" gutterSize="20px">
-        <!-- Password -->
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>New Password</mat-label>
-            <input matInput type="password" formControlName="password" />
-            <mat-error *ngIf="agentForm.get('password')?.invalid"
-              >Invalid password. Make sure to use a strong password.</mat-error
-            >
-            <mat-error>Password need to match.</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>New Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="agentForm.get('password')?.invalid"
+            >Invalid password.</mat-error
+          >
+        </mat-form-field>
 
-        <mat-grid-tile colspan="1">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Confirm Password</mat-label>
-            <input matInput type="password" formControlName="confirmPassword" />
-            <!-- TODO fix this mat-error not showing with custom validator -->
-            <mat-error>Password need to match.</mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" />
+          <mat-error>Password need to match.</mat-error>
+        </mat-form-field>
 
-        <!-- Active Toggle -->
-        <mat-grid-tile colspan="2">
-          <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
-        </mat-grid-tile>
-      </mat-grid-list>
+        <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+      </div>
     </mat-card-content>
 
-    <!-- Form Actions -->
     <mat-card-actions>
       <button
         mat-raised-button
