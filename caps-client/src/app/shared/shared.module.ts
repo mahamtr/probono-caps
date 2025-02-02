@@ -20,6 +20,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StateInputComponent } from './components/state-input/state-input.component';
 import { MatSelectModule } from '@angular/material/select';
 import { IdInputComponent } from './components/id-input/id-input.component';
+import { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 var modules = [
   MatIconModule,
@@ -38,6 +40,7 @@ var modules = [
   MatIconModule,
   RouterModule,
   MatSnackBarModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({
@@ -47,9 +50,10 @@ var modules = [
     LoginComponent,
     StateInputComponent,
     IdInputComponent,
+    SpinnerOverlayComponent,
   ],
   imports: [modules],
-  exports: [StateInputComponent, IdInputComponent],
+  exports: [StateInputComponent, IdInputComponent, SpinnerOverlayComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

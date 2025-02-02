@@ -1,4 +1,4 @@
-// Center the login form
+
 .login-container {
     display: flex;
     justify-content: center;
@@ -6,7 +6,14 @@
     height: 100vh;
     background: #f4f7fc;
   }
-  
+.full-width{
+  width: 100%;
+}
+
+  mat-card-title {
+text-align: center;    
+    padding: 20px;
+  }
   // Card styling
   .login-card {
     width: 100%;
@@ -24,7 +31,7 @@
   // Forgot password link
   .forgot-password {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
   
     a {
       text-decoration: none;

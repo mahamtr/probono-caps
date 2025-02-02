@@ -6,15 +6,17 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingService } from './loading.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loadingService: LoadingService
   ) {}
 
   intercept(
@@ -22,6 +24,8 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
+
+    this.loadingService.show();
 
     let authReq = req;
     if (token) {
@@ -45,6 +49,9 @@ export class AuthInterceptor implements HttpInterceptor {
           }
         }
         return throwError(() => error);
+      }),
+      finalize(() => {
+        this.loadingService.hide();
       })
     );
   }
