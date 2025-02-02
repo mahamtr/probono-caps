@@ -25,6 +25,11 @@ const routes: Routes = [
             (m) => m.AppointmentsModule
           ),
       },
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      },
     ],
   },
   {

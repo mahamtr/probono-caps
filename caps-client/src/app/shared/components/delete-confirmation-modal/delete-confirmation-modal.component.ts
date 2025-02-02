@@ -3,13 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-confirmation-modal',
-  // templateUrl: './delete-confirmation-modal.component.html',
-  // styleUrls: ['./delete-confirmation-modal.component.scss'],
   template: `
     <h2 mat-dialog-title>Confirm Deletion</h2>
-    <mat-dialog-content
-      >Are you sure you want to delete this agent?</mat-dialog-content
-    >
+    <mat-dialog-content>Are you sure you want to delete?</mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button (click)="onCancel()">Cancel</button>
       <button mat-button color="warn" (click)="onConfirm()">Delete</button>

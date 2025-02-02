@@ -20,8 +20,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { StateInputComponent } from './components/state-input/state-input.component';
 import { MatSelectModule } from '@angular/material/select';
 import { IdInputComponent } from './components/id-input/id-input.component';
-import { SpinnerOverlayComponent } from './spinner-overlay/spinner-overlay.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 var modules = [
   MatIconModule,
@@ -41,6 +43,7 @@ var modules = [
   RouterModule,
   MatSnackBarModule,
   MatProgressSpinnerModule,
+  MatMenuModule,
 ];
 
 @NgModule({
@@ -51,9 +54,15 @@ var modules = [
     StateInputComponent,
     IdInputComponent,
     SpinnerOverlayComponent,
+    CalendarComponent,
   ],
   imports: [modules],
-  exports: [StateInputComponent, IdInputComponent, SpinnerOverlayComponent],
+  exports: [
+    StateInputComponent,
+    IdInputComponent,
+    SpinnerOverlayComponent,
+    CalendarComponent,
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
