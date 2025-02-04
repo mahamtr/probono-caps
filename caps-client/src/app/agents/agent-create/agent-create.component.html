@@ -1,0 +1,116 @@
+<form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-title>Add Agent</mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" required />
+          <mat-error *ngIf="agentForm.get('firstName')?.invalid"
+            >Required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" required />
+        </mat-form-field>
+
+        <app-id-input formControlName="idNumber"></app-id-input>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            matInput
+            type="date"
+            formControlName="dateOfBirth"
+            required
+            min="1940-01-01"
+            max="2023-01-01"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Privilege</mat-label>
+          <mat-select formControlName="privilege">
+            <mat-option value="Agent">Agent</mat-option>
+            <mat-option value="Admin">Admin</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <h3 class="section-title">Contact Information</h3>
+
+      <div class="row" formGroupName="contactInformation">
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" required />
+        </mat-form-field>
+
+        <app-state-input
+          ngDefaultControl
+          formControlName="state"
+        ></app-state-input>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Short Biography</mat-label>
+          <textarea
+            matInput
+            formControlName="biography"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <h3 class="section-title">Security</h3>
+
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>New Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="agentForm.get('password')?.invalid"
+            >Invalid password.</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" />
+          <mat-error>Password need to match.</mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="isActive">Active</mat-slide-toggle>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="agentForm.invalid"
+      >
+        Create Agent
+      </button>
+      <button mat-raised-button [routerLink]="['/agents']">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

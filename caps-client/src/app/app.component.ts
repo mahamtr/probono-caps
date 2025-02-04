@@ -1,24 +1,37 @@
-import { Component } from '@angular/core';
-import { HeroService } from './hero.service';
-
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'caps-client';
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+  isMobile = true;
+  isCollapsed = true;
 
-  constructor(private sharedService: HeroService) {}
+  constructor(private observer: BreakpointObserver) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.refreshList();
-    }, 2000);
-  }
-  refreshList() {
-    this.sharedService.getData().subscribe((data) => {
-      console.log(data);
+    this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
+      if (screenSize.matches) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
     });
+  }
+
+  toggleMenu() {
+    if (this.isMobile) {
+      this.sidenav.toggle();
+      this.isCollapsed = false;
+    } else {
+      this.sidenav.open();
+      this.isCollapsed = !this.isCollapsed;
+    }
   }
 }

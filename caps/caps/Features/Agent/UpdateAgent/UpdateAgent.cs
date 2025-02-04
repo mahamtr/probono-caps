@@ -1,11 +1,12 @@
 using caps.Features.Agent.Model;
+using caps.Features.Agent.Service;
 using caps.Infrastructure.Data;
 using FastEndpoints;
 using IMapper = AutoMapper.IMapper;
 
 namespace caps.Features.Agent.UpdateAgent;
 
-public class UpdateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<AgentDto, bool>
+public class UpdateAgent(CapsDbContext dbContext, IMapper mapper, IHashService hashService) : Endpoint<AgentDto, bool>
 {
     public override void Configure()
     {
@@ -21,6 +22,10 @@ public class UpdateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<Age
             var recordInDb = dbContext.Agents.FirstOrDefault(a=> a.Id.ToString() == req.Id);
             if (recordInDb is null) throw new BadHttpRequestException("Agent does not exists.");
             mapper.Map(req, recordInDb);
+            if (!string.IsNullOrEmpty(req.Password))
+            {
+                recordInDb.Password = hashService.GeneratePasswordHash(req.Password);
+            }
             await SendAsync(
                 await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);
         }

@@ -1,0 +1,30 @@
+.appointments-container {
+    padding: 20px;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .status.complete { background: lightgreen; }
+  .status.cancelled { background: lightcoral; }
+
+  
+  button[mat-stroked-button] {
+    height: 56px; 
+    font-size: 14px;
+    margin-left: 10px; 
+  }

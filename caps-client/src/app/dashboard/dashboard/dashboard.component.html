@@ -1,0 +1,61 @@
+<mat-grid-list cols="12" rowHeight="120px" gutterSize="16px">
+  <mat-grid-tile [colspan]="10" [rowspan]="1">
+    <mat-card class="overview-card">
+      <div class="overview-container">
+        <div class="stat">
+          <mat-icon class="icon">groups</mat-icon>
+          <div>
+            <p>Total Patients</p>
+            <h3>{{ totals?.totalPatients || 0 }}</h3>
+          </div>
+        </div>
+        <div class="stat">
+          <mat-icon class="icon">badge</mat-icon>
+          <div>
+            <p>Total Agents</p>
+            <h3>{{ totals?.totalAgents || 0 }}</h3>
+          </div>
+        </div>
+        <div class="stat">
+          <mat-icon class="icon">event</mat-icon>
+          <div>
+            <p>Total Appointments</p>
+            <h3>{{ totals?.totalAppointments || 0 }}</h3>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="2" [rowspan]="5">
+    <mat-card class="appointments-card">
+      <h2>Next Appointments</h2>
+      <div class="appointment-list-container">
+        <div
+          class="appointment"
+          *ngFor="let appointment of nextAppointments | async"
+        >
+          <div class="appointment-header">
+            <mat-icon>event</mat-icon>
+            <span class="reason">{{ appointment.reason }}</span>
+          </div>
+          <p class="patient-name">
+            {{ appointment.patientName }} ({{ appointment.age }} yrs)
+          </p>
+          <p class="appointment-date">
+            {{ formatDate(appointment.appointmentDate) }}
+          </p>
+          <span class="status" [ngClass]="appointment.status?.toLowerCase()">{{
+            appointment.status
+          }}</span>
+        </div>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="10" [rowspan]="4">
+    <mat-card class="calendar-card">
+      <app-calendar></app-calendar>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

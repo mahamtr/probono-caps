@@ -11,6 +11,8 @@ public class AgentProfile : Profile
             .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
 
-        CreateMap<Agent, AgentDto>();
+        CreateMap<Agent, AgentDto>()
+            .ForMember(dest => dest.Password, opt => opt.Ignore())
+            ;
     }
 }

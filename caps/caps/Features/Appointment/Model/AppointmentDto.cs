@@ -57,12 +57,10 @@ public class AppointmentDto
     [ForeignKey("Patient")]
     public string PatientId { get; set; }
 
-    // public Patient.Model.Patient Patient { get; set; }
 
     [ForeignKey("Agent")]
     public string AgentId { get; set; }
 
-    // public Agent.Model.Agent Agent { get; set; }
 
     public List<string> BlobUrls { get; set; }
 }

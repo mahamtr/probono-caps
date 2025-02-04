@@ -1,0 +1,38 @@
+.patient-card {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.smallerRow{
+  height: 60px;
+}
+
+mat-form-field {
+  flex: 1;
+  min-width: 250px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+
+
+}
+
+.patient-form-container{
+  padding: 20px;
+}
+
+
+.patient-form-title{
+  padding-bottom: 20px;
+}

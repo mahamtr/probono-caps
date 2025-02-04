@@ -1,0 +1,47 @@
+.patients-container {
+    padding: 20px;
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  table {
+    margin-top: 20px;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  th {
+    background: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  td, th {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .mat-icon-button {
+    margin: 0 5px;
+  }
+  
+  .mat-icon {
+    color: #555;
+  }
+  
+  .mat-icon:hover {
+    color: #007bff;
+  }
+  
+  button[color="warn"] .mat-icon {
+    color: red;
+  }
+  
+  button[color="warn"]:hover .mat-icon {
+    color: darkred;
+  }

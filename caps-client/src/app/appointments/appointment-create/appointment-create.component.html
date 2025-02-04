@@ -1,0 +1,90 @@
+<div class="create-appointment-container">
+  <h2>Add Appointment</h2>
+
+  <form [formGroup]="appointmentForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Patient Name</mat-label>
+      <input
+        matInput
+        #patientInput
+        formControlName="patientId"
+        [matAutocomplete]="autoPatient"
+        [value]="selectedPatient?.firstName + ' ' + selectedPatient?.lastName"
+      />
+      <mat-autocomplete
+        #autoPatient="matAutocomplete"
+        (optionSelected)="onPatientSelected($event)"
+      >
+        <mat-option
+          *ngFor="let patient of filteredPatients"
+          [value]="patient.id"
+        >
+          {{ patient.firstName }} {{ patient.lastName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Agent Name</mat-label>
+      <input
+        matInput
+        #agentInput
+        formControlName="agentId"
+        [matAutocomplete]="autoAgent"
+        [value]="selectedAgent?.firstName + ' ' + selectedAgent?.lastName"
+      />
+      <mat-autocomplete
+        #autoAgent="matAutocomplete"
+        (optionSelected)="onAgentSelected($event)"
+      >
+        <mat-option *ngFor="let agent of filteredAgents" [value]="agent.id">
+          {{ agent.firstName }} {{ agent.lastName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Appointment Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          formControlName="datePart"
+        />
+        <mat-datepicker #datepicker></mat-datepicker>
+        <mat-datepicker-toggle
+          [for]="datepicker"
+          matSuffix
+        ></mat-datepicker-toggle>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Appointment Time</mat-label>
+        <mat-select formControlName="timePart">
+          <mat-option *ngFor="let time of availableTimes" [value]="time">{{
+            time
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Reason</mat-label>
+      <textarea matInput formControlName="reason" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!appointmentForm.valid"
+      >
+        Create Appointment
+      </button>
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,196 @@
+<div class="patient-form-container">
+  <mat-card class="patient-card">
+    <mat-card-title class="patient-form-title"
+      >{{ isEditMode ? "Edit" : "Create" }} Patient</mat-card-title
+    >
+    <mat-card-content>
+      <form [formGroup]="patientForm" (ngSubmit)="onSave()">
+        <div class="row smallerRow">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+          </mat-form-field>
+        </div>
+
+        <div class="row smallerRow">
+          <app-id-input formControlName="idNumber"></app-id-input>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input
+              matInput
+              formControlName="dateOfBirth"
+              type="date"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Age</mat-label>
+            <input matInput formControlName="age" />
+          </mat-form-field>
+        </div>
+
+        <div
+          class="row smallerRow"
+          formGroupName="guardianShipSection"
+          *ngIf="showGuardianSection"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Guardian Name</mat-label>
+            <input matInput formControlName="guardianShipName" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Guardian Phone</mat-label>
+            <input matInput formControlName="guardianShipPhone" required />
+          </mat-form-field>
+        </div>
+
+        <div class="row smallerRow">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Zone</mat-label>
+            <mat-select formControlName="houseZone">
+              <mat-option value="Rural">Rural</mat-option>
+              <mat-option value="Urban">Urban</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row smallerRow">
+          <mat-form-field appearance="outline">
+            <mat-label>Civil Status</mat-label>
+            <mat-select formControlName="civilStatus">
+              <mat-option value="single">Single</mat-option>
+              <mat-option value="married">Married</mat-option>
+              <mat-option value="divorced">Divorced</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Program</mat-label>
+            <mat-select formControlName="program">
+              <mat-option *ngFor="let program of programs" [value]="program">{{
+                program
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Referral</mat-label>
+            <input matInput formControlName="referral" />
+          </mat-form-field>
+        </div>
+
+        <div
+          class="row smallerRow"
+          formGroupName="studentSection"
+          *ngIf="showStudentSection"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Major</mat-label>
+            <input matInput formControlName="major" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Study Year</mat-label>
+            <input
+              matInput
+              formControlName="studyYear"
+              type="number"
+              required
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="row smallerRow" formGroupName="contactInformation">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" />
+          </mat-form-field>
+
+          <app-state-input
+            ngDefaultControl
+            formControlName="state"
+          ></app-state-input>
+        </div>
+
+        <div class="row" formGroupName="contactInformation">
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-radio-group formControlName="status">
+            <mat-label>Status</mat-label>
+            <mat-radio-button value="Active">Active</mat-radio-button>
+            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="row">
+          <mat-radio-group formControlName="gender">
+            <mat-label>Gender</mat-label>
+            <mat-radio-button value="Male">Male</mat-radio-button>
+            <mat-radio-button value="Female">Female</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Diagnostic #1</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="5"
+              formControlName="diagnostic"
+              placeholder="Enter the first diagnostic..."
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Diagnostic #2</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="5"
+              formControlName="secondDiagnostic"
+              placeholder="Enter the second diagnostic..."
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="buttons">
+          <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="patientForm.invalid"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
