@@ -1,5 +1,4 @@
 using caps.Features.Agent.Model;
-using caps.Features.Agent.ResetPassword;
 using caps.Infrastructure.Data;
 using FastEndpoints;
 using IMapper = AutoMapper.IMapper;

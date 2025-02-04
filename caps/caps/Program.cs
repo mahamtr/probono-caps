@@ -1,4 +1,5 @@
 using caps.Features.Agent.Service;
+using caps.Infrastructure.Blob;
 using caps.Infrastructure.Data;
 using DotNetEnv;
 using FastEndpoints;
@@ -31,7 +32,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 var client = new MongoClient(Environment.GetEnvironmentVariable("MONGO_DATABASE_URL"));
 var db = CapsDbContext.Create(client.GetDatabase(Environment.GetEnvironmentVariable("MONGO_DATABASE_NAME")));
 
+// builder.Services.AddSingleton<BlobServiceClient>(x => 
+//     );
+
 builder.Services.AddSingleton(db);
+builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
 
 builder.Services.AddAuthorizationBuilder().AddPolicy("AdminOnly", x => x.RequireRole("Admin"));
