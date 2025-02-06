@@ -11,8 +11,10 @@ public class BlobStorageService : IBlobStorageService
     public BlobStorageService()
     {
         var blobServiceClient = new BlobServiceClient(
-            "DefaultEndpointsProtocol=https;AccountName=capsblob;AccountKey=4r6mjaynaSw3hOO8PC1aJ/UedcM1rCCziNyVlLSWtLCtP+vK73U3xK0I3G8i1aBK0Seo4tU1JRD/+ASt0CSCig==;EndpointSuffix=core.windows.net");
-        _containerClient = blobServiceClient.GetBlobContainerClient("containername");
+            Environment.GetEnvironmentVariable("BLOB_URL_CONNECTION_STRING")
+            );
+        _containerClient = blobServiceClient.GetBlobContainerClient(            Environment.GetEnvironmentVariable("BLOB_CONTAINER_NAME")
+        );
         _containerClient.CreateIfNotExists();
     }
 
