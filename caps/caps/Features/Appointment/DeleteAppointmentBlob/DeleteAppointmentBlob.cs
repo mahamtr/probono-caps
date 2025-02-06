@@ -8,13 +8,13 @@ public class DeleteAppointmentBlob(IBlobStorageService blobStorageService,CapsDb
 {
     public override void Configure()
     {
-        Delete("/api/appointment/{id}/{name}");
+        Delete("/api/appointment/blob");
     }
 
     public override async Task HandleAsync( CancellationToken ct)
     {
-        var appointmentId = Route<string>("id");
-        var name = Route<string>("name");
+        var appointmentId = Query<string>("appointmentId");
+        var name = Query<string>("blobName");
         if(name is null) ThrowError("Please include name of the filename to download.");
 
         await blobStorageService.DeleteObjectAsync(name);

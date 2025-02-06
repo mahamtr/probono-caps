@@ -8,12 +8,12 @@ public class DownloadAppointmentBlob(IBlobStorageService blobStorageService,Caps
 {
     public override void Configure()
     {
-        Get("/api/appointment/blob/download/{name}");
+        Get("/api/appointment/blob/download");
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var name = Route<string>("name");
+        var name = Query<string>("blobName");
         if(name is null) ThrowError("Please include name of the filename to download.");
         var urlString = await blobStorageService.GetDownloadLink(name,ct);
         await SendAsync(urlString, cancellation: ct);

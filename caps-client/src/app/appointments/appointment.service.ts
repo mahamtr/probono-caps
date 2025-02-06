@@ -23,13 +23,15 @@ export class AppointmentService {
 
   downloadFile(blobName: string): Observable<string> {
     return this.apiService.get<string>(
-      `api/appointment/blob/download/${blobName}`
+      `api/appointment/blob/download?blobName=${encodeURIComponent(blobName)}`
     );
   }
 
   deleteFile(id: string, blobName: string): Observable<HttpEvent<boolean>> {
     return this.apiService.delete<boolean>(
-      `api/appointment/${id}/${blobName}`,
+      `api/appointment/blob?blobName=${encodeURIComponent(
+        blobName
+      )}&appointmentId=${id}`,
       {}
     );
   }
