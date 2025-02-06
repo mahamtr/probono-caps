@@ -164,6 +164,11 @@ export class AppointmentEditComponent {
       .deleteFile(this.appointmentForm.value.id, fileName)
       .subscribe(
         (res) => {
+          if (fileType === 'file1') {
+            this.file1Name = '';
+          } else {
+            this.file2Name = '';
+          }
           this.snackBar.open('File deleted successfully', 'Close', {
             duration: 3000,
           });

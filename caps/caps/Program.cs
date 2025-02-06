@@ -5,6 +5,7 @@ using DotNetEnv;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,13 +30,16 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-var client = new MongoClient(Environment.GetEnvironmentVariable("MONGO_DATABASE_URL"));
-var db = CapsDbContext.Create(client.GetDatabase(Environment.GetEnvironmentVariable("MONGO_DATABASE_NAME")));
+builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(Environment.GetEnvironmentVariable("MONGO_DATABASE_URL")));
 
-// builder.Services.AddSingleton<BlobServiceClient>(x => 
-//     );
+builder.Services.AddScoped<CapsDbContext>(provider =>
+{
+    var client = provider.GetRequiredService<IMongoClient>();
+    var options = new DbContextOptionsBuilder<CapsDbContext>().Options;
+    return new CapsDbContext(options, client);
+});
 
-builder.Services.AddSingleton(db);
+
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
 

@@ -56,7 +56,7 @@ export class AppointmentService {
   }
 
   deleteAppointment(id: string): Observable<HttpEvent<boolean>> {
-    return this.apiService.delete<boolean>(`api/appointment/${id}`, null);
+    return this.apiService.delete<boolean>(`api/appointment/${id}`, {});
   }
 
   createAppointment(appointmnet: Appointment): Observable<string> {

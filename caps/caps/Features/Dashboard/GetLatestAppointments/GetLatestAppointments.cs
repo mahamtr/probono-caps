@@ -16,28 +16,22 @@ public class GetLatestAppointments(CapsDbContext dbContext, IMapper mapper)  : E
     {
         try
         {
-            var appointments = dbContext.Appointments.OrderBy(a=> a.ScheduledDate).Take(5);
-            var appoint = new List<AppointmentTableDto>();
-                
-            foreach (var app in appointments)
+            var appointments = dbContext.Appointments.OrderBy(a=> a.ScheduledDate).ToList();
+            var appoint = (from app in appointments.ToList()
+            let patient = dbContext.Patients.First(p => p.Id == app.PatientId)
+            select new AppointmentTableDto
             {
-                //TODO find a way to map this with relationship, or modify mongo structure
-                var patient = dbContext.Patients.First(p => p.Id == app.PatientId);
-                appoint.Add(new AppointmentTableDto
-                {
-                    Id = app.Id.ToString(),
-                    Age = patient.Age,
-                    AppointmentDate = app.ScheduledDate,
-                    Program = patient.Program,
-                    Reason = app.Reason,
-                    Status = app.Status,
-                    Location = app.Destination,
-                    Mode = app.Mode,
-                    PatientName = patient.FirstName + ' ' + patient.LastName,
+                Id = app.Id.ToString(),
+                Age = patient.Age,
+                AppointmentDate = app.ScheduledDate,
+                Program = patient.Program,
+                Reason = app.Reason,
+                Status = app.Status,
+                Location = app.Destination,
+                Mode = app.Mode,
+                PatientName = patient.FirstName + ' ' + patient.LastName,
+            }).ToList();
 
-                });
-            }
-            
             await SendAsync(
                 appoint, cancellation: ct);
         }

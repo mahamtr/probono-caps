@@ -8,6 +8,7 @@ import {
   StrongPasswordRegx,
 } from 'src/app/constants/constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { formatDateToInput } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-agent-edit',
@@ -60,6 +61,9 @@ export class AgentEditComponent {
   loadAgentData(): void {
     this.agentService.getAgent(this.agentId).subscribe((agent) => {
       this.agentForm.patchValue(agent);
+
+      const formattedDate = formatDateToInput(agent.dateOfBirth);
+      this.agentForm.patchValue({ dateOfBirth: formattedDate });
     });
   }
 
