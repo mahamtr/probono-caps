@@ -23,6 +23,8 @@ services:
     volumes:
       - ../caps-client:/home/node/app
       - /home/node/app/node_modules #
+    environment:
+      - BACKEND_URL=http://webapi:8080
     ports:
       - "4200:4200"
     working_dir: /home/node/app

@@ -1,6 +1,7 @@
 using caps.Features.Agent.Service;
 using caps.Infrastructure.Blob;
 using caps.Infrastructure.Data;
+using caps.Middleware;
 using DotNetEnv;
 using FastEndpoints;
 using FastEndpoints.Security;
@@ -22,9 +23,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
+            // builder.WithOrigins("http://localhost:4200","http://client:4200")
+                builder.
+                    AllowAnyOrigin()
+                    .AllowAnyHeader()
                 .AllowAnyMethod();
+            
         });
 });
 
@@ -49,7 +53,7 @@ var app = builder.Build();
 
 //app.UseHttpsRedirection();
 // TODO add https support before deployment, should create docker compose override
-
+app.UseMiddleware<LoggingMiddlware>();
 app.UseCors("AllowOrigin");
 
 app.UseAuthentication().UseAuthorization().UseFastEndpoints().UseSwaggerGen();
