@@ -76,6 +76,13 @@ export class AppointmentEditComponent {
         .subscribe((appointment) => {
           this.appointmentForm.patchValue(appointment);
 
+          if (appointment.blobUrls && appointment.blobUrls.length > 0) {
+            this.file1Name = appointment.blobUrls[0];
+          }
+          if (appointment.blobUrls && appointment.blobUrls.length > 1) {
+            this.file2Name = appointment.blobUrls[1];
+          }
+
           this.patientService
             .getPatientById(appointment.patientId)
             .subscribe((patient) => {

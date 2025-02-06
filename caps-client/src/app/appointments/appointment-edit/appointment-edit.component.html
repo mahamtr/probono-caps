@@ -214,6 +214,7 @@
         <button
           mat-icon-button
           (click)="deleteFile('file1')"
+          [disabled]="!file1Name"
           matTooltip="Delete File"
         >
           <mat-icon>delete</mat-icon>
@@ -221,6 +222,7 @@
         <button
           mat-icon-button
           (click)="downloadFile('file1')"
+          [disabled]="!file1Name"
           matTooltip="Download File"
         >
           <mat-icon>cloud_download</mat-icon>
@@ -254,7 +256,7 @@
         <button
           mat-icon-button
           (click)="deleteFile('file2')"
-          [disabled]="!file2Url"
+          [disabled]="!file2Name"
           matTooltip="Delete File"
         >
           <mat-icon>delete</mat-icon>
@@ -262,7 +264,7 @@
         <button
           mat-icon-button
           (click)="downloadFile('file2')"
-          [disabled]="!file2Url"
+          [disabled]="!file2Name"
           matTooltip="Download File"
         >
           <mat-icon>cloud_download</mat-icon>
