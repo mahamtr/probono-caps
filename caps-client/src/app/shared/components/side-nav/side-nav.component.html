@@ -11,7 +11,11 @@
     [opened]="isMobile ? 'false' : 'true'"
   >
     <mat-nav-list>
-      <div routerLink="/dashboard">
+      <div
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a mat-list-item>
           <span class="entry">
             <mat-icon class="row">house</mat-icon>
@@ -19,7 +23,11 @@
           </span>
         </a>
       </div>
-      <div routerLink="/appointments/calendar">
+      <div
+        routerLink="/appointments/calendar"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a mat-list-item>
           <span class="entry">
             <mat-icon class="row">event</mat-icon>
@@ -27,7 +35,11 @@
           </span>
         </a>
       </div>
-      <div routerLink="/appointments">
+      <div
+        routerLink="/appointments"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a mat-list-item>
           <span class="entry">
             <mat-icon class="row">edit_calendar</mat-icon>
@@ -35,7 +47,11 @@
           </span>
         </a>
       </div>
-      <div routerLink="/agents">
+      <div
+        routerLink="/agents"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
         <a mat-list-item>
           <span class="entry">
             <mat-icon class="row">person</mat-icon>
@@ -43,7 +59,11 @@
           </span>
         </a>
       </div>
-      <div routerLink="/patients">
+      <div
+        routerLink="/patients"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
         <a mat-list-item>
           <span class="entry">
             <mat-icon class="row">accessible</mat-icon>

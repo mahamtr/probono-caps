@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using MongoDB.Bson;
 
 namespace caps.Features.Appointment.Model;
 

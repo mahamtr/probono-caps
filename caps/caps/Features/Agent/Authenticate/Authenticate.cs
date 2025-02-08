@@ -1,4 +1,3 @@
-using caps.Features.Agent.Model;
 using caps.Features.Agent.Service;
 using caps.Infrastructure.Data;
 using FastEndpoints;

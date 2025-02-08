@@ -3,19 +3,20 @@ using FastEndpoints;
 
 namespace caps.Features.Appointment.DeleteAppointment;
 
-public class DeleteAppointment(CapsDbContext dbContext) : Endpoint<string, bool>
+public class DeleteAppointment(CapsDbContext dbContext) : EndpointWithoutRequest< bool>
 {
     public override void Configure()
     {
-        Delete("/api/appointment/delete");
+        Delete("/api/appointment/{id}");
     }
 
-    public override async Task HandleAsync(string req, CancellationToken ct)
+    public override async Task HandleAsync( CancellationToken ct)
     {
         try
         {
-            if(string.IsNullOrWhiteSpace(req)) throw new BadHttpRequestException("Id cannot be null or empty.");
-            var recordInDb = dbContext.Appointments.FirstOrDefault(a=> a.Id.ToString() == req);
+            var id = Route<string>("id");
+            if(string.IsNullOrWhiteSpace(id)) throw new BadHttpRequestException("Id cannot be null or empty.");
+            var recordInDb = dbContext.Appointments.FirstOrDefault(a=> a.Id.ToString() == id);
             if (recordInDb is null) throw new Exception("Appointment Id not found");
             dbContext.Appointments.Remove(recordInDb);
             await SendAsync(

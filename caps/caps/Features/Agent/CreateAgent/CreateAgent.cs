@@ -1,12 +1,12 @@
 using caps.Features.Agent.Model;
-using caps.Features.Agent.ResetPassword;
+using caps.Features.Agent.Service;
 using caps.Infrastructure.Data;
 using FastEndpoints;
 using IMapper = AutoMapper.IMapper;
 
 namespace caps.Features.Agent.CreateAgent;
 
-public class CreateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<AgentDto, bool>
+public class CreateAgent(CapsDbContext dbContext, IMapper mapper, IHashService hashService) : Endpoint<AgentDto, bool>
 {
     public override void Configure()
     {
@@ -24,6 +24,10 @@ public class CreateAgent(CapsDbContext dbContext, IMapper mapper) : Endpoint<Age
                 ThrowError("Please use another email.");
             }
             mapper.Map(req, newAgent);
+            if (!string.IsNullOrEmpty(req.Password))
+            {
+                newAgent.Password = hashService.GeneratePasswordHash(req.Password);
+            }
             dbContext.Agents.Add(newAgent);
             await SendAsync(await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);
         }

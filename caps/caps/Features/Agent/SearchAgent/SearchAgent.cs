@@ -1,7 +1,6 @@
 using caps.Features.Agent.Model;
 using caps.Infrastructure.Data;
 using FastEndpoints;
-using IMapper = AutoMapper.IMapper;
 
 namespace caps.Features.Agent.SearchAgent;
 

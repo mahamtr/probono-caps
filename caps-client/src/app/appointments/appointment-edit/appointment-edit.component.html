@@ -183,22 +183,95 @@
             ></textarea>
           </mat-form-field>
         </div>
+      </form>
 
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>File Upload 1</mat-label>
-            <!-- TODO upload this to blob storage and then index in Blob prop in appontmnet object -->
-            <!-- <input matInput formControlName="fileUpload1" /> -->
-            <input matInput disabled="true" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>File Upload 2</mat-label>
-            <!-- TODO upload this to blob storage and then index in Blob prop in appontmnet object -->
-            <!-- <input matInput formControlName="fileUpload2" /> -->
-            <input matInput disabled="true" />
-          </mat-form-field>
-        </div>
+      <div class="form-row">
+        <!-- File Upload 1 -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Upload File 1</mat-label>
+          <input
+            matInput
+            [value]="file1Name"
+            placeholder="No file chosen"
+            readonly
+          />
+        </mat-form-field>
 
+        <!-- File Input and Buttons -->
+        <input
+          type="file"
+          #fileInput1
+          (change)="onFileSelected($event, 'file1')"
+          hidden
+        />
+        <button
+          mat-icon-button
+          (click)="fileInput1.click()"
+          matTooltip="Choose File"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="deleteFile('file1')"
+          [disabled]="!file1Name"
+          matTooltip="Delete File"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="downloadFile('file1')"
+          [disabled]="!file1Name"
+          matTooltip="Download File"
+        >
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+
+        <!-- File Upload 2 -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Upload File 2</mat-label>
+          <input
+            matInput
+            [value]="file2Name"
+            placeholder="No file chosen"
+            readonly
+          />
+        </mat-form-field>
+
+        <!-- File Input and Buttons -->
+        <input
+          type="file"
+          #fileInput2
+          (change)="onFileSelected($event, 'file2')"
+          hidden
+        />
+        <button
+          mat-icon-button
+          (click)="fileInput2.click()"
+          matTooltip="Choose File"
+        >
+          <mat-icon>attach_file</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="deleteFile('file2')"
+          [disabled]="!file2Name"
+          matTooltip="Delete File"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="downloadFile('file2')"
+          [disabled]="!file2Name"
+          matTooltip="Download File"
+        >
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+      </div>
+
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Task 1</mat-label>

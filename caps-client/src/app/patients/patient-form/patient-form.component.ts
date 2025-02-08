@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../patient.service';
 import { PROGRAMS } from 'src/app/constants/constants';
+import { DatePipe } from '@angular/common';
+import { formatDateToInput } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-patient-form',
@@ -79,6 +81,9 @@ export class PatientFormComponent {
   loadPatientData() {
     this.patientService.getPatientById(this.patientId!).subscribe((patient) => {
       this.patientForm.patchValue(patient);
+
+      const formattedDate = formatDateToInput(patient.dateOfBirth);
+      this.patientForm.patchValue({ dateOfBirth: formattedDate });
     });
   }
 

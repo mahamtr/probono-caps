@@ -1,9 +1,5 @@
-using caps.Features.Agent;
 using caps.Features.Agent.Model;
-using caps.Features.Appointment;
 using caps.Features.Appointment.Model;
-using caps.Features.Patient;
-using caps.Features.Patient.Model;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;
@@ -16,14 +12,20 @@ public class CapsDbContext : DbContext
     public DbSet<Appointment> Appointments { get; init; }
     public DbSet<Patient> Patients { get; init; }
     
-    public static CapsDbContext Create(IMongoDatabase database) =>
-        new(new DbContextOptionsBuilder<CapsDbContext>()
-            .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
-            .Options);
+    private readonly IMongoClient _mongoClient;
 
-    public CapsDbContext(DbContextOptions options)
+    
+    public CapsDbContext(DbContextOptions<CapsDbContext> options, IMongoClient mongoClient)
         : base(options)
     {
+        _mongoClient = mongoClient;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (optionsBuilder.IsConfigured) return;
+        var databaseName = Environment.GetEnvironmentVariable("MONGO_DATABASE_NAME");
+        optionsBuilder.UseMongoDB(_mongoClient, databaseName);
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

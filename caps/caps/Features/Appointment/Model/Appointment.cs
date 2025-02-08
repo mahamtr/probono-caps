@@ -64,5 +64,5 @@ public class Appointment
 
     public Agent.Model.Agent Agent { get; set; }
 
-    public List<string>? BlobUrls { get; set; }
+    public List<string> BlobUrls { get; set; } = [];
 }

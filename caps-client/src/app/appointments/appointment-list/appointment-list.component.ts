@@ -27,7 +27,7 @@ export class AppointmentListComponent {
   ];
   dataSource = new MatTableDataSource();
 
-  statuses = ['Scheduled', 'Canceled', 'Complete', 'Pending'];
+  statuses = ['Scheduled', 'Canceled', 'Complete', 'In Progress'];
   rooms = ['Room 1', 'Room 2', 'Room 3'];
   programs = PROGRAMS;
 

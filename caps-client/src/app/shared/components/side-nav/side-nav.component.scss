@@ -39,3 +39,27 @@ mat-sidenav-content {
         padding-top: 4rem;
     }
 }
+
+mat-sidenav {
+    .entry {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+    }
+  
+    .active {
+      background-color: rgba(0, 0, 0, 0.1); /* Add background color */
+      color: #1976d2; /* You can change this color to your preferred active color */
+      font-weight: bold; /* Optional, to emphasize the active link */
+    }
+  }
+  
+  mat-sidenav-content {
+    padding-top: 3.5rem;
+    height: calc(100vh - 64px);
+  
+    @media screen and (min-width: 600px) {
+      padding-top: 4rem;
+    }
+  }

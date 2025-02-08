@@ -1,4 +1,3 @@
-using System.Globalization;
 using caps.Infrastructure.Data;
 using FastEndpoints;
 

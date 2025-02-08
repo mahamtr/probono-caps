@@ -17,6 +17,25 @@ export class AppointmentService {
     return this.apiService.get<Appointment[]>('api/appointment/list');
   }
 
+  uploadFile(id: string, data: FormData): Observable<boolean> {
+    return this.apiService.post<boolean>(`api/appointment/${id}/blob`, data);
+  }
+
+  downloadFile(blobName: string): Observable<string> {
+    return this.apiService.get<string>(
+      `api/appointment/blob/download?blobName=${encodeURIComponent(blobName)}`
+    );
+  }
+
+  deleteFile(id: string, blobName: string): Observable<HttpEvent<boolean>> {
+    return this.apiService.delete<boolean>(
+      `api/appointment/blob?blobName=${encodeURIComponent(
+        blobName
+      )}&appointmentId=${id}`,
+      {}
+    );
+  }
+
   getAppointmentsTable(): Observable<AppointmentTableDto[]> {
     return this.apiService.get<AppointmentTableDto[]>('api/appointment/table');
   }
@@ -37,7 +56,7 @@ export class AppointmentService {
   }
 
   deleteAppointment(id: string): Observable<HttpEvent<boolean>> {
-    return this.apiService.delete<boolean>(`api/appointment/${id}`, null);
+    return this.apiService.delete<boolean>(`api/appointment/${id}`, {});
   }
 
   createAppointment(appointmnet: Appointment): Observable<string> {
