@@ -11,7 +11,8 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
-
+var a = Environment.GetEnvironmentVariable("MONGO_DATABASE_URL");
+if (a is null) throw new Exception("adfasf");
 builder.Services
     .AddAuthenticationJwtBearer(s => s.SigningKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY"))
     .AddAuthorization()
@@ -50,11 +51,13 @@ builder.Services.AddTransient<IHashService, HashService>();
 builder.Services.AddAuthorizationBuilder().AddPolicy("AdminOnly", x => x.RequireRole("Admin"));
 
 var app = builder.Build();
+//app.UseStaticFiles();
 
 //app.UseHttpsRedirection();
 // TODO add https support before deployment, should create docker compose override
 app.UseMiddleware<LoggingMiddlware>();
 app.UseCors("AllowOrigin");
+//app.MapFallbackToFile("index.html");
 
 app.UseAuthentication().UseAuthorization().UseFastEndpoints().UseSwaggerGen();
 app.Run();
