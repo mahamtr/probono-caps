@@ -7,7 +7,7 @@
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-        <AssemblyName>caps</AssemblyName>
+        <AssemblyName>caps-app</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

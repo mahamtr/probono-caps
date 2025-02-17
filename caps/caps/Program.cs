@@ -12,25 +12,28 @@ using MongoDB.Driver;
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
-builder.Services
-    .AddAuthenticationJwtBearer(s => s.SigningKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY"))
-    .AddAuthorization()
-    .AddFastEndpoints()
-    .SwaggerDocument();
+
+var a = Environment.GetEnvironmentVariable("MONGO_DATABASE_URL");
+
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-        builder =>
+        d =>
         {
-            // builder.WithOrigins("http://localhost:4200","http://client:4200")
-                builder.
+                d.
                     AllowAnyOrigin()
                     .AllowAnyHeader()
                 .AllowAnyMethod();
             
         });
 });
+
+builder.Services
+    .AddAuthenticationJwtBearer(s => s.SigningKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY"))
+    .AddAuthorization()
+    .AddFastEndpoints()
+    .SwaggerDocument();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -50,11 +53,21 @@ builder.Services.AddTransient<IHashService, HashService>();
 builder.Services.AddAuthorizationBuilder().AddPolicy("AdminOnly", x => x.RequireRole("Admin"));
 
 var app = builder.Build();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseStaticFiles();
+}
 
-//app.UseHttpsRedirection();
-// TODO add https support before deployment, should create docker compose override
-app.UseMiddleware<LoggingMiddlware>();
+app.UseHttpsRedirection();
 app.UseCors("AllowOrigin");
+app.UseMiddleware<LoggingMiddlware>();
 
-app.UseAuthentication().UseAuthorization().UseFastEndpoints().UseSwaggerGen();
+if (!app.Environment.IsDevelopment())
+{
+    app.MapFallbackToFile("index.html");
+}
+
+app
+    .UseAuthentication().UseAuthorization()
+    .UseFastEndpoints().UseSwaggerGen();
 app.Run();
