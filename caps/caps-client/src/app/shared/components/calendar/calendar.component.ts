@@ -29,6 +29,7 @@ export class CalendarComponent {
   ngOnInit(): void {
     this.generateTimeSlots();
     this.updateCalendar();
+    this.fetchAppointments();
   }
 
   generateTimeSlots(): void {

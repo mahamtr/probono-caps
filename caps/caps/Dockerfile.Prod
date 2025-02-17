@@ -1,4 +1,11 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM node:lts AS client-build
+WORKDIR /app
+COPY caps-client/package.json caps-client/package-lock.json ./
+RUN npm ci --quiet
+COPY caps-client ./
+RUN npm run build --prod
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
@@ -21,5 +28,7 @@ FROM base AS final
 WORKDIR /app
 
 COPY --from=publish /app/publish .
+
+COPY --from=client-build /app/dist/caps-client /app/wwwroot
 
 ENTRYPOINT ["dotnet", "caps-app.dll"]
