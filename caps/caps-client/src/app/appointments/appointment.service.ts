@@ -59,8 +59,8 @@ export class AppointmentService {
     return this.apiService.delete<boolean>(`api/appointment/${id}`, {});
   }
 
-  createAppointment(appointmnet: Appointment): Observable<string> {
-    return this.apiService.post<string>(`api/appointment/create`, appointmnet);
+  createAppointment(appointment: Appointment): Observable<string> {
+    return this.apiService.post<string>(`api/appointment/create`, appointment);
   }
 
   //TODO move this to their respective service.

@@ -2,28 +2,52 @@
   <h2>Add Appointment</h2>
 
   <form [formGroup]="appointmentForm" (ngSubmit)="submit()">
-    <mat-form-field appearance="outline">
-      <mat-label>Patient Name</mat-label>
-      <input
-        matInput
-        #patientInput
-        formControlName="patientId"
-        [matAutocomplete]="autoPatient"
-        [value]="selectedPatient?.firstName + ' ' + selectedPatient?.lastName"
-      />
-      <mat-autocomplete
-        #autoPatient="matAutocomplete"
-        (optionSelected)="onPatientSelected($event)"
-      >
-        <mat-option
-          *ngFor="let patient of filteredPatients"
-          [value]="patient.id"
-        >
-          {{ patient.firstName }} {{ patient.lastName }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <mat-tab-group mat-stretch-tabs (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="New Patient">
+        <div class="tab row">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="newPatientFirstName" />
+          </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="newPatientLastName" />
+          </mat-form-field>
+
+          <app-id-input formControlName="newPatientIDNumber"></app-id-input>
+        </div>
+      </mat-tab>
+      <mat-tab label="Existing Patient">
+        <div class="tab">
+          <mat-form-field appearance="outline">
+            <mat-label>Patient Name</mat-label>
+            <input
+              matInput
+              #patientInput
+              formControlName="patientIdSelect"
+              [matAutocomplete]="autoPatient"
+              [value]="
+                selectedPatient?.firstName + ' ' + selectedPatient?.lastName
+              "
+            />
+            <mat-autocomplete
+              #autoPatient="matAutocomplete"
+              (optionSelected)="onPatientSelected($event)"
+            >
+              <mat-option
+                *ngFor="let patient of filteredPatients"
+                [value]="patient.id"
+              >
+                {{ patient.firstName }} {{ patient.lastName }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- Agent Name Autocomplete -->
     <mat-form-field appearance="outline">
       <mat-label>Agent Name</mat-label>
       <input
@@ -43,6 +67,7 @@
       </mat-autocomplete>
     </mat-form-field>
 
+    <!-- Appointment Date and Time -->
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>Appointment Date</mat-label>
@@ -68,11 +93,13 @@
       </mat-form-field>
     </div>
 
+    <!-- Reason -->
     <mat-form-field appearance="outline">
       <mat-label>Reason</mat-label>
       <textarea matInput formControlName="reason" rows="3"></textarea>
     </mat-form-field>
 
+    <!-- Buttons -->
     <div class="button-group">
       <button
         mat-raised-button

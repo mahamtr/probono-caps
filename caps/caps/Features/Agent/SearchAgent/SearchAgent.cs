@@ -1,6 +1,7 @@
 using caps.Features.Agent.Model;
 using caps.Infrastructure.Data;
 using FastEndpoints;
+using Microsoft.EntityFrameworkCore;
 
 namespace caps.Features.Agent.SearchAgent;
 
@@ -16,12 +17,27 @@ public class SearchAgent(CapsDbContext dbContext) : EndpointWithoutRequest<IEnum
         try
         {
             var searchParam = Query<string>("search");
-            if (searchParam is null) ThrowError("Search parameter in query cannot be empty.");
-            var agents = dbContext.Agents.Where(a =>
-                (a.FirstName != null && a.FirstName.Contains(searchParam)) ||
-                (a.LastName != null && a.LastName.Contains(searchParam)) ||
-                (a.IDNumber != null && a.IDNumber.Contains(searchParam)) && a.IsActive == true);
-            await SendAsync(agents.Select(a=> new AgentDto(){FirstName = a.FirstName, LastName = a.LastName, Id = a.Id.ToString()}), cancellation: ct);
+            var agentsQuery = dbContext.Agents.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                agentsQuery = agentsQuery.Where(a =>
+                    a.LastName != null && a.FirstName != null && (a.FirstName.Contains(searchParam) ||
+                                                                  a.LastName.Contains(searchParam)));
+            }
+            else
+            {
+                agentsQuery = agentsQuery.OrderBy(a => a.FirstName).Take(5);
+            }
+            var agents = await agentsQuery
+                .Select(a => new AgentDto()
+                {
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Id = a.Id.ToString()
+                })
+                .ToListAsync(ct);
+            await SendAsync(agents, cancellation: ct);
         }
         catch (Exception e)
         {

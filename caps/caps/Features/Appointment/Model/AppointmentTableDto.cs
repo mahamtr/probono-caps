@@ -12,7 +12,7 @@ public class AppointmentTableDto
 
     public int Age { get; set; }
 
-    public string Program { get; set; }
+    public string? Program { get; set; }
 
     public DateTime AppointmentDate { get; set; }
 
