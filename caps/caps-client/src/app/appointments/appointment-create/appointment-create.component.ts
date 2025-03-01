@@ -7,6 +7,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
+  merge,
+  startWith,
 } from 'rxjs';
 import { AppointmentService } from '../appointment.service';
 import { Agent } from 'src/app/agents/agent/agent.interface';
@@ -48,10 +50,14 @@ export class AppointmentCreateComponent {
     this.initForm();
 
     // Autocomplete for Patients
-    this.keyupSubscription = fromEvent(this.patientInput.nativeElement, 'keyup')
-      .pipe(
+    this.keyupSubscription = merge(
+      fromEvent(this.patientInput.nativeElement, 'focus').pipe(startWith('')),
+      fromEvent(this.patientInput.nativeElement, 'keyup').pipe(
         debounceTime(1000),
-        distinctUntilChanged(),
+        distinctUntilChanged()
+      )
+    )
+      .pipe(
         switchMap(() =>
           this.appointmentService.searchPatients(
             this.patientInput.nativeElement.value
@@ -64,10 +70,14 @@ export class AppointmentCreateComponent {
 
     // Autocomplete for Agents
     this.keyupSubscription.add(
-      fromEvent(this.agentInput.nativeElement, 'keyup')
-        .pipe(
+      merge(
+        fromEvent(this.agentInput.nativeElement, 'focus').pipe(startWith('')),
+        fromEvent(this.agentInput.nativeElement, 'keyup').pipe(
           debounceTime(1000),
-          distinctUntilChanged(),
+          distinctUntilChanged()
+        )
+      )
+        .pipe(
           switchMap(() =>
             this.appointmentService.searchAgents(
               this.agentInput.nativeElement.value

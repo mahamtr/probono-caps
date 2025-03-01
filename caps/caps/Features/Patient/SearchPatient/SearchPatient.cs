@@ -1,5 +1,6 @@
 using caps.Infrastructure.Data;
 using FastEndpoints;
+using Microsoft.EntityFrameworkCore;
 
 namespace caps.Features.Patient.SearchPatient;
 
@@ -15,11 +16,27 @@ public class SearchPatient(CapsDbContext dbContext) : EndpointWithoutRequest<IEn
         try
         {
             var searchParam = Query<string>("search");
-            if (searchParam is null) ThrowError("Search parameter in query cannot be empty.");
-            var patients = dbContext.Patients.Where(a =>
-                (a.FirstName.Contains(searchParam)) ||
-                (a.LastName.Contains(searchParam)) );
-            await SendAsync(patients.Select(a=> new PatientDto(){FirstName = a.FirstName, LastName = a.LastName, Id = a.Id.ToString()}), cancellation: ct);
+            var patientsQuery = dbContext.Patients.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                patientsQuery = patientsQuery.Where(a =>
+                    a.FirstName.Contains(searchParam) ||
+                    a.LastName.Contains(searchParam));
+            }
+            else
+            {
+                patientsQuery = patientsQuery.OrderBy(a => a.FirstName).Take(5);
+            }
+            var patients = await patientsQuery
+                .Select(a => new PatientDto
+                {
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Id = a.Id.ToString()
+                })
+                .ToListAsync(ct);
+            await SendAsync(patients, cancellation: ct);
         }
         catch (Exception e)
         {
