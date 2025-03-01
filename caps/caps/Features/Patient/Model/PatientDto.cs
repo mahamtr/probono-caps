@@ -18,9 +18,9 @@ public class PatientDto
     [Required]
     public DateTime DateOfBirth { get; set; }
 
-    public string CivilStatus { get; set; }
+    public string? CivilStatus { get; set; }
 
-    public string EducationLevel { get; set; }
+    public string? EducationLevel { get; set; }
 
     public GuardianShipSection GuardianShipSection { get; set; } = new();
 
@@ -28,21 +28,20 @@ public class PatientDto
 
     public ContactInformation ContactInformation { get; set; } = new();
 
-    public string HouseZone { get; set; }
+    public string? HouseZone { get; set; }
 
     [EmailAddress]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
-    public string Program { get; set; }
+    public string? Program { get; set; }
 
-    public string Referral { get; set; }
+    public string? Referral { get; set; }
 
-    public string Diagnostic { get; set; }
+    public string? Diagnostic { get; set; }
 
-    public string SecondDiagnostic { get; set; }
+    public string? SecondDiagnostic { get; set; }
 
-    [Required]
-    public string Gender { get; set; }
+    public string? Gender { get; set; }
 
-    public string Status { get; set; }
+    public string? Status { get; set; }
 }

@@ -18,13 +18,27 @@ public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoi
         {
             var newAppointment = new Model.Appointment();
             mapper.Map(req, newAppointment);
+
+            if (string.IsNullOrEmpty(req.PatientId) && req.NewPatient != null)
+            {
+                // Create new patient
+                var newPatient = new Patient.Model.Patient
+                {
+                    FirstName = req.NewPatient.FirstName,
+                    LastName = req.NewPatient.LastName,
+                    IDNumber = req.NewPatient.IDNumber
+                };
+                dbContext.Patients.Add(newPatient);
+                await dbContext.SaveChangesAsync(ct);
+                newAppointment.PatientId = newPatient.Id;
+            }
+
             dbContext.Appointments.Add(newAppointment);
             if (await dbContext.SaveChangesAsync(ct) > 0)
             {
                 await SendAsync(newAppointment.Id.ToString(), cancellation: ct);
-
-            }else
-
+            }
+            else
             {
                 ThrowError("Error creating appointment.");
             }
@@ -33,6 +47,5 @@ public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoi
         {
             throw new BadHttpRequestException(e.Message);
         }
-      
     }
 }

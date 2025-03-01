@@ -62,4 +62,5 @@ public class AppointmentDto
 
 
     public List<string> BlobUrls { get; set; }
+    public PatientDto? NewPatient { get; set; }
 }

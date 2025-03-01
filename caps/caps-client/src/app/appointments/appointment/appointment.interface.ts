@@ -25,6 +25,11 @@ export interface Appointment {
   patientId: string;
   agentId: string;
   blobUrls?: string[];
+  newPatient?: {
+    firstName?: string;
+    lastName?: string;
+    idNumber?: number;
+  };
 }
 
 export interface AppointmentTableDto {

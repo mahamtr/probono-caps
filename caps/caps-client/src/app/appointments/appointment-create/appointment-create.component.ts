@@ -82,13 +82,17 @@ export class AppointmentCreateComponent {
 
   initForm() {
     this.appointmentForm = this.fb.group({
-      patientId: ['', Validators.required],
+      patientIdSelect: [''],
+      patientId: [null],
       agentId: ['', Validators.required],
       scheduledDate: [''],
       datePart: [null, Validators.required],
       timePart: [null, Validators.required],
       reason: ['', Validators.required],
       status: ['In Progress'],
+      newPatientFirstName: ['', Validators.required],
+      newPatientLastName: ['', Validators.required],
+      newPatientIDNumber: ['', Validators.required],
     });
   }
 
@@ -97,12 +101,13 @@ export class AppointmentCreateComponent {
     this.selectedPatient = this.filteredPatients.find(
       (patient) => patient.id === selectedPatientId
     );
+    this.appointmentForm.get('patientId')?.setValue(selectedPatientId);
   }
 
   onAgentSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedPatientId = event.option.value;
+    const selectedAgentId = event.option.value;
     this.selectedAgent = this.filteredAgents.find(
-      (patient) => patient.id === selectedPatientId
+      (patient) => patient.id === selectedAgentId
     );
   }
 
@@ -120,8 +125,26 @@ export class AppointmentCreateComponent {
         const fullDateTime = this.combineDateTime(date, time);
         this.appointmentForm.patchValue({ scheduledDate: fullDateTime });
       }
+
+      const newPatientFirstName = this.appointmentForm.get(
+        'newPatientFirstName'
+      )?.value;
+      const newPatientLastName =
+        this.appointmentForm.get('newPatientLastName')?.value;
+      const newPatientIDNumber =
+        this.appointmentForm.get('newPatientIDNumber')?.value;
+
+      // New patient
+      const newPatientData = {
+        firstName: newPatientFirstName,
+        lastName: newPatientLastName,
+        idNumber: Number(newPatientIDNumber),
+      };
       this.appointmentService
-        .createAppointment(this.appointmentForm.value)
+        .createAppointment({
+          ...this.appointmentForm.value,
+          newPatient: newPatientData,
+        })
         .subscribe((response) => {
           this.router.navigate([`/appointments/edit/${response}`]);
         });
@@ -134,5 +157,33 @@ export class AppointmentCreateComponent {
 
   ngOnDestroy(): void {
     this.keyupSubscription.unsubscribe();
+  }
+
+  onTabChange(event: any): void {
+    const isNewPatientTab = event.index === 0;
+    const newPatientFirstNameControl = this.appointmentForm.get(
+      'newPatientFirstName'
+    );
+    const newPatientLastNameControl =
+      this.appointmentForm.get('newPatientLastName');
+    const newPatientIDNumberControl =
+      this.appointmentForm.get('newPatientIDNumber');
+
+    const patientSelect = this.appointmentForm.get('patientId');
+
+    if (isNewPatientTab) {
+      newPatientFirstNameControl?.setValidators([Validators.required]);
+      newPatientLastNameControl?.setValidators([Validators.required]);
+      newPatientIDNumberControl?.setValidators([Validators.required]);
+    } else {
+      patientSelect?.setValidators([Validators.required]);
+      newPatientFirstNameControl?.clearValidators();
+      newPatientLastNameControl?.clearValidators();
+      newPatientIDNumberControl?.clearValidators();
+    }
+    patientSelect?.updateValueAndValidity();
+    newPatientFirstNameControl?.updateValueAndValidity();
+    newPatientLastNameControl?.updateValueAndValidity();
+    newPatientIDNumberControl?.updateValueAndValidity();
   }
 }
