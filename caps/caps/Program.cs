@@ -1,4 +1,5 @@
 using caps.Features.Agent.Service;
+using caps.Features.ScheduledJobs;
 using caps.Infrastructure.Blob;
 using caps.Infrastructure.Data;
 using caps.Middleware;
@@ -6,6 +7,8 @@ using DotNetEnv;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -46,6 +49,8 @@ builder.Services.AddScoped<CapsDbContext>(provider =>
     return new CapsDbContext(options, client);
 });
 
+builder.Services.AddHangfire(config => config.UseMemoryStorage());
+builder.Services.AddHangfireServer();
 
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
@@ -66,6 +71,13 @@ if (!app.Environment.IsDevelopment())
 {
     app.MapFallbackToFile("index.html");
 }
+app.UseHangfireServer();
+
+// Schedule the daily job
+RecurringJob.AddOrUpdate<ExpireOldAppointments>(
+    "update-appointments-status",
+    updater => updater.UpdateOldAppointmentsStatus(),
+    Cron.Daily);
 
 app
     .UseAuthentication().UseAuthorization()
