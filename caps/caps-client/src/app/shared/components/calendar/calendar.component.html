@@ -46,6 +46,11 @@
             *ngFor="
               let appointment of getAppointmentsForDayAndTime(day.date, time)
             "
+            [ngStyle]="{
+              'background-color': getStatusColor(
+                appointment.status || 'Unknown'
+              )
+            }"
           >
             <div class="appointment-details" hover-class="appointment-hover">
               <div class="appointment-reason" [matMenuTriggerFor]="menu">
@@ -79,6 +84,9 @@
         <div
           class="appointment"
           *ngFor="let appointment of getAppointmentsForDay(day.date)"
+          [ngStyle]="{
+            'background-color': getStatusColor(appointment.status || 'Unknown')
+          }"
         >
           <div class="appointment-reason" [matMenuTriggerFor]="menu">
             {{ getFormatedDate(appointment.scheduledDate) }}

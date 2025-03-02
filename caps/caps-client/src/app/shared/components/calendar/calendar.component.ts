@@ -4,6 +4,7 @@ import { AppointmentService } from 'src/app/appointments/appointment.service';
 import { Appointment } from 'src/app/appointments/appointment/appointment.interface';
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
 import { Router } from '@angular/router';
+import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-calendar',
@@ -33,7 +34,7 @@ export class CalendarComponent {
   }
 
   generateTimeSlots(): void {
-    for (let hour = 6; hour <= 19; hour++) {
+    for (let hour = 8; hour <= 15; hour++) {
       this.timeSlots.push(`${hour} - ${hour + 1}`);
     }
   }
@@ -117,6 +118,7 @@ export class CalendarComponent {
 
   getAppointmentsForDayAndTime(day: string, time: string): Appointment[] {
     return this.appointments.filter((appointment) => {
+      debugger;
       const appointmentDate = new Date(appointment.scheduledDate);
       const appointmentDay = appointmentDate.getDate();
       const calendarDay = new Date(day).getDate();
@@ -220,5 +222,18 @@ export class CalendarComponent {
     this.view = view;
     this.updateCalendar();
     this.fetchAppointments();
+  }
+
+  getStatusColor(status: string): string {
+    switch (status) {
+      case APPOINTMENT_STATUSES.SCHEDULED:
+        return '#90CAF9'; // Light Blue (Material Blue 300)
+      case APPOINTMENT_STATUSES.CANCELED:
+        return '#EF9A9A'; // Light Red (Material Red 300)
+      case APPOINTMENT_STATUSES.COMPLETED:
+        return '#A5D6A7'; // Light Green (Material Green 300)
+      default:
+        return '#B0BEC5'; // Subtle Gray (Material Blue Grey 300)
+    }
   }
 }
