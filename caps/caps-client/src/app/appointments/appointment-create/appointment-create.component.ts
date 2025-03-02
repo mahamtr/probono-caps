@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   Subscription,
   fromEvent,
@@ -37,7 +37,8 @@ export class AppointmentCreateComponent {
   constructor(
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   generateTimeOptions(): void {
@@ -50,6 +51,25 @@ export class AppointmentCreateComponent {
   ngOnInit(): void {
     this.generateTimeOptions();
     this.initForm();
+
+    // Retrieve query parameters
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const date = params['date'];
+      const time = params['time'];
+
+      if (date) {
+        this.appointmentForm.get('datePart')?.setValue(new Date(date));
+      }
+
+      if (time) {
+        const timeValue = this.availableTimes.find((t) =>
+          t.startsWith(time.padStart(2, '0'))
+        );
+        if (timeValue) {
+          this.appointmentForm.get('timePart')?.setValue(timeValue);
+        }
+      }
+    });
 
     // Autocomplete for Patients
     this.keyupSubscription = merge(

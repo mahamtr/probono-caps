@@ -42,8 +42,8 @@ export class AppointmentService {
   getAppointmentsCalendar(
     startDate: string,
     endDate: string
-  ): Observable<Appointment[]> {
-    return this.apiService.get<Appointment[]>(
+  ): Observable<AppointmentTableDto[]> {
+    return this.apiService.get<AppointmentTableDto[]>(
       `api/appointment/calendar?startDate=${startDate}&endDate=${endDate}`
     );
   }

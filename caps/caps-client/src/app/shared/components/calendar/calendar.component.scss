@@ -151,3 +151,13 @@
       }
     }
   }
+
+.day-column:hover {
+    background-color: darken(#f5f5f5, 10%);
+    cursor: pointer;
+}
+
+.day-cell:hover {
+    background-color: darken(#f5f5f5, 10%);
+    cursor: pointer;
+}

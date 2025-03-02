@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentService } from 'src/app/appointments/appointment.service';
-import { Appointment } from 'src/app/appointments/appointment/appointment.interface';
+import {
+  Appointment,
+  AppointmentTableDto,
+} from 'src/app/appointments/appointment/appointment.interface';
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 
 @Component({
@@ -12,7 +15,7 @@ import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent {
-  appointments: Appointment[] = [];
+  appointments: AppointmentTableDto[] = [];
   view: 'week' | 'month' = 'week';
 
   currentDate: Date = new Date();
@@ -24,7 +27,8 @@ export class CalendarComponent {
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -75,17 +79,17 @@ export class CalendarComponent {
     }
   }
 
-  getAppointmentsForDay(day: any): Appointment[] {
+  getAppointmentsForDay(day: any): AppointmentTableDto[] {
     return this.appointments.filter((appointment) => {
-      const appointmentDate = new Date(appointment.scheduledDate);
+      const appointmentDate = new Date(appointment.appointmentDate);
       return appointmentDate.getDate() === day;
     });
   }
 
   getFormatedDate(scheduledDate: any) {
     const date = new Date(scheduledDate);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
     return `${hours}:${minutes}`;
   }
@@ -116,21 +120,21 @@ export class CalendarComponent {
     }
   }
 
-  getAppointmentsForDayAndTime(day: string, time: string): Appointment[] {
+  getAppointmentsForDayAndTime(
+    day: string,
+    time: string
+  ): AppointmentTableDto[] {
     return this.appointments.filter((appointment) => {
-      debugger;
-      const appointmentDate = new Date(appointment.scheduledDate);
-      const appointmentDay = appointmentDate.getDate();
-      const calendarDay = new Date(day).getDate();
-      const hours = appointmentDate.getHours();
-      return (
-        time.split('-')[0].includes(hours.toString()) &&
-        calendarDay === appointmentDay
-      );
+      const appointmentDate = new Date(appointment.appointmentDate);
+      const appointmentDay = appointmentDate.getUTCDate();
+      const calendarDay = new Date(day).getUTCDate();
+      const appointmentHour = appointmentDate.getUTCHours();
+      const timeHour = parseInt(time.split('-')[0], 10);
+      return appointmentHour === timeHour && calendarDay === appointmentDay;
     });
   }
 
-  openDeleteModal(appointment: Appointment): void {
+  openDeleteModal(appointment: AppointmentTableDto): void {
     const dialogRef = this.dialog.open(DeleteConfirmationModalComponent, {
       width: '250px',
       data: { appointment },
@@ -149,7 +153,7 @@ export class CalendarComponent {
     });
   }
 
-  onEdit(appointment: Appointment): void {
+  onEdit(appointment: AppointmentTableDto): void {
     this.router.navigate(['appointments/edit/' + appointment.id]);
   }
 
@@ -235,5 +239,20 @@ export class CalendarComponent {
       default:
         return '#B0BEC5'; // Subtle Gray (Material Blue Grey 300)
     }
+  }
+
+  onCellClick(day: string, time?: string): void {
+    const hour = time ? time.split('-')[0].trim() : '';
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        date: day,
+      },
+    };
+    if (hour)
+      navigationExtras.queryParams = {
+        ...navigationExtras.queryParams,
+        time: hour,
+      };
+    this.router.navigate(['/appointments/create'], navigationExtras);
   }
 }
