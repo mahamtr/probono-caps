@@ -27,8 +27,7 @@ export class CalendarComponent {
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -73,9 +72,26 @@ export class CalendarComponent {
     const lastDayOfMonth = new Date(year, month + 1, 0);
     this.monthDays = [];
 
+    // Add leading days from the previous month
+    const startDayOfWeek = firstDayOfMonth.getDay();
+    for (let i = startDayOfWeek - 1; i >= 0; i--) {
+      const day = new Date(firstDayOfMonth);
+      day.setDate(day.getDate() - i - 1);
+      this.monthDays.push({ date: day.getDate(), fullDate: day });
+    }
+
+    // Add days of the current month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       const fullDate = new Date(year, month, i);
       this.monthDays.push({ date: i, fullDate });
+    }
+
+    // Add trailing days from the next month
+    const endDayOfWeek = lastDayOfMonth.getDay();
+    for (let i = 1; i < 7 - endDayOfWeek; i++) {
+      const day = new Date(lastDayOfMonth);
+      day.setDate(day.getDate() + i);
+      this.monthDays.push({ date: day.getDate(), fullDate: day });
     }
   }
 
@@ -178,8 +194,37 @@ export class CalendarComponent {
   }
 
   fetchAppointments(): void {
-    const startDate = this.getStartDate();
-    const endDate = this.getEndDate();
+    let startDate: string;
+    let endDate: string;
+
+    if (this.view === 'month') {
+      const firstDayOfMonth = new Date(
+        this.currentDate.getFullYear(),
+        this.currentDate.getMonth(),
+        1
+      );
+      const lastDayOfMonth = new Date(
+        this.currentDate.getFullYear(),
+        this.currentDate.getMonth() + 1,
+        0
+      );
+
+      // Adjust start date to include leading days from the previous month
+      const startDayOfWeek = firstDayOfMonth.getDay();
+      const adjustedStartDate = new Date(firstDayOfMonth);
+      adjustedStartDate.setDate(adjustedStartDate.getDate() - startDayOfWeek);
+      startDate = adjustedStartDate.toISOString();
+
+      // Adjust end date to include trailing days from the next month
+      const endDayOfWeek = lastDayOfMonth.getDay();
+      const adjustedEndDate = new Date(lastDayOfMonth);
+      adjustedEndDate.setDate(adjustedEndDate.getDate() + (6 - endDayOfWeek));
+      endDate = adjustedEndDate.toISOString();
+    } else {
+      startDate = this.getStartDate();
+      endDate = this.getEndDate();
+    }
+
     this.appointmentService
       .getAppointmentsCalendar(startDate, endDate)
       .subscribe((data) => {
@@ -242,10 +287,16 @@ export class CalendarComponent {
   }
 
   onCellClick(day: string, time?: string): void {
+    const date = new Date(day);
+    if (this.view === 'month') {
+      date.setDate(date.getDate() + 1);
+    }
+    const formattedDate = date.toISOString().split('T')[0];
+
     const hour = time ? time.split('-')[0].trim() : '';
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        date: day,
+        date: formattedDate,
       },
     };
     if (hour)
