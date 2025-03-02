@@ -55,6 +55,10 @@ export class AppointmentService {
     return this.apiService.patch<boolean>('api/appointment/update', appt);
   }
 
+  rescheduleAppointment(appt: Appointment): Observable<boolean> {
+    return this.apiService.patch<boolean>('api/appointment/reschedule', appt);
+  }
+
   deleteAppointment(id: string): Observable<HttpEvent<boolean>> {
     return this.apiService.delete<boolean>(`api/appointment/${id}`, {});
   }

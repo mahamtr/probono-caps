@@ -255,4 +255,18 @@ export class CalendarComponent {
       };
     this.router.navigate(['/appointments/create'], navigationExtras);
   }
+
+  onReschedule(appointment: AppointmentTableDto): void {
+    const newDate = new Date(appointment.appointmentDate);
+    newDate.setDate(newDate.getDate() + 7);
+    const updatedAppointment = {
+      ...appointment,
+      scheduledDate: newDate,
+    };
+    this.appointmentService
+      .rescheduleAppointment(updatedAppointment as unknown as Appointment)
+      .subscribe(() => {
+        this.fetchAppointments();
+      });
+  }
 }

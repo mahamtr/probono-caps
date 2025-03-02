@@ -69,6 +69,9 @@
                 Delete
               </button>
               <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
+              <button mat-menu-item (click)="onReschedule(appointment)">
+                Reschedule
+              </button>
             </mat-menu>
           </div>
         </div>
@@ -106,6 +109,10 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDeleteModal(appointment)">
               Delete
+            </button>
+            <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
+            <button mat-menu-item (click)="onReschedule(appointment)">
+              Reschedule
             </button>
           </mat-menu>
         </div>
