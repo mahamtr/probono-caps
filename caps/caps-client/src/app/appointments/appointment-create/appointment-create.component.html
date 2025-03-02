@@ -99,6 +99,16 @@
       <textarea matInput formControlName="reason" rows="3"></textarea>
     </mat-form-field>
 
+    <!-- Status -->
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of statuses" [value]="status">
+          {{ status }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <!-- Buttons -->
     <div class="button-group">
       <button

@@ -143,3 +143,9 @@ export const PROGRAMS = [
   'UNAH-VS',
   'Red Inter Salud Mental',
 ];
+
+export const APPOINTMENT_STATUSES = {
+  SCHEDULED: 'Scheduled',
+  CANCELED: 'Canceled',
+  COMPLETED: 'Completed',
+};

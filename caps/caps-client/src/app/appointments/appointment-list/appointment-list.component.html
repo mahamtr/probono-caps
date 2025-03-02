@@ -128,8 +128,14 @@
       <th mat-header-cell *matHeaderCellDef>Action</th>
       <td mat-cell *matCellDef="let appointment">
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="editAppointment(appointment.id)">
-            Edit
+          <button mat-menu-item (click)="moveToScheduled(appointment.id)">
+            Move to Scheduled
+          </button>
+          <button mat-menu-item (click)="moveToCompleted(appointment.id)">
+            Move to Completed
+          </button>
+          <button mat-menu-item (click)="cancelAppointment(appointment.id)">
+            Move to Canceled
           </button>
           <button mat-menu-item (click)="confirmDelete(appointment.id)">
             Delete

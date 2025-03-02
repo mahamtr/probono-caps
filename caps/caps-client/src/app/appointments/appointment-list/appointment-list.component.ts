@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
-import { PROGRAMS } from 'src/app/constants/constants';
+import { PROGRAMS, APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-appointment-list',
@@ -27,7 +27,7 @@ export class AppointmentListComponent {
   ];
   dataSource = new MatTableDataSource();
 
-  statuses = ['Scheduled', 'Canceled', 'Complete', 'In Progress'];
+  statuses = Object.values(APPOINTMENT_STATUSES);
   rooms = ['Room 1', 'Room 2', 'Room 3'];
   programs = PROGRAMS;
 
@@ -105,5 +105,28 @@ export class AppointmentListComponent {
 
   navigateToAddAppointment() {
     this.router.navigate(['/appointments/create']);
+  }
+
+  moveToCompleted(appointmentId: string) {
+    this.updateAppointmentStatus(appointmentId, APPOINTMENT_STATUSES.COMPLETED);
+  }
+
+  cancelAppointment(appointmentId: string) {
+    this.updateAppointmentStatus(appointmentId, APPOINTMENT_STATUSES.CANCELED);
+  }
+
+  moveToScheduled(appointmentId: string) {
+    this.updateAppointmentStatus(appointmentId, APPOINTMENT_STATUSES.SCHEDULED);
+  }
+
+  private updateAppointmentStatus(appointmentId: string, status: string) {
+    this.appointmentService
+      .getAppointmentById(appointmentId)
+      .subscribe((appointment) => {
+        appointment.status = status;
+        this.appointmentService.updateAppointment(appointment).subscribe(() => {
+          this.loadAppointments();
+        });
+      });
   }
 }

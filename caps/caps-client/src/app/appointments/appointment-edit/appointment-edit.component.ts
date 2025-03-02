@@ -9,6 +9,7 @@ import {
   DIAGNOSTIC_OPTIONS,
   INTERVENTION_OPTIONS,
   TASK_OPTIONS,
+  APPOINTMENT_STATUSES,
 } from 'src/app/constants/constants';
 
 @Component({
@@ -17,6 +18,7 @@ import {
   styleUrls: ['./appointment-edit.component.scss'],
 })
 export class AppointmentEditComponent {
+  statuses = Object.values(APPOINTMENT_STATUSES);
   appointmentForm: FormGroup;
   patient: Patient = {} as Patient;
   diagnosticOptions = DIAGNOSTIC_OPTIONS;
@@ -59,7 +61,7 @@ export class AppointmentEditComponent {
       destination: [''],
       diagnosticOne: [''],
       diagnosticTwo: [''],
-      status: [''],
+      status: [APPOINTMENT_STATUSES.COMPLETED],
       scheduledDate: ['', Validators.required],
       lastUpdated: [''],
       patientId: ['', Validators.required],
@@ -74,6 +76,9 @@ export class AppointmentEditComponent {
       this.appointmentService
         .getAppointmentById(id)
         .subscribe((appointment) => {
+          //default status for next step
+          appointment.status = APPOINTMENT_STATUSES.COMPLETED;
+
           this.appointmentForm.patchValue(appointment);
 
           if (appointment.blobUrls && appointment.blobUrls.length > 0) {

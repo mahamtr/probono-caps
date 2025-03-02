@@ -335,10 +335,11 @@
         <div class="form-colum">
           <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
-            <select matNativeControl formControlName="status">
-              <option value="Scheduled">Scheduled</option>
-              <option value="Canceled">Canceled</option>
-            </select>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of statuses" [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
 

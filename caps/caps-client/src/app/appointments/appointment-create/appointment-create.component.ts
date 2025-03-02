@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   Subscription,
   fromEvent,
@@ -14,6 +14,7 @@ import { AppointmentService } from '../appointment.service';
 import { Agent } from 'src/app/agents/agent/agent.interface';
 import { Patient } from 'src/app/patients/patient/patient.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 
 @Component({
   selector: 'app-appointment-create',
@@ -21,6 +22,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrls: ['./appointment-create.component.scss'],
 })
 export class AppointmentCreateComponent {
+  statuses = Object.values(APPOINTMENT_STATUSES);
   appointmentForm!: FormGroup;
   keyupSubscription!: Subscription;
   filteredPatients: Patient[] = [];
@@ -35,11 +37,12 @@ export class AppointmentCreateComponent {
   constructor(
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   generateTimeOptions(): void {
-    for (let hour = 6; hour <= 19; hour++) {
+    for (let hour = 8; hour <= 15; hour++) {
       const formattedHour = hour.toString().padStart(2, '0'); // Ensure 2-digit format
       this.availableTimes.push(`${formattedHour}:00`);
     }
@@ -48,6 +51,25 @@ export class AppointmentCreateComponent {
   ngOnInit(): void {
     this.generateTimeOptions();
     this.initForm();
+
+    // Retrieve query parameters
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const date = params['date'];
+      const time = params['time'];
+
+      if (date) {
+        this.appointmentForm.get('datePart')?.setValue(new Date(date));
+      }
+
+      if (time) {
+        const timeValue = this.availableTimes.find((t) =>
+          t.startsWith(time.padStart(2, '0'))
+        );
+        if (timeValue) {
+          this.appointmentForm.get('timePart')?.setValue(timeValue);
+        }
+      }
+    });
 
     // Autocomplete for Patients
     this.keyupSubscription = merge(
@@ -99,7 +121,7 @@ export class AppointmentCreateComponent {
       datePart: [null, Validators.required],
       timePart: [null, Validators.required],
       reason: ['', Validators.required],
-      status: ['In Progress'],
+      status: [{ value: APPOINTMENT_STATUSES.SCHEDULED, disabled: true }],
       newPatientFirstName: ['', Validators.required],
       newPatientLastName: ['', Validators.required],
       newPatientIDNumber: ['', Validators.required],
@@ -152,7 +174,7 @@ export class AppointmentCreateComponent {
       };
       this.appointmentService
         .createAppointment({
-          ...this.appointmentForm.value,
+          ...this.appointmentForm.getRawValue(),
           newPatient: newPatientData,
         })
         .subscribe((response) => {

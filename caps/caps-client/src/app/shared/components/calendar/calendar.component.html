@@ -40,17 +40,27 @@
     <div class="time-slots">
       <div class="time-slot" *ngFor="let time of timeSlots">
         <div class="time-label">{{ time }}</div>
-        <div class="day-column" *ngFor="let day of weekDays">
+        <div
+          class="day-column"
+          *ngFor="let day of weekDays"
+          (click)="onCellClick(day.date, time)"
+        >
           <div
             class="appointment"
             *ngFor="
               let appointment of getAppointmentsForDayAndTime(day.date, time)
             "
+            [ngStyle]="{
+              'background-color': getStatusColor(
+                appointment.status || 'Unknown'
+              )
+            }"
+            (click)="$event.stopPropagation()"
           >
             <div class="appointment-details" hover-class="appointment-hover">
               <div class="appointment-reason" [matMenuTriggerFor]="menu">
-                {{ getFormatedDate(appointment.scheduledDate) }}
-                {{ appointment.reason }}
+                {{ getFormatedDate(appointment.appointmentDate) }}
+                {{ appointment.patientName }}
               </div>
             </div>
 
@@ -59,6 +69,9 @@
                 Delete
               </button>
               <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
+              <button mat-menu-item (click)="onReschedule(appointment)">
+                Reschedule
+              </button>
             </mat-menu>
           </div>
         </div>
@@ -73,21 +86,33 @@
     <div class="day-header" *ngFor="let day of dayNames">
       {{ day }}
     </div>
-    <div class="day-cell" *ngFor="let day of monthDays">
+    <div
+      class="day-cell"
+      *ngFor="let day of monthDays"
+      (click)="onCellClick(day.fullDate.toISOString().split('T')[0])"
+    >
       <div class="day-number">{{ day.date }}</div>
       <div class="appointments">
         <div
           class="appointment"
           *ngFor="let appointment of getAppointmentsForDay(day.date)"
+          [ngStyle]="{
+            'background-color': getStatusColor(appointment.status || 'Unknown')
+          }"
+          (click)="$event.stopPropagation()"
         >
           <div class="appointment-reason" [matMenuTriggerFor]="menu">
-            {{ getFormatedDate(appointment.scheduledDate) }}
-            {{ appointment.reason }}
+            {{ getFormatedDate(appointment.appointmentDate) }}
+            {{ appointment.patientName }}
           </div>
 
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDeleteModal(appointment)">
               Delete
+            </button>
+            <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
+            <button mat-menu-item (click)="onReschedule(appointment)">
+              Reschedule
             </button>
           </mat-menu>
         </div>
