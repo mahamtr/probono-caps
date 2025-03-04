@@ -29,4 +29,14 @@ export class AgentService {
   deleteAgent(id: string): Observable<HttpEvent<boolean>> {
     return this.apiService.delete('api/agent/' + id, {});
   }
+
+  changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Observable<boolean> {
+    return this.apiService.post<boolean>('api/agent/changePassword', {
+      currentPassword,
+      newPassword,
+    });
+  }
 }

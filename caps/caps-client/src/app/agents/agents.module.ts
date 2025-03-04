@@ -23,8 +23,14 @@ import { AgentCreateComponent } from './agent-create/agent-create.component';
 import { AgentEditComponent } from './agent-edit/agent-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { AgentInformationComponent } from './agent-information/agent-information.component';
 @NgModule({
-  declarations: [AgentsListComponent, AgentCreateComponent, AgentEditComponent],
+  declarations: [
+    AgentsListComponent,
+    AgentCreateComponent,
+    AgentEditComponent,
+    AgentInformationComponent,
+  ],
   imports: [
     CommonModule,
     AgentsRoutingModule,

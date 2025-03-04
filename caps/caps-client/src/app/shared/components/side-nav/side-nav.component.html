@@ -60,6 +60,18 @@
         </a>
       </div>
       <div
+        routerLink="/agents/information"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">key</mat-icon>
+            <span *ngIf="!isCollapsed">Password Change</span>
+          </span>
+        </a>
+      </div>
+      <div
         routerLink="/patients"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: false }"

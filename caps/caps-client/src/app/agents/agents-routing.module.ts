@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AgentsListComponent } from './agents-list/agents-list.component';
 import { AgentEditComponent } from './agent-edit/agent-edit.component';
 import { AgentCreateComponent } from './agent-create/agent-create.component';
+import { AgentInformationComponent } from './agent-information/agent-information.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: AgentEditComponent,
+  },
+  {
+    path: 'information',
+    component: AgentInformationComponent,
   },
 ];
 
