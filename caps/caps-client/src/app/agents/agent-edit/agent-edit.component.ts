@@ -9,6 +9,7 @@ import {
 } from 'src/app/constants/constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDateToInput } from 'src/app/shared/utils/utils';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-agent-edit',
@@ -19,13 +20,18 @@ export class AgentEditComponent {
   states: string[] = HONDURAS_DEPARTMENTS;
   agentId: string = this.route.snapshot.paramMap.get('id')!;
   agentForm!: FormGroup;
+  isAdmin: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private agentService: AgentService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.isAdmin = this.authService.isAdmin();
+  }
 
   ngOnInit(): void {
     this.agentId = this.route.snapshot.paramMap.get('id')!;
