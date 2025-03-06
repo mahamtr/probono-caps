@@ -207,13 +207,14 @@
         <button
           mat-icon-button
           (click)="fileInput1.click()"
+          [disabled]="!!file1Name"
           matTooltip="Choose File"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
         <button
           mat-icon-button
-          (click)="deleteFile('file1')"
+          (click)="deleteFile('file1', $event)"
           [disabled]="!file1Name"
           matTooltip="Delete File"
         >
@@ -221,7 +222,7 @@
         </button>
         <button
           mat-icon-button
-          (click)="downloadFile('file1')"
+          (click)="downloadFile('file1', $event)"
           [disabled]="!file1Name"
           matTooltip="Download File"
         >
@@ -249,13 +250,14 @@
         <button
           mat-icon-button
           (click)="fileInput2.click()"
+          [disabled]="!!file2Name"
           matTooltip="Choose File"
         >
           <mat-icon>attach_file</mat-icon>
         </button>
         <button
           mat-icon-button
-          (click)="deleteFile('file2')"
+          (click)="deleteFile('file2', $event)"
           [disabled]="!file2Name"
           matTooltip="Delete File"
         >
@@ -263,7 +265,7 @@
         </button>
         <button
           mat-icon-button
-          (click)="downloadFile('file2')"
+          (click)="downloadFile('file2', $event)"
           [disabled]="!file2Name"
           matTooltip="Download File"
         >

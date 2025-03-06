@@ -24,6 +24,15 @@ export class ApiService {
     return this.http.get<T>(`${this.baseUrl}/${url}`, options);
   }
 
+  getBlob(
+    url: string,
+    params?: HttpParams,
+    headers?: HttpHeaders
+  ): Observable<Blob> {
+    const options = { params, headers, responseType: 'blob' as const };
+    return this.http.get(`${this.baseUrl}/${url}`, options);
+  }
+
   post<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
     const options = { headers };
     return this.http.post<T>(`${this.baseUrl}/${url}`, body, options);

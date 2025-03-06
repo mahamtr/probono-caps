@@ -1,30 +1,35 @@
 using caps.Infrastructure.Blob;
 using caps.Infrastructure.Data;
 using FastEndpoints;
+using MongoDB.Bson;
 
 namespace caps.Features.Appointment.DeleteAppointmentBlob;
 
-public class DeleteAppointmentBlob(IBlobStorageService blobStorageService,CapsDbContext context) : EndpointWithoutRequest<bool>
+public class DeleteAppointmentBlob(IBlobStorageService blobStorageService, CapsDbContext context) : Endpoint<Request, bool>
 {
     public override void Configure()
     {
         Delete("/api/appointment/blob");
     }
 
-    public override async Task HandleAsync( CancellationToken ct)
+    public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        var appointmentId = Query<string>("appointmentId");
-        var name = Query<string>("blobName");
-        if(name is null) ThrowError("Please include name of the filename to download.");
+        var id = Query<string>("appointmentId");
+        var fileId = Query<string>("fileId");
+        var appointment = context.Appointments.FirstOrDefault(a => a.Id.ToString() == id);
+        if (appointment == null)
+        {
+            await SendNotFoundAsync(ct);
+            return;
+        }
 
-        await blobStorageService.DeleteObjectAsync(name);
-        
-        var appnt = context.Appointments.First(a => a.Id.ToString() == appointmentId);
-        appnt.BlobUrls.Remove(name);
-        
+        var success = await blobStorageService.DeleteObjectAsync(fileId);
+        if (success)
+        {
+            appointment.BlobUrls.Remove(fileId);
+            await context.SaveChangesAsync(ct);
+        }
 
-        //TODO publish event BlobDownload
-
-        await SendAsync(await context.SaveChangesAsync(ct) > 0, cancellation: ct);
+        await SendAsync(success, cancellation: ct);
     }
 }
