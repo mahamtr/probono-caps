@@ -1,8 +1,11 @@
+using MongoDB.Bson;
+
 namespace caps.Infrastructure.Blob;
 
 public interface IBlobStorageService
 {
-    Task UploadObjectAsync(IFormFile file, CancellationToken ct);
-    Task<string?> GetDownloadLink(string blobName, CancellationToken ct);
-    Task<bool> DeleteObjectAsync( string blobName);
+    Task<string> UploadObjectAsync(IFormFile file, CancellationToken ct);
+    Task<byte[]> GetFileAsync(string fileId, CancellationToken ct);
+    Task<bool> DeleteObjectAsync(string fileId);
+    Task<string> GetFileNameAsync(string fileId, CancellationToken ct);
 }

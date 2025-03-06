@@ -11,6 +11,7 @@ import {
   TASK_OPTIONS,
   APPOINTMENT_STATUSES,
 } from 'src/app/constants/constants';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-appointment-edit',
@@ -29,8 +30,8 @@ export class AppointmentEditComponent {
   file2: File | null = null;
   file1Name: string = '';
   file2Name: string = '';
-  file1Url: string | null = null;
-  file2Url: string | null = null;
+  file1Id: string = '';
+  file2Id: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -82,10 +83,18 @@ export class AppointmentEditComponent {
           this.appointmentForm.patchValue(appointment);
 
           if (appointment.blobUrls && appointment.blobUrls.length > 0) {
-            this.file1Name = appointment.blobUrls[0];
+            this.file1Id = appointment.blobUrls[0];
+            // Get the file name for display
+            this.appointmentService
+              .getFileName(this.file1Id)
+              .subscribe((name) => (this.file1Name = name));
           }
           if (appointment.blobUrls && appointment.blobUrls.length > 1) {
-            this.file2Name = appointment.blobUrls[1];
+            this.file2Id = appointment.blobUrls[1];
+            // Get the file name for display
+            this.appointmentService
+              .getFileName(this.file2Id)
+              .subscribe((name) => (this.file2Name = name));
           }
 
           this.patientService
@@ -120,6 +129,7 @@ export class AppointmentEditComponent {
 
   // Handle file selection
   onFileSelected(event: any, fileType: string): void {
+    event.stopPropagation();
     const file: File = event.target.files[0];
     if (file && file.size <= 25 * 1024 * 1024) {
       // Check file size
@@ -161,18 +171,23 @@ export class AppointmentEditComponent {
   }
 
   // Delete file from the backend
-  deleteFile(fileType: string): void {
-    const fileName = fileType === 'file1' ? this.file1Name : this.file2Name;
-    if (!fileName) return;
+  deleteFile(fileType: string, event: Event): void {
+    event.stopPropagation();
+    const fileId = fileType === 'file1' ? this.file1Id : this.file2Id;
+    if (!fileId) return;
 
     this.appointmentService
-      .deleteFile(this.appointmentForm.value.id, fileName)
+      .deleteFile(this.appointmentForm.value.id, fileId)
       .subscribe(
         (res) => {
           if (fileType === 'file1') {
             this.file1Name = '';
+            this.file1Id = '';
+            this.file1 = null;
           } else {
             this.file2Name = '';
+            this.file2Id = '';
+            this.file2 = null;
           }
           this.snackBar.open('File deleted successfully', 'Close', {
             duration: 3000,
@@ -187,15 +202,17 @@ export class AppointmentEditComponent {
   }
 
   // Download file from the backend
-  downloadFile(fileType: string): void {
+  downloadFile(fileType: string, event: Event): void {
+    event.stopPropagation();
+    const fileId = fileType === 'file1' ? this.file1Id : this.file2Id;
     const fileName = fileType === 'file1' ? this.file1Name : this.file2Name;
-    if (!fileName) return;
+    if (!fileId) return;
 
-    this.appointmentService.downloadFile(fileName).subscribe(
-      (response: string) => {
-        window.open(response, '_blank');
+    this.appointmentService.downloadFile(fileId).subscribe(
+      (blob) => {
+        saveAs(blob, fileName);
       },
-      () => {
+      (e) => {
         this.snackBar.open('File download failed', 'Close', {
           duration: 3000,
         });

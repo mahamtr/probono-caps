@@ -21,17 +21,19 @@ export class AppointmentService {
     return this.apiService.post<boolean>(`api/appointment/${id}/blob`, data);
   }
 
-  downloadFile(blobName: string): Observable<string> {
+  downloadFile(fileId: string): Observable<Blob> {
+    return this.apiService.getBlob(`api/appointment/blob/download/${fileId}`);
+  }
+
+  getFileName(fileId: string): Observable<string> {
     return this.apiService.get<string>(
-      `api/appointment/blob/download?blobName=${encodeURIComponent(blobName)}`
+      `api/appointment/blob/filename?fileId=${encodeURIComponent(fileId)}`
     );
   }
 
-  deleteFile(id: string, blobName: string): Observable<HttpEvent<boolean>> {
+  deleteFile(id: string, fileId: string): Observable<HttpEvent<boolean>> {
     return this.apiService.delete<boolean>(
-      `api/appointment/blob?blobName=${encodeURIComponent(
-        blobName
-      )}&appointmentId=${id}`,
+      `api/appointment/blob?appointmentId=${id}&fileId=${fileId}`,
       {}
     );
   }

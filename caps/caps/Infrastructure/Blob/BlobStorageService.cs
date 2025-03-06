@@ -1,47 +1,50 @@
-using Azure.Storage.Blobs;
-using Azure.Storage.Sas;
+using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 
 namespace caps.Infrastructure.Blob;
 
 public class BlobStorageService : IBlobStorageService
 {
-    private readonly BlobContainerClient _containerClient;
+    private readonly IGridFSBucket _gridFS;
 
-
-    public BlobStorageService()
+    public BlobStorageService(IMongoClient mongoClient)
     {
-        var blobServiceClient = new BlobServiceClient(
-            Environment.GetEnvironmentVariable("BLOB_URL_CONNECTION_STRING")
-            );
-        _containerClient = blobServiceClient.GetBlobContainerClient(            Environment.GetEnvironmentVariable("BLOB_CONTAINER_NAME")
-        );
-        _containerClient.CreateIfNotExists();
+        var database = mongoClient.GetDatabase(Environment.GetEnvironmentVariable("MONGO_DATABASE_NAME"));
+        _gridFS = new GridFSBucket(database);
     }
 
-
-    public async Task UploadObjectAsync(IFormFile file, CancellationToken ct = new())
+    public async Task<string> UploadObjectAsync(IFormFile file, CancellationToken ct = default)
     {
-        var blob = _containerClient.GetBlobClient(file.FileName);
-        if (await blob.ExistsAsync(ct)) return;
-        await using var data = file.OpenReadStream();
-        await _containerClient.UploadBlobAsync(file.FileName, data, ct);
+        using var stream = file.OpenReadStream();
+        var fileId = await _gridFS.UploadFromStreamAsync(file.FileName, stream, cancellationToken: ct);
+        return fileId.ToString();
     }
 
-    public async Task<string?> GetDownloadLink(string blobName, CancellationToken ct = new())
+    public async Task<byte[]> GetFileAsync(string fileId, CancellationToken ct = default)
     {
-        var file = _containerClient.GetBlobClient(blobName);
-        string? sasUri = null;
-        if (!await file.ExistsAsync(ct)) return sasUri;
-        var builder = new BlobSasBuilder(BlobSasPermissions.Read, 
-            //TODO configure this in env var
-            DateTimeOffset.Now.AddMinutes(15));
-        sasUri = file.GenerateSasUri(builder).ToString();
-
-        return sasUri;
+        var objectId = MongoDB.Bson.ObjectId.Parse(fileId);
+        return await _gridFS.DownloadAsBytesAsync(objectId, cancellationToken: ct);
     }
 
-    public async Task<bool> DeleteObjectAsync(string blobName)
+    public async Task<bool> DeleteObjectAsync(string fileId)
     {
-        return await _containerClient.DeleteBlobIfExistsAsync(blobName);
+        try
+        {
+            var objectId = MongoDB.Bson.ObjectId.Parse(fileId);
+            await _gridFS.DeleteAsync(objectId);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public async Task<string> GetFileNameAsync(string fileId, CancellationToken ct = default)
+    {
+        var objectId = MongoDB.Bson.ObjectId.Parse(fileId);
+        var filter = Builders<GridFSFileInfo>.Filter.Eq("_id", objectId);
+        var fileInfo = await _gridFS.Find(filter).FirstOrDefaultAsync(ct);
+        return fileInfo?.Filename ?? string.Empty;
     }
 }
