@@ -16,8 +16,6 @@ public class Authenticate(CapsDbContext dbContext, IHashService hashService) : E
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
         var secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ?? throw new InvalidOperationException();
-        var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new InvalidOperationException();
-        var audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new InvalidOperationException();
         var expireInMinute = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRE_MINS") ?? throw new InvalidOperationException());
 
         var agent = dbContext.Agents.FirstOrDefault(a => a.Email == req.Email);

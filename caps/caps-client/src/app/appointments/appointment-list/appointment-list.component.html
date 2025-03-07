@@ -137,7 +137,11 @@
           <button mat-menu-item (click)="cancelAppointment(appointment.id)">
             Move to Canceled
           </button>
-          <button mat-menu-item (click)="confirmDelete(appointment.id)">
+          <button
+            mat-menu-item
+            [disabled]="!canDeleteAppointment"
+            (click)="confirmDelete(appointment.id)"
+          >
             Delete
           </button>
         </mat-menu>

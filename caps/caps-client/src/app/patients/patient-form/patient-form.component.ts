@@ -6,6 +6,7 @@ import { PatientService } from '../patient.service';
 import { PROGRAMS } from 'src/app/constants/constants';
 import { DatePipe } from '@angular/common';
 import { formatDateToInput } from 'src/app/shared/utils/utils';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -20,13 +21,15 @@ export class PatientFormComponent {
   showGuardianSection = false;
   programs = PROGRAMS;
   showStudentSection = false;
+  canEditPatient = false;
 
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.patientForm = this.fb.group({
       id: [''],
@@ -54,7 +57,7 @@ export class PatientFormComponent {
       diagnostic: [''],
       secondDiagnostic: [''],
       gender: ['', Validators.required],
-      status: [''],
+      status: ['Active'],
       guardianShipSection: this.fb.group({
         guardianShipName: [''],
         guardianShipPhone: [''],
@@ -68,6 +71,16 @@ export class PatientFormComponent {
     this.patientForm.get('program')?.valueChanges.subscribe((program) => {
       this.toggleStudentSection(program);
     });
+
+    this.canEditPatient = this.authService.canEditPatient();
+
+    if (!this.canEditPatient) {
+      this.patientForm.disable();
+    }
+
+    if (!this.authService.canEnablePatient()) {
+      this.patientForm.get('status')?.disable();
+    }
   }
 
   ngOnInit(): void {

@@ -7,7 +7,7 @@ public class HashService : IHashService
     private const int SaltSize = 16;
     private const int HashSize = 32;
     private const int Iterations = 999999;
-    
+
     public string GeneratePasswordHash(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -18,12 +18,11 @@ public class HashService : IHashService
 
     public bool VerifyPasswordHash(string password, string hashedPassword)
     {
-        var parts = hashedPassword.Split("-");
-        var hash = Convert.FromHexString(parts.First());
-        var salt = Convert.FromHexString(parts.Last());
+        string[] parts = hashedPassword.Split("-");
+        byte[] hash = Convert.FromHexString(parts[0]);
+        byte[] salt = Convert.FromHexString(parts[1]);
 
-        var inputhash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA512, HashSize);
-
+        byte[] inputhash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA512, HashSize);
         return CryptographicOperations.FixedTimeEquals(hash, inputhash);
     }
 }

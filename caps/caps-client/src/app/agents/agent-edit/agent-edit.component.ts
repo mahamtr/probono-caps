@@ -20,7 +20,8 @@ export class AgentEditComponent {
   states: string[] = HONDURAS_DEPARTMENTS;
   agentId: string = this.route.snapshot.paramMap.get('id')!;
   agentForm!: FormGroup;
-  isAdmin: boolean = false;
+  hasSecurityAccess: boolean = false;
+  canEditAgent: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +31,8 @@ export class AgentEditComponent {
     private router: Router,
     private authService: AuthService
   ) {
-    this.isAdmin = this.authService.isAdmin();
+    this.hasSecurityAccess = this.authService.canUpdateSecurity();
+    this.canEditAgent = this.authService.canEditAgent();
   }
 
   ngOnInit(): void {
@@ -63,6 +65,10 @@ export class AgentEditComponent {
     );
 
     this.loadAgentData();
+
+    if (!this.canEditAgent) {
+      this.agentForm.disable();
+    }
   }
   loadAgentData(): void {
     this.agentService.getAgent(this.agentId).subscribe((agent) => {

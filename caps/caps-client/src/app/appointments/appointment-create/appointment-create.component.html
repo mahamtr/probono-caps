@@ -115,7 +115,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="!appointmentForm.valid"
+        [disabled]="!appointmentForm.valid || !canCreateAppointment"
       >
         Create Appointment
       </button>

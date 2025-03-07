@@ -1,6 +1,11 @@
 <div class="header-container">
   <h2>Agents</h2>
-  <button mat-raised-button color="primary" [routerLink]="['create']">
+  <button
+    [disabled]="!canCreateAgent"
+    mat-raised-button
+    color="primary"
+    [routerLink]="['create']"
+  >
     + New
   </button>
 </div>
@@ -46,7 +51,11 @@
           <mat-icon>edit</mat-icon>
           <span>Edit</span>
         </button>
-        <button mat-menu-item (click)="openDeleteDialog(id)">
+        <button
+          mat-menu-item
+          [disabled]="!canDeleteAgent"
+          (click)="openDeleteDialog(id)"
+        >
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
         </button>

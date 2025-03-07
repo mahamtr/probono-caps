@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AgentService } from '../agent/agent.service';
 import { Agent } from '../agent/agent.interface';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/shared/auth.service';
 @Component({
   selector: 'app-agents-list',
   templateUrl: './agents-list.component.html',
@@ -12,11 +13,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AgentsListComponent {
   agents$: Observable<Agent[]> = of([]);
+  canCreateAgent: boolean = false;
+  canDeleteAgent: boolean = false;
+
   constructor(
     private agentService: AgentService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private authService: AuthService
+  ) {
+    this.canCreateAgent = this.authService.canCreateAgent();
+    this.canDeleteAgent = this.authService.canDeleteAgent();
+  }
 
   getInitials(firstName: string, lastName: string): string {
     return (firstName?.charAt(0) || '') + (lastName?.charAt(0) || '');
