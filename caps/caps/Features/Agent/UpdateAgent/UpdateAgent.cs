@@ -11,7 +11,7 @@ public class UpdateAgent(CapsDbContext dbContext, IMapper mapper, IHashService h
     public override void Configure()
     {
         Patch("/api/agent/update");
-        Policies("AdminOnly");
+        Roles("Admin","Professional");
     }
 
     public override async Task HandleAsync(AgentDto req, CancellationToken ct)

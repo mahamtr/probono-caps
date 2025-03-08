@@ -185,7 +185,7 @@
             mat-flat-button
             color="primary"
             type="submit"
-            [disabled]="patientForm.invalid"
+            [disabled]="patientForm.invalid || !canEditPatient"
           >
             Save Changes
           </button>

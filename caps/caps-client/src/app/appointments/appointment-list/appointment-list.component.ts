@@ -6,6 +6,7 @@ import { DeleteConfirmationModalComponent } from 'src/app/shared/components/dele
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
 import { PROGRAMS, APPOINTMENT_STATUSES } from 'src/app/constants/constants';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -34,14 +35,18 @@ export class AppointmentListComponent {
   selectedStatus = '';
   selectedRoom = '';
   selectedProgram = '';
+  canDeleteAppointment = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.canDeleteAppointment = this.authService.canDeleteAppointment();
+  }
 
   ngOnInit() {
     this.loadAppointments();

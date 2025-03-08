@@ -15,6 +15,7 @@ import { Agent } from 'src/app/agents/agent/agent.interface';
 import { Patient } from 'src/app/patients/patient/patient.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-appointment-create',
@@ -33,13 +34,17 @@ export class AppointmentCreateComponent {
   selectedPatient: Patient | undefined;
   selectedAgent: Agent | undefined;
   availableTimes: string[] = [];
+  canCreateAppointment = false;
 
   constructor(
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService
+  ) {
+    this.canCreateAppointment = this.authService.canCreateAppointment();
+  }
 
   generateTimeOptions(): void {
     for (let hour = 8; hour <= 15; hour++) {
@@ -51,6 +56,10 @@ export class AppointmentCreateComponent {
   ngOnInit(): void {
     this.generateTimeOptions();
     this.initForm();
+
+    if (!this.canCreateAppointment) {
+      this.appointmentForm.disable();
+    }
 
     // Retrieve query parameters
     this.activatedRoute.queryParams.subscribe((params) => {

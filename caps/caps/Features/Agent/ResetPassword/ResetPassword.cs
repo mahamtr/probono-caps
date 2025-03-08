@@ -9,7 +9,7 @@ public class ResetPassword(CapsDbContext dbContext, IHashService hashService) : 
     public override void Configure()
     {
         Patch("/api/agent/resetPassword");
-        Policies("AdminOnly");
+        Roles("Admin");
     }
 
     public override async Task HandleAsync(Request req, CancellationToken ct)

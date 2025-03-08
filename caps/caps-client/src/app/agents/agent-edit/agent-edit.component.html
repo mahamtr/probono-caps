@@ -70,7 +70,7 @@
         </mat-form-field>
       </div>
 
-      <ng-container *ngIf="isAdmin">
+      <ng-container *ngIf="hasSecurityAccess">
         <h3 class="section-title">Security</h3>
         <div class="row">
           <mat-form-field appearance="outline">
@@ -96,7 +96,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="agentForm.invalid"
+        [disabled]="agentForm.invalid || !canEditAgent"
       >
         Save
       </button>

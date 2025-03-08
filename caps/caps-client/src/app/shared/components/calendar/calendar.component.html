@@ -107,7 +107,11 @@
           </div>
 
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openDeleteModal(appointment)">
+            <button
+              mat-menu-item
+              [disabled]="!canDeleteAppointment"
+              (click)="openDeleteModal(appointment)"
+            >
               Delete
             </button>
             <button mat-menu-item (click)="onEdit(appointment)">Edit</button>

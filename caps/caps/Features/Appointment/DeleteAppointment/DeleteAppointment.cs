@@ -10,6 +10,7 @@ public class DeleteAppointment(CapsDbContext dbContext, IBlobStorageService blob
     public override void Configure()
     {
         Delete("/api/appointment/{id}");
+        Roles("Admin");
     }
 
     public override async Task HandleAsync(CancellationToken ct)

@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PatientService } from '../patient.service';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-patients-list',
@@ -23,13 +24,19 @@ export class PatientsListComponent {
     'action',
   ];
   dataSource = new MatTableDataSource<Patient>();
+  canCreatePatient = false;
+  canDeletePatient = false;
 
   constructor(
     private patientService: PatientService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    public router: Router
-  ) {}
+    public router: Router,
+    private authService: AuthService
+  ) {
+    this.canCreatePatient = this.authService.canCreatePatient();
+    this.canDeletePatient = this.authService.canDeletePatient();
+  }
 
   ngOnInit(): void {
     this.loadFetch();

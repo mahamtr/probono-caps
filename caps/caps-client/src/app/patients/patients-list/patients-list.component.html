@@ -4,6 +4,7 @@
     <button
       mat-raised-button
       color="primary"
+      [disabled]="!canCreatePatient"
       (click)="router.navigate(['/patients/create'])"
     >
       + New
@@ -58,6 +59,7 @@
         <button
           mat-icon-button
           color="warn"
+          [disabled]="!canDeletePatient"
           (click)="deletePatient(patient.id)"
         >
           <mat-icon>delete</mat-icon>

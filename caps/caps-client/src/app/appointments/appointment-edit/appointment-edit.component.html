@@ -192,6 +192,7 @@
           <input
             matInput
             [value]="file1Name"
+            [disabled]="!canEditAppointment"
             placeholder="No file chosen"
             readonly
           />
@@ -207,7 +208,7 @@
         <button
           mat-icon-button
           (click)="fileInput1.click()"
-          [disabled]="!!file1Name"
+          [disabled]="!!file1Name || !canEditAppointment"
           matTooltip="Choose File"
         >
           <mat-icon>attach_file</mat-icon>
@@ -215,7 +216,7 @@
         <button
           mat-icon-button
           (click)="deleteFile('file1', $event)"
-          [disabled]="!file1Name"
+          [disabled]="!file1Name || !canEditAppointment"
           matTooltip="Delete File"
         >
           <mat-icon>delete</mat-icon>
@@ -235,6 +236,7 @@
           <input
             matInput
             [value]="file2Name"
+            [disabled]="!canEditAppointment"
             placeholder="No file chosen"
             readonly
           />
@@ -250,7 +252,7 @@
         <button
           mat-icon-button
           (click)="fileInput2.click()"
-          [disabled]="!!file2Name"
+          [disabled]="!!file2Name || !canEditAppointment"
           matTooltip="Choose File"
         >
           <mat-icon>attach_file</mat-icon>
@@ -258,7 +260,7 @@
         <button
           mat-icon-button
           (click)="deleteFile('file2', $event)"
-          [disabled]="!file2Name"
+          [disabled]="!file2Name || !canEditAppointment"
           matTooltip="Delete File"
         >
           <mat-icon>delete</mat-icon>
@@ -350,7 +352,7 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="appointmentForm.invalid"
+            [disabled]="appointmentForm.invalid || !canEditAppointment"
           >
             Save Changes
           </button>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AgentRole } from '../constants/constants';
 
 interface AuthResponse {
   accessToken: string;
@@ -43,7 +44,63 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.userRole === 'Admin';
+    return false;
+    return this.userRole === AgentRole.Admin;
+  }
+
+  isProfessional(): boolean {
+    return true;
+    return this.userRole === AgentRole.Professional;
+  }
+
+  isIntern(): boolean {
+    return false;
+    return this.userRole === AgentRole.Intern;
+  }
+
+  canDeleteAppointment(): boolean {
+    return this.isAdmin();
+  }
+
+  canEditAppointment(): boolean {
+    return this.isAdmin() || this.isProfessional() || this.isIntern();
+  }
+
+  canCreateAppointment(): boolean {
+    return this.isAdmin() || this.isIntern() || this.isProfessional();
+  }
+
+  canDeletePatient(): boolean {
+    return this.isAdmin() || this.isProfessional();
+  }
+
+  canEditPatient(): boolean {
+    return this.isAdmin() || this.isProfessional() || this.isIntern();
+  }
+
+  canCreatePatient(): boolean {
+    return this.isAdmin() || this.isProfessional() || this.isIntern();
+  }
+
+  canEnablePatient(): boolean {
+    return this.isAdmin() || this.isProfessional();
+  }
+
+  // Agent permissions
+  canDeleteAgent(): boolean {
+    return this.isAdmin();
+  }
+
+  canEditAgent(): boolean {
+    return this.isAdmin() || this.isProfessional();
+  }
+
+  canCreateAgent(): boolean {
+    return this.isAdmin();
+  }
+
+  canUpdateSecurity(): boolean {
+    return this.isAdmin();
   }
 
   logout(): void {

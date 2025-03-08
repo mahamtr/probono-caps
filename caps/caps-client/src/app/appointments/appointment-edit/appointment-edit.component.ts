@@ -12,6 +12,7 @@ import {
   APPOINTMENT_STATUSES,
 } from 'src/app/constants/constants';
 import { saveAs } from 'file-saver';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-appointment-edit',
@@ -25,6 +26,7 @@ export class AppointmentEditComponent {
   diagnosticOptions = DIAGNOSTIC_OPTIONS;
   taskOptions = TASK_OPTIONS;
   interventionOptions = INTERVENTION_OPTIONS;
+  canEditAppointment = false;
 
   file1: File | null = null;
   file2: File | null = null;
@@ -39,8 +41,10 @@ export class AppointmentEditComponent {
     private router: Router,
     private appointmentService: AppointmentService,
     private patientService: PatientService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
+    this.canEditAppointment = this.authService.canEditAppointment();
     this.appointmentForm = this.fb.group({
       id: [''],
       reason: ['', Validators.required],
@@ -103,6 +107,9 @@ export class AppointmentEditComponent {
               this.patient = patient;
             });
         });
+    }
+    if (!this.canEditAppointment) {
+      this.appointmentForm.disable();
     }
   }
 
