@@ -8,6 +8,7 @@ import {
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-calendar',
@@ -23,12 +24,16 @@ export class CalendarComponent {
   monthDays: { date: number; fullDate: Date }[] = [];
   timeSlots: string[] = [];
   dayNames: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  canDeleteAppointment = false;
 
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.canDeleteAppointment = this.authService.canDeleteAppointment();
+  }
 
   ngOnInit(): void {
     this.generateTimeSlots();

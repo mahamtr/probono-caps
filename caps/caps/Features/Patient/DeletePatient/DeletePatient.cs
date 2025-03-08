@@ -8,8 +8,7 @@ public class DeletePatient(CapsDbContext dbContext) : EndpointWithoutRequest<boo
     public override void Configure()
     {
         Delete("/api/patient/{id}");
-        Policies("AdminOnly");
-        Policies("ProfessionalOnly");
+        Roles("Admin","Professional");
     }
     
     public override async Task HandleAsync(CancellationToken ct)

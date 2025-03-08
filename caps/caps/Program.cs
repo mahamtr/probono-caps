@@ -55,9 +55,6 @@ builder.Services.AddHangfireServer();
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
 
-builder.Services.AddAuthorizationBuilder().AddPolicy("AdminOnly", x => x.RequireRole("Admin"));
-builder.Services.AddAuthorizationBuilder().AddPolicy("ProfessionalOnly", x => x.RequireRole("Professional"));
-
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {

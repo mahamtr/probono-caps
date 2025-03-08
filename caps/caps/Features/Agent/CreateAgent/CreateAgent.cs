@@ -11,7 +11,7 @@ public class CreateAgent(CapsDbContext dbContext, IMapper mapper, IHashService h
     public override void Configure()
     {
         Post("/api/agent/create");
-        Policies("AdminOnly");
+        Roles("Admin");
     }
 
     public override async Task HandleAsync(AgentDto req, CancellationToken ct)
