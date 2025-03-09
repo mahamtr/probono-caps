@@ -104,7 +104,6 @@ export class AuthService {
   }
 
   logout(): void {
-    console.log('LOGOUTTTT');
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
     this.userRole = '';
