@@ -8,7 +8,7 @@ on:
 
 env:
   DOCKER_IMAGE: mahamtr/caps
-  NOTIFICATION_EMAILS: "mzmaai70@gmail.com"
+  NOTIFICATION_EMAILS: "mzmaai70@gmail.com,roghax85@gmail.com"
 
 jobs:
   build-and-push:
