@@ -1,0 +1,29 @@
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: ./caps/Dockerfile.Dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - client
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  client:
+    build:
+      context: .
+      dockerfile: ./caps-client/Dockerfile
+    command: sh -c "npm start"
+    volumes:
+      - ./caps-client:/home/node/app
+      - /home/node/app/node_modules #
+    environment:
+      - BACKEND_URL=http://webapi:80
+    ports:
+      - "4200:4200"
+    working_dir: /home/node/app
+volumes:
+  node_modules:

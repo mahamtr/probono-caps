@@ -30,11 +30,21 @@ const routes: Routes = [
         loadChildren: () =>
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
     ],
   },
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: '**', // Move the wildcard route OUTSIDE of the SideNavComponent children
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
   },
 ];
 

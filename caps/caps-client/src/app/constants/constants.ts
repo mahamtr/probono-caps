@@ -7,7 +7,6 @@ export enum AgentRole {
 export const AGENT_PRIVILEGES = [AgentRole.Professional, AgentRole.Intern];
 
 export const StrongPasswordRegx: RegExp =
-  // /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
   /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
 export const HONDURAS_DEPARTMENTS = [

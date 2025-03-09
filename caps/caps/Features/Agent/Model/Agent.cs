@@ -5,7 +5,7 @@ namespace caps.Features.Agent.Model;
 public class Agent
 {
     [Key]
-    public ObjectId Id { get; set; } 
+    public ObjectId Id { get; set; }
 
     [Required]
     public string? FirstName { get; set; }
@@ -23,7 +23,7 @@ public class Agent
     [Required]
     public DateTime? DateOfBirth { get; set; }
 
-    [Required] public string? Privilege { get; set; } = "agent"; // TODO add const agent | admin
+    [Required] public string? Privilege { get; set; }
 
     public ContactInformation? ContactInformation { get; set; }
 
@@ -40,7 +40,7 @@ public class ContactInformation
     public string? PhoneNumber { get; set; }
 
     [Required]
-    public string? City { get; set; } 
+    public string? City { get; set; }
 
     [Required]
     public string? Address { get; set; }
