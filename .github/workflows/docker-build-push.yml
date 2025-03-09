@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./caps/Dockerfile.Prod
+          file: ./caps/caps/Dockerfile.Prod
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
           cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache
