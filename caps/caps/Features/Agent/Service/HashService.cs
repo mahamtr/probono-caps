@@ -18,11 +18,24 @@ public class HashService : IHashService
 
     public bool VerifyPasswordHash(string password, string hashedPassword)
     {
-        string[] parts = hashedPassword.Split("-");
-        byte[] hash = Convert.FromHexString(parts[0]);
-        byte[] salt = Convert.FromHexString(parts[1]);
+        try
+        {
+            string[] parts = hashedPassword.Split("-");
+            if (parts.Length != 2)
+            {
+                return false;
+            }
 
-        byte[] inputhash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA512, HashSize);
-        return CryptographicOperations.FixedTimeEquals(hash, inputhash);
+            byte[] hash = Convert.FromHexString(parts[0]);
+            byte[] salt = Convert.FromHexString(parts[1]);
+
+            byte[] newHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA512, HashSize);
+            return CryptographicOperations.FixedTimeEquals(hash, newHash);
+        }
+        catch
+        {
+            Console.WriteLine("Error verifying password hash");
+            return false;
+        }
     }
 }

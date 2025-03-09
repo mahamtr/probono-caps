@@ -2,28 +2,26 @@ services:
   webapi:
     build:
       context: .
-      dockerfile: ./caps/Dockerfile
+      dockerfile: ./caps/Dockerfile.Prod
+      platforms:
+        - linux/amd64
     ports:
-      - "8080:8080"
+      - "80:8080"
+    environment:
+      - MONGO_DATABASE_URL=mongodb://mongodb:27017
+      - MONGO_DATABASE_NAME=sample_planets
+      - JWT_SECRET_KEY=THIS_IS_A_LONG_SECRET_THIS_IS_A_LONG_SECRET_THIS_IS_A_LONG_SECRET_THIS_IS_A_LONG_SECRET
+      - JWT_EXPIRE_MINS=120
+      - ADMIN_DEFAULT_PASSWORD=12qw!@QW
     depends_on:
-      - client
+      - mongodb
+
   mongodb:
     image: mongo:latest
     ports:
       - "27017:27017"
-
-  client:
-    build:
-      context: .
-      dockerfile: ./caps-client/Dockerfile
-    command: sh -c "npm start"
     volumes:
-      - ./caps-client:/home/node/app
-      - /home/node/app/node_modules #
-    environment:
-      - BACKEND_URL=http://webapi:80
-    ports:
-      - "4200:4200"
-    working_dir: /home/node/app
+      - mongodb_data:/data/db
+
 volumes:
-  node_modules:
+  mongodb_data:

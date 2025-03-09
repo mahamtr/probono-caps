@@ -16,19 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
 
-var a = Environment.GetEnvironmentVariable("MONGO_DATABASE_URL");
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
         d =>
         {
-                d.
-                    AllowAnyOrigin()
-                    .AllowAnyHeader()
+            d.
+                AllowAnyOrigin()
+                .AllowAnyHeader()
                 .AllowAnyMethod();
-            
         });
 });
 
@@ -54,8 +50,16 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
+builder.Services.AddTransient<DatabaseSeeder>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    await seeder.SeedAsync();
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseStaticFiles();
