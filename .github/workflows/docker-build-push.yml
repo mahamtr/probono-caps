@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
+      - "release/**"
 
 env:
   DOCKER_IMAGE: mahamtr/caps
-  DOCKER_TAG: latest
   NOTIFICATION_EMAILS: "mzmaai70@gmail.com"
 
 jobs:
@@ -17,6 +17,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/main ]]; then
+            echo "DOCKER_TAG=latest" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} =~ refs/heads/release/(.*) ]]; then
+            VERSION=${BASH_REMATCH[1]}
+            echo "DOCKER_TAG=$VERSION" >> $GITHUB_ENV
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -46,7 +56,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "✅ Docker Build & Push Successful - CAPS"
+          subject: "✅ Docker Build & Push Successful - CAPS ${{ env.DOCKER_TAG }}"
           to: ${{ env.NOTIFICATION_EMAILS }}
           from: GitHub Actions
           body: |
@@ -55,6 +65,7 @@ jobs:
             Repository: ${{ github.repository }}
             Branch: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+            Tag: ${{ env.DOCKER_TAG }}
 
             Image: ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
 
@@ -68,7 +79,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "❌ Docker Build & Push Failed - CAPS"
+          subject: "❌ Docker Build & Push Failed - CAPS ${{ env.DOCKER_TAG }}"
           to: ${{ env.NOTIFICATION_EMAILS }}
           from: GitHub Actions
           body: |
@@ -77,5 +88,6 @@ jobs:
             Repository: ${{ github.repository }}
             Branch: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
+            Tag: ${{ env.DOCKER_TAG }}
 
             Please check the logs for more details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
