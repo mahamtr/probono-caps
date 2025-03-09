@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8080'; // TODO make this come from enviroment
+  private baseUrl = 'http://localhost:80'; // TODO make this come from enviroment
 
   constructor(private http: HttpClient) {}
 
