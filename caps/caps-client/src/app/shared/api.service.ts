@@ -6,12 +6,13 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:80'; // TODO make this come from enviroment
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
