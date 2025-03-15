@@ -99,15 +99,24 @@ jobs:
             try {
               console.log('Making request to OpenAI API...');
               
+              // Add delay to respect rate limits
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
               const apiUrl = 'https://api.openai.com/v1/chat/completions';
               console.log('API URL:', apiUrl);
               
               const headers = {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json',
-                'OpenAI-Beta': 'assistants=v1'
+                'Content-Type': 'application/json'
               };
               console.log('Headers configured (excluding auth token)');
+              
+              // Calculate approximate tokens in the prompt
+              const promptTokens = Math.ceil(prompt.length / 4);
+              console.log(`Estimated prompt tokens: ${promptTokens}`);
+              
+              // Adjust max_tokens based on prompt size to stay within limits
+              const max_tokens = Math.min(2000, 4096 - promptTokens);
               
               const payload = {
                 model: "gpt-3.5-turbo",
@@ -116,7 +125,7 @@ jobs:
                   content: prompt
                 }],
                 temperature: 0.7,
-                max_tokens: 2000
+                max_tokens: max_tokens
               };
               console.log('Request payload prepared');
 
@@ -159,7 +168,17 @@ jobs:
                   headers: { ...error.config?.headers, Authorization: '[REDACTED]' }
                 }
               });
-              core.setFailed(`Failed to complete code review: ${error.message}`);
+              
+              let errorMessage = 'Failed to complete code review: ';
+              if (error.response?.data?.error?.message?.includes('exceeded your current quota')) {
+                errorMessage += 'OpenAI API quota exceeded. Please check your billing status at https://platform.openai.com/account/billing';
+              } else if (error.response?.status === 429) {
+                errorMessage += 'Rate limit exceeded. Please try again in a few minutes.';
+              } else {
+                errorMessage += error.message;
+              }
+              
+              core.setFailed(errorMessage);
             }
 
       - name: Send review notification
