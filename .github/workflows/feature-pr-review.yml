@@ -97,7 +97,19 @@ jobs:
             Please provide specific, actionable feedback for each concern found.`;
 
             try {
-              const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+              console.log('Making request to OpenAI API...');
+              
+              const apiUrl = 'https://api.openai.com/v1/chat/completions';
+              console.log('API URL:', apiUrl);
+              
+              const headers = {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v1'
+              };
+              console.log('Headers configured (excluding auth token)');
+              
+              const payload = {
                 model: "gpt-4",
                 messages: [{
                   role: "user",
@@ -105,15 +117,23 @@ jobs:
                 }],
                 temperature: 0.7,
                 max_tokens: 2000
-              }, {
-                headers: {
-                  'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                  'Content-Type': 'application/json'
-                }
+              };
+              console.log('Request payload prepared');
+
+              const response = await axios.post(apiUrl, payload, { headers });
+              console.log('Response received:', {
+                status: response.status,
+                statusText: response.statusText,
+                hasData: !!response.data
               });
               
+              if (!response.data || !response.data.choices || !response.data.choices[0]) {
+                throw new Error('Invalid response format from OpenAI API');
+              }
+
               const review = response.data.choices[0].message.content;
               
+              console.log('Creating PR comment...');
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -125,9 +145,21 @@ jobs:
                 ---
                 This review was automatically generated using OpenAI GPT-4.`
               });
+              console.log('PR comment created successfully');
+              
             } catch (error) {
-              console.error('Error during OpenAI review:', error);
-              core.setFailed('Failed to complete code review');
+              console.error('Error during OpenAI review:', {
+                message: error.message,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                data: error.response?.data,
+                config: {
+                  url: error.config?.url,
+                  method: error.config?.method,
+                  headers: { ...error.config?.headers, Authorization: '[REDACTED]' }
+                }
+              });
+              core.setFailed(`Failed to complete code review: ${error.message}`);
             }
 
       - name: Send review notification
