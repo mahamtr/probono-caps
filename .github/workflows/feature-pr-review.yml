@@ -49,6 +49,7 @@ jobs:
         id: get-changes
         run: |
           PR_NUMBER=${{ steps.check-pr.outputs.pr_number }}
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           git fetch origin main
           DIFF_FILES=$(git diff --name-only origin/main)
           echo "DIFF_FILES<<EOF" >> $GITHUB_ENV
@@ -143,18 +144,35 @@ jobs:
               const review = response.data.choices[0].message.content;
               
               console.log('Creating PR comment...');
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: parseInt(process.env.PR_NUMBER),
-                body: `## Automated Code Review
+              const prNumber = process.env.PR_NUMBER;
+              if (!prNumber) {
+                throw new Error('PR number not found in environment variables');
+              }
+              
+              console.log(`Attempting to create comment on PR #${prNumber}`);
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(prNumber),
+                  body: `## Automated Code Review
 
                 ${review}
                 
                 ---
                 This review was automatically generated using OpenAI GPT-3.5-turbo.`
-              });
-              console.log('PR comment created successfully');
+                });
+                console.log('PR comment created successfully');
+              } catch (commentError) {
+                console.error('Error creating PR comment:', {
+                  status: commentError.status,
+                  message: commentError.message,
+                  prNumber: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
+                });
+                throw new Error(`Failed to create PR comment: ${commentError.message}`);
+              }
               
             } catch (error) {
               console.error('Error during OpenAI review:', {
