@@ -5,6 +5,12 @@ on:
     branches:
       - "feature/**"
 
+# Add permissions block at the workflow level
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   pr-review:
     runs-on: ubuntu-latest
@@ -49,6 +55,7 @@ jobs:
         id: get-changes
         run: |
           PR_NUMBER=${{ steps.check-pr.outputs.pr_number }}
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           git fetch origin main
           DIFF_FILES=$(git diff --name-only origin/main)
           echo "DIFF_FILES<<EOF" >> $GITHUB_ENV
@@ -59,6 +66,16 @@ jobs:
           echo "DIFF_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$DIFF_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        if: steps.check-pr.outputs.pr_found == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        if: steps.check-pr.outputs.pr_found == 'true'
+        run: npm install axios
 
       - name: Review Changes with OpenAI
         if: steps.check-pr.outputs.pr_found == 'true'
@@ -78,6 +95,8 @@ jobs:
             6. Testing considerations
             7. Documentation needs
 
+            Provide specific action points. Do not include basic comments like ensuring testing is conducted.
+
             Changes to review:
             ${process.env.DIFF_FILES}
 
@@ -87,55 +106,132 @@ jobs:
             Please provide specific, actionable feedback for each concern found.`;
 
             try {
-              const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-                model: "gpt-4",
+              console.log('Making request to OpenAI API...');
+              
+              // Add delay to respect rate limits
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
+              const apiUrl = 'https://api.openai.com/v1/chat/completions';
+              console.log('API URL:', apiUrl);
+              
+              const headers = {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+              };
+              console.log('Headers configured (excluding auth token)');
+              
+              // Calculate approximate tokens in the prompt
+              const promptTokens = Math.ceil(prompt.length / 4);
+              console.log(`Estimated prompt tokens: ${promptTokens}`);
+              
+              // Adjust max_tokens based on prompt size to stay within limits
+              const max_tokens = Math.min(2000, 4096 - promptTokens);
+              
+              const payload = {
+                model: "gpt-3.5-turbo",
                 messages: [{
                   role: "user",
                   content: prompt
                 }],
                 temperature: 0.7,
-                max_tokens: 2000
-              }, {
-                headers: {
-                  'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                  'Content-Type': 'application/json'
-                }
+                max_tokens: 3000
+              };
+              console.log('Request payload prepared');
+
+              const response = await axios.post(apiUrl, payload, { headers });
+              console.log('Response received:', {
+                status: response.status,
+                statusText: response.statusText,
+                hasData: !!response.data
               });
               
+              if (!response.data || !response.data.choices || !response.data.choices[0]) {
+                throw new Error('Invalid response format from OpenAI API');
+              }
+
               const review = response.data.choices[0].message.content;
               
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: parseInt(process.env.PR_NUMBER),
-                body: `## Automated Code Review
+              console.log('Creating PR comment...');
+              const prNumber = process.env.PR_NUMBER;
+              if (!prNumber) {
+                throw new Error('PR number not found in environment variables');
+              }
+              
+              console.log(`Attempting to create comment on PR #${prNumber}`);
+              try {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(prNumber),
+                  body: `## Automated Code Review
 
                 ${review}
                 
                 ---
-                This review was automatically generated using OpenAI GPT-4.`
-              });
+                This review was automatically generated using OpenAI GPT-3.5-turbo.`
+                });
+                console.log('PR comment created successfully');
+              } catch (commentError) {
+                console.error('Error creating PR comment:', {
+                  status: commentError.status,
+                  message: commentError.message,
+                  prNumber: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
+                });
+                throw new Error(`Failed to create PR comment: ${commentError.message}`);
+              }
+              
             } catch (error) {
-              console.error('Error during OpenAI review:', error);
-              core.setFailed('Failed to complete code review');
+              console.error('Error during OpenAI review:', {
+                message: error.message,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                data: error.response?.data,
+                config: {
+                  url: error.config?.url,
+                  method: error.config?.method,
+                  headers: { ...error.config?.headers, Authorization: '[REDACTED]' }
+                }
+              });
+              
+              let errorMessage = 'Failed to complete code review: ';
+              if (error.response?.data?.error?.message?.includes('exceeded your current quota')) {
+                errorMessage += 'OpenAI API quota exceeded. Please check your billing status at https://platform.openai.com/account/billing';
+              } else if (error.response?.status === 429) {
+                errorMessage += 'Rate limit exceeded. Please try again in a few minutes.';
+              } else {
+                errorMessage += error.message;
+              }
+              
+              core.setFailed(errorMessage);
             }
 
       - name: Send review notification
         if: steps.check-pr.outputs.pr_found == 'true'
         uses: dawidd6/action-send-mail@v3
+        env:
+          NOTIFICATION_EMAILS: ${{ secrets.NOTIFICATION_EMAILS }}
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "🔍 Code Review Completed for Feature Branch PR"
-          to: ${{ env.NOTIFICATION_EMAILS }}
+          to: ${{ secrets.NOTIFICATION_EMAILS }}
           from: GitHub Actions
-          body: |
-            A code review has been completed for the Pull Request on branch ${{ github.ref_name }}.
+          html_body: |
+            <h2>Code Review Completed</h2>
+            <p>A code review has been completed for the Pull Request on branch <code>${{ github.ref_name }}</code>.</p>
 
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref_name }}
-            PR Number: ${{ steps.check-pr.outputs.pr_number }}
+            <ul>
+              <li><strong>Repository:</strong> ${{ github.repository }}</li>
+              <li><strong>Branch:</strong> ${{ github.ref_name }}</li>
+              <li><strong>PR Number:</strong> ${{ steps.check-pr.outputs.pr_number }}</li>
+            </ul>
 
-            Please check the PR comments for the detailed review: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}
+            <p>Please check the PR comments for the detailed review: <a href="${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}">${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}</a></p>
+
+            <hr>
+            <p><em>This review was conducted using OpenAI GPT-3.5-turbo model.</em></p>
+            <p style="color: #666; font-size: 0.9em;"><strong>Disclaimer:</strong> This automated review is intended to supplement, not replace, human code review. While it can identify common issues and suggest improvements, it may miss context-specific concerns or produce false positives. Please ensure that a thorough human review is conducted before merging any changes.</p>
