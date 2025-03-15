@@ -95,6 +95,8 @@ jobs:
             6. Testing considerations
             7. Documentation needs
 
+            Provide specific action points. Do not include basic comments like ensuring testing is conducted.
+
             Changes to review:
             ${process.env.DIFF_FILES}
 
