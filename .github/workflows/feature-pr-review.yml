@@ -208,19 +208,28 @@ jobs:
       - name: Send review notification
         if: steps.check-pr.outputs.pr_found == 'true'
         uses: dawidd6/action-send-mail@v3
+        env:
+          NOTIFICATION_EMAILS: ${{ secrets.NOTIFICATION_EMAILS }}
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "🔍 Code Review Completed for Feature Branch PR"
-          to: ${{ env.NOTIFICATION_EMAILS }}
+          to: ${{ secrets.NOTIFICATION_EMAILS }}
           from: GitHub Actions
-          body: |
-            A code review has been completed for the Pull Request on branch ${{ github.ref_name }}.
+          html_body: |
+            <h2>Code Review Completed</h2>
+            <p>A code review has been completed for the Pull Request on branch <code>${{ github.ref_name }}</code>.</p>
 
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref_name }}
-            PR Number: ${{ steps.check-pr.outputs.pr_number }}
+            <ul>
+              <li><strong>Repository:</strong> ${{ github.repository }}</li>
+              <li><strong>Branch:</strong> ${{ github.ref_name }}</li>
+              <li><strong>PR Number:</strong> ${{ steps.check-pr.outputs.pr_number }}</li>
+            </ul>
 
-            Please check the PR comments for the detailed review: ${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}
+            <p>Please check the PR comments for the detailed review: <a href="${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}">${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.check-pr.outputs.pr_number }}</a></p>
+
+            <hr>
+            <p><em>This review was conducted using OpenAI GPT-3.5-turbo model.</em></p>
+            <p style="color: #666; font-size: 0.9em;"><strong>Disclaimer:</strong> This automated review is intended to supplement, not replace, human code review. While it can identify common issues and suggest improvements, it may miss context-specific concerns or produce false positives. Please ensure that a thorough human review is conducted before merging any changes.</p>
