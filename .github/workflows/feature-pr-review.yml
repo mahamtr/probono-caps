@@ -5,6 +5,12 @@ on:
     branches:
       - "feature/**"
 
+# Add permissions block at the workflow level
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   pr-review:
     runs-on: ubuntu-latest
