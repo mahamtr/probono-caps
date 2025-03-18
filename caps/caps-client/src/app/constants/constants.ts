@@ -142,17 +142,16 @@ export const INTERVENTION_OPTIONS = [
   'Other Intervention',
 ];
 
-export const PROGRAMS = [
-  'Otro',
-  'Glasswing',
-  'Club Rotario',
-  'World Vision',
-  'UNAH-VS',
-  'Red Inter Salud Mental',
-];
-
 export const APPOINTMENT_STATUSES = {
   SCHEDULED: 'Scheduled',
   CANCELED: 'Canceled',
   COMPLETED: 'Completed',
 };
+
+export const CONFIG_TYPES = {
+  MAJOR: 'Major',
+  PROGRAM: 'Program',
+  DIAGNOSIS: 'Diagnosis',
+};
+
+// Removed hardcoded PROGRAMS constant.

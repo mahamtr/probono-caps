@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
-import { PROGRAMS, APPOINTMENT_STATUSES } from 'src/app/constants/constants';
+import { CONFIG_TYPES, APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 import { AuthService } from 'src/app/shared/auth.service';
+import { AdminService } from 'src/app/admin/admin.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -29,11 +30,9 @@ export class AppointmentListComponent {
   dataSource = new MatTableDataSource();
 
   statuses = Object.values(APPOINTMENT_STATUSES);
-  rooms = ['Room 1', 'Room 2', 'Room 3'];
-  programs = PROGRAMS;
+  programs: string[] = [];
 
   selectedStatus = '';
-  selectedRoom = '';
   selectedProgram = '';
   canDeleteAppointment = false;
 
@@ -43,9 +42,14 @@ export class AppointmentListComponent {
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private adminService: AdminService // Added AdminService
   ) {
     this.canDeleteAppointment = this.authService.canDeleteAppointment();
+
+    this.adminService.fetchConfigs().subscribe((configs) => {
+      this.programs = configs.filter(config => config.type === CONFIG_TYPES.PROGRAM).map(config => config.name);
+    });
   }
 
   ngOnInit() {
@@ -64,14 +68,12 @@ export class AppointmentListComponent {
     this.dataSource.filterPredicate = (data: any, filter: string) => {
       const filters = JSON.parse(filter);
       const statusMatch = !filters.status || data.status === filters.status;
-      const roomMatch = !filters.room || data.location === filters.room;
       const programMatch = !filters.program || data.program === filters.program;
-      return statusMatch && roomMatch && programMatch;
+      return statusMatch && programMatch;
     };
 
     const filter = {
       status: this.selectedStatus,
-      room: this.selectedRoom,
       program: this.selectedProgram,
     };
 
@@ -84,7 +86,6 @@ export class AppointmentListComponent {
 
   resetFilters() {
     this.selectedStatus = '';
-    this.selectedRoom = '';
     this.selectedProgram = '';
     this.applyFilters();
   }

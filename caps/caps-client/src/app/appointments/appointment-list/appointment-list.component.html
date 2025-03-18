@@ -25,18 +25,6 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Room</mat-label>
-      <mat-select
-        [(ngModel)]="selectedRoom"
-        (selectionChange)="onFilterChange()"
-      >
-        <mat-option *ngFor="let room of rooms" [value]="room">
-          {{ room }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
       <mat-label>Program</mat-label>
       <mat-select
         [(ngModel)]="selectedProgram"

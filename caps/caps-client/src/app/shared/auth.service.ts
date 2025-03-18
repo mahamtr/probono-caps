@@ -44,17 +44,14 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return false;
     return this.userRole === AgentRole.Admin;
   }
 
   isProfessional(): boolean {
-    return true;
     return this.userRole === AgentRole.Professional;
   }
 
   isIntern(): boolean {
-    return false;
     return this.userRole === AgentRole.Intern;
   }
 

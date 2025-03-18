@@ -3,10 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../patient.service';
-import { PROGRAMS } from 'src/app/constants/constants';
+import { CONFIG_TYPES } from 'src/app/constants/constants';
 import { DatePipe } from '@angular/common';
 import { formatDateToInput } from 'src/app/shared/utils/utils';
 import { AuthService } from 'src/app/shared/auth.service';
+import { AdminService } from 'src/app/admin/admin.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -19,9 +20,10 @@ export class PatientFormComponent {
   patientId: string | null = null;
   today = new Date();
   showGuardianSection = false;
-  programs = PROGRAMS;
+  programs: string[] = [];
   showStudentSection = false;
   canEditPatient = false;
+  majors: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +31,8 @@ export class PatientFormComponent {
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private adminService: AdminService // Added AdminService
   ) {
     this.patientForm = this.fb.group({
       id: [''],
@@ -81,6 +84,11 @@ export class PatientFormComponent {
     if (!this.authService.canEnablePatient()) {
       this.patientForm.get('status')?.disable();
     }
+
+    this.adminService.fetchConfigs().subscribe((configs) => {
+      this.majors = configs.filter(config => config.type === CONFIG_TYPES.MAJOR).map(config => config.name);
+      this.programs = configs.filter(config => config.type === CONFIG_TYPES.PROGRAM).map(config => config.name);
+    });
   }
 
   ngOnInit(): void {
