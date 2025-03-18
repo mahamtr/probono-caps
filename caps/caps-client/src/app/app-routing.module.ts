@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SideNavComponent } from './shared/components/side-nav/side-nav.component';
 import { LoginComponent } from './shared/components/login/login.component';
+import { AdminGuard } from './admin/admin.guard';
+
 
 const routes: Routes = [
   {
@@ -29,6 +31,12 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: () =>
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./admin/admin.module').then((m) => m.AdminModule),
+        canActivate: [AdminGuard],
       },
       {
         path: '',

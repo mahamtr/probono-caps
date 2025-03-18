@@ -83,6 +83,18 @@
           </span>
         </a>
       </div>
+      <div
+        routerLink="/admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+      >
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">settings</mat-icon>
+            <span *ngIf="!isCollapsed">Admin Settings</span>
+          </span>
+        </a>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

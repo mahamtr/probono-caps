@@ -1,5 +1,6 @@
 using caps.Features.Agent.Model;
 using caps.Features.Appointment.Model;
+using caps.Features.Config.Model;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.EntityFrameworkCore.Extensions;
@@ -11,10 +12,11 @@ public class CapsDbContext : DbContext
     public DbSet<Agent> Agents { get; init; }
     public DbSet<Appointment> Appointments { get; init; }
     public DbSet<Patient> Patients { get; init; }
-    
+    public DbSet<Config> Configs { get; set; }
+
     private readonly IMongoClient _mongoClient;
 
-    
+
     public CapsDbContext(DbContextOptions<CapsDbContext> options, IMongoClient mongoClient)
         : base(options)
     {
@@ -34,5 +36,5 @@ public class CapsDbContext : DbContext
         modelBuilder.Entity<Appointment>().ToCollection("Appointments");
         modelBuilder.Entity<Patient>().ToCollection("Patients");
     }
-    
+
 }

@@ -97,7 +97,9 @@
         >
           <mat-form-field appearance="outline">
             <mat-label>Major</mat-label>
-            <input matInput formControlName="major" required />
+            <mat-select formControlName="major" required>
+              <mat-option *ngFor="let major of majors" [value]="major">{{ major }}</mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
