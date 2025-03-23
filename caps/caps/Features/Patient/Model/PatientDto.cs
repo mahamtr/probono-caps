@@ -44,4 +44,7 @@ public class PatientDto
     public string? Gender { get; set; }
 
     public string? Status { get; set; }
+
+    public string? Notes { get; set; }
+    public string? Profession { get; set; }
 }

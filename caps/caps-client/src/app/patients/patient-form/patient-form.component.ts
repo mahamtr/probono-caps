@@ -65,13 +65,15 @@ export class PatientFormComponent {
         guardianShipName: [''],
         guardianShipPhone: [''],
       }),
-    });
+      notes: [''],
+      profession: [''],
+      });
 
-    this.patientForm.get('dateOfBirth')?.valueChanges.subscribe((dob) => {
+    this.patientForm.get('dateOfBirth')?.valueChanges.subscribe((dob: string) => {
       if (dob) this.calculateAge(dob);
     });
 
-    this.patientForm.get('program')?.valueChanges.subscribe((program) => {
+    this.patientForm.get('program')?.valueChanges.subscribe((program: string) => {
       this.toggleStudentSection(program);
     });
 
@@ -85,9 +87,9 @@ export class PatientFormComponent {
       this.patientForm.get('status')?.disable();
     }
 
-    this.adminService.fetchConfigs().subscribe((configs) => {
-      this.majors = configs.filter(config => config.type === CONFIG_TYPES.MAJOR).map(config => config.name);
-      this.programs = configs.filter(config => config.type === CONFIG_TYPES.PROGRAM).map(config => config.name);
+    this.adminService.fetchConfigs().subscribe((configs: any) => {
+      this.majors = configs.filter((config: any) => config.type === CONFIG_TYPES.MAJOR).map((config: any) => config.name);
+      this.programs = configs.filter((config: any) => config.type === CONFIG_TYPES.PROGRAM).map((config: any) => config.name);
     });
   }
 
@@ -100,7 +102,7 @@ export class PatientFormComponent {
   }
 
   loadPatientData() {
-    this.patientService.getPatientById(this.patientId!).subscribe((patient) => {
+    this.patientService.getPatientById(this.patientId!).subscribe((patient: any) => {
       this.patientForm.patchValue(patient);
 
       const formattedDate = formatDateToInput(patient.dateOfBirth);
@@ -113,7 +115,7 @@ export class PatientFormComponent {
     if (this.isEditMode) {
       this.patientService
         .updatePatient(this.patientForm.value)
-        .subscribe((res) => {
+        .subscribe((res: any) => {
           if (res) {
             this.snackBar.open('Patient updated successfully', 'Close', {
               duration: 3000,
@@ -124,7 +126,7 @@ export class PatientFormComponent {
     } else {
       this.patientService
         .createPatient(this.patientForm.value)
-        .subscribe((res) => {
+        .subscribe((res: any) => {
           if (res) {
             this.snackBar.open('Patient created successfully', 'Close', {
               duration: 3000,

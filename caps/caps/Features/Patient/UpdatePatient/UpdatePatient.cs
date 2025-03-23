@@ -19,6 +19,9 @@ public class UpdatePatient(CapsDbContext dbContext, IMapper mapper) : Endpoint<P
             var recordInDb = dbContext.Patients.FirstOrDefault(a => a.Id.ToString() == req.Id);
             if (recordInDb == null) throw new BadHttpRequestException("Patient not found");
             mapper.Map(req, recordInDb);
+            recordInDb.Notes = req.Notes;
+            recordInDb.Profession = req.Profession;
+            recordInDb.EducationLevel = req.EducationLevel;
             await SendAsync(await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);
         }
         catch (Exception e)
