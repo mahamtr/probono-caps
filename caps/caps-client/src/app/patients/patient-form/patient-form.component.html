@@ -181,6 +181,27 @@
           </mat-form-field>
         </div>
 
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Profession</mat-label>
+            <input matInput formControlName="profession" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Education Level</mat-label>
+            <input matInput formControlName="educationLevel" />
+          </mat-form-field>
+        </div>
+
         <div class="buttons">
           <button mat-button color="warn" (click)="onCancel()">Cancel</button>
           <button

@@ -17,6 +17,9 @@ public class CreatePatient(CapsDbContext dbContext, IMapper mapper) : Endpoint<P
         {
             var newAgent = new Model.Patient();
             mapper.Map(req, newAgent);
+            newAgent.Notes = req.Notes;
+            newAgent.Profession = req.Profession;
+            newAgent.EducationLevel = req.EducationLevel;
             dbContext.Patients.Add(newAgent);
             await SendAsync(await dbContext.SaveChangesAsync(ct) > 0, cancellation: ct);
         }

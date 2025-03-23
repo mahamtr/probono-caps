@@ -49,6 +49,10 @@ public class Patient
     public string? Gender { get; set; }
 
     public string? Status { get; set; }
+
+    public string? Notes { get; set; }
+    public string? Profession { get; set; }
+  
 }
 
 public class GuardianShipSection
