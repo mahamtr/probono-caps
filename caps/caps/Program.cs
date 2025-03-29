@@ -2,7 +2,6 @@ using caps.Configuration;
 using caps.Features.Agent.Service;
 using caps.Features.ScheduledJobs;
 using caps.Infrastructure.Blob;
-using caps.Infrastructure.Data;
 using caps.Middleware;
 using DotNetEnv;
 using FastEndpoints;
@@ -42,7 +41,6 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
-builder.Services.AddTransient<DatabaseSeeder>();
 
 var app = builder.Build();
 

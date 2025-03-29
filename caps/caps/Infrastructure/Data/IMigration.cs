@@ -5,6 +5,6 @@ namespace caps.Infrastructure.Data;
 public interface IMigration
 {
     int MigrationId { get; }
-    string Name { get; }
+    string Description { get; }
     Task Up(IMongoDatabase database);
 }

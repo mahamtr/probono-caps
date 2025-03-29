@@ -7,7 +7,7 @@ namespace caps.Infrastructure.Data.Migrations;
 public class AddAdminUserMigration : IMigration
 {
     public int MigrationId => 1;
-    public string Name => "Creating_Admin_User";
+    public string Description => "Creating_Admin_User";
 
     public async Task Up(IMongoDatabase database)
     {

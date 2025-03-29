@@ -32,7 +32,7 @@ public class MigrationRunner
             if (appliedMigrationIds.Contains(migration.MigrationId))
                 continue;
 
-            Console.WriteLine($"Applying migration: {migration.MigrationId} - {migration.Name}");
+            Console.WriteLine($"Applying migration: {migration.MigrationId} - {migration.GetType().Name}");
 
             try
             {
@@ -42,7 +42,8 @@ public class MigrationRunner
                 {
                     { "MigrationId", migration.MigrationId },
                     { "AppliedAt", DateTime.UtcNow },
-                    { "Name", migration.Name }
+                    { "Name", migration.GetType().Name }, 
+                    { "Description", migration.Description }
                 };
 
                 await _migrationsCollection.InsertOneAsync(migrationDocument);
