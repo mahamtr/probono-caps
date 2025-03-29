@@ -13,7 +13,7 @@ public class PatientDto
     public string LastName { get; set; }
 
     [Required]
-    public double IDNumber { get; set; }
+    public string IDNumber { get; set; }
 
     [Required]
     public DateTime DateOfBirth { get; set; }
