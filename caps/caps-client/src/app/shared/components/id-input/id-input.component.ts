@@ -40,20 +40,27 @@ export class IdInputComponent implements ControlValueAccessor {
   onInputChange(event: any): void {
     const inputValue = event.target.value;
 
-    this.rawValue = inputValue.replace(/\D/g, '').slice(0, 13);
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+    this.rawValue = numericValue.slice(0, 13); // Limit to 13 characters
 
     this.formattedValue = this.formatIdNumber(this.rawValue);
 
-    this.onChange(this.rawValue);
+    event.target.value = this.formattedValue;
+
+    if (this.rawValue.length !== 13) {
+        this.onChange(''); // Set invalid value
+    } else {
+        this.onChange(this.rawValue); // Set valid value
+    }
   }
 
   formatIdNumber(value: string): string {
     if (value.length <= 4) {
-      return value;
+        return value;
     } else if (value.length <= 8) {
-      return `${value.slice(0, 4)}-${value.slice(4)}`;
+        return `${value.slice(0, 4)}-${value.slice(4)}`;
     } else {
-      return `${value.slice(0, 4)}-${value.slice(4, 8)}-${value.slice(8, 12)}`;
+        return `${value.slice(0, 4)}-${value.slice(4, 8)}-${value.slice(8)}`; // Correctly handle the last part
     }
   }
 

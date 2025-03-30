@@ -16,7 +16,7 @@ public class Patient
     public string LastName { get; set; }
 
     [Required]
-    public double IDNumber { get; set; }
+    public string IDNumber { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
 

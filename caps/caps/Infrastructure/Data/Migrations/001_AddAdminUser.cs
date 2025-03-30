@@ -2,28 +2,25 @@ using caps.Features.Agent.Model;
 using caps.Features.Agent.Service;
 using MongoDB.Driver;
 
-namespace caps.Infrastructure.Data;
+namespace caps.Infrastructure.Data.Migrations;
 
-public class DatabaseSeeder(CapsDbContext capsDbContext, IHashService hashService)
+public class AddAdminUserMigration : IMigration
 {
-    public async Task SeedAsync()
-    {
-        await SeedAdminUser();
-    }
+    public int MigrationId => 1;
+    public string Description => "Creating_Admin_User";
 
-    private async Task SeedAdminUser()
+    public async Task Up(IMongoDatabase database)
     {
-        var existingAdmin = capsDbContext.Agents.FirstOrDefault(a => a.Email == "admin@caps.com");
+        var agentsCollection = database.GetCollection<Agent>("Agents");
 
+        var existingAdmin = await agentsCollection.Find(a => a.Email == "admin@caps.com").FirstOrDefaultAsync();
         if (existingAdmin != null)
         {
             Console.WriteLine("Admin user already exists. Skipping creation.");
             return;
         }
 
-        var adminPassword = Environment.GetEnvironmentVariable("ADMIN_DEFAULT_PASSWORD") ?? throw new InvalidOperationException("ADMIN_DEFAULT_PASSWORD environment variable is not set");
-        var hashedPassword = hashService.GeneratePasswordHash(adminPassword);
-        Console.WriteLine($"Generated admin password hash: {hashedPassword}");
+        var adminPasswordHash = Environment.GetEnvironmentVariable("ADMIN_DEFAULT_PASSWORD_HASH") ?? throw new InvalidOperationException("ADMIN_DEFAULT_PASSWORD_HASH environment variable is not set");
 
         var admin = new Agent
         {
@@ -41,12 +38,11 @@ public class DatabaseSeeder(CapsDbContext capsDbContext, IHashService hashServic
                 State = "Francisco Morazán"
             },
             Biography = "System Administrator",
-            Password = hashedPassword,
+            Password = adminPasswordHash,
             IsActive = true
         };
 
-        capsDbContext.Agents.Add(admin);
-        await capsDbContext.SaveChangesAsync();
+        await agentsCollection.InsertOneAsync(admin);
         Console.WriteLine("Admin user created successfully.");
     }
 }

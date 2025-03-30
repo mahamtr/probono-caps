@@ -179,7 +179,7 @@ export class AppointmentCreateComponent {
       const newPatientData = {
         firstName: newPatientFirstName,
         lastName: newPatientLastName,
-        idNumber: Number(newPatientIDNumber),
+        idNumber: newPatientIDNumber
       };
       this.appointmentService
         .createAppointment({

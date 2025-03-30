@@ -2,7 +2,7 @@ export interface Patient {
   id: string;
   firstName: string;
   lastName: string;
-  idNumber: number;
+  idNumber: string;
   dateOfBirth: string;
   civilStatus?: string;
   educationLevel?: string;

@@ -1,7 +1,7 @@
+using caps.Configuration;
 using caps.Features.Agent.Service;
 using caps.Features.ScheduledJobs;
 using caps.Infrastructure.Blob;
-using caps.Infrastructure.Data;
 using caps.Middleware;
 using DotNetEnv;
 using FastEndpoints;
@@ -9,8 +9,6 @@ using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
@@ -36,29 +34,17 @@ builder.Services
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddSingleton<IMongoClient>(_ => new MongoClient(Environment.GetEnvironmentVariable("MONGO_DATABASE_URL")));
-
-builder.Services.AddScoped<CapsDbContext>(provider =>
-{
-    var client = provider.GetRequiredService<IMongoClient>();
-    var options = new DbContextOptionsBuilder<CapsDbContext>().Options;
-    return new CapsDbContext(options, client);
-});
+builder.ConfigureMongoDb();
 
 builder.Services.AddHangfire(config => config.UseMemoryStorage());
 builder.Services.AddHangfireServer();
 
 builder.Services.AddTransient<IBlobStorageService, BlobStorageService>();
 builder.Services.AddTransient<IHashService, HashService>();
-builder.Services.AddTransient<DatabaseSeeder>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-    await seeder.SeedAsync();
-}
+await app.Services.ApplyMigrationsAsync();
 
 if (!app.Environment.IsDevelopment())
 {

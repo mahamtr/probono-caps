@@ -79,27 +79,6 @@ export class AgentEditComponent {
     });
   }
 
-  formatIdNumber(): void {
-    const control = this.agentForm.get('idNumber');
-    if (!control) return;
-
-    let rawValue = control.value.replace(/\D/g, '');
-
-    if (rawValue.length > 13) {
-      rawValue = rawValue.substring(0, 13);
-    }
-
-    let formattedValue = rawValue;
-    if (rawValue.length > 4) {
-      formattedValue = rawValue.slice(0, 4) + '-' + rawValue.slice(4);
-    }
-    if (rawValue.length > 8) {
-      formattedValue = formattedValue.slice(0, 9) + '-' + rawValue.slice(8);
-    }
-
-    control.setValue(formattedValue, { emitEvent: false });
-  }
-
   onSubmit(): void {
     if (this.agentForm.valid) {
       const updatedAgent = this.agentForm.getRawValue();
