@@ -24,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { BadRequestInterceptor } from './bad-request.interceptor';
 
 var modules = [
   MatIconModule,
@@ -65,6 +66,7 @@ var modules = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BadRequestInterceptor, multi: true },
   ],
 })
 export class SharedModule {}
