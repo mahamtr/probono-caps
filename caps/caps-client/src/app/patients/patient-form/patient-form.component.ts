@@ -44,7 +44,7 @@ export class PatientFormComponent {
       civilStatus: [''],
       educationLevel: [''],
       contactInformation: this.fb.group({
-        phoneNumber: [''],
+        phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
         city: [''],
         state: [''],
         address: [''],

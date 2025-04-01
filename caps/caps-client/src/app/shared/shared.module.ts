@@ -25,6 +25,7 @@ import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-ov
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { BadRequestInterceptor } from './bad-request.interceptor';
+import { PhoneInputComponent } from './components/phone-input/phone-input.component';
 
 var modules = [
   MatIconModule,
@@ -54,6 +55,7 @@ var modules = [
     LoginComponent,
     StateInputComponent,
     IdInputComponent,
+    PhoneInputComponent,
     SpinnerOverlayComponent,
     CalendarComponent,
   ],
@@ -61,6 +63,7 @@ var modules = [
   exports: [
     StateInputComponent,
     IdInputComponent,
+    PhoneInputComponent,
     SpinnerOverlayComponent,
     CalendarComponent,
   ],

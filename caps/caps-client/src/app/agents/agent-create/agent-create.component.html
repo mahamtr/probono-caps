@@ -46,10 +46,9 @@
       <h3 class="section-title">Contact Information</h3>
 
       <div class="row" formGroupName="contactInformation">
-        <mat-form-field appearance="outline">
-          <mat-label>Phone Number</mat-label>
-          <input matInput formControlName="phoneNumber" required />
-        </mat-form-field>
+       
+        <app-phone-input formControlName="phoneNumber"></app-phone-input>
+
 
         <mat-form-field appearance="outline">
           <mat-label>City</mat-label>
