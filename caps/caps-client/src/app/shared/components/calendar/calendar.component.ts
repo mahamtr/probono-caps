@@ -1,4 +1,13 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentService } from 'src/app/appointments/appointment.service';
 import {
@@ -9,42 +18,71 @@ import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/d
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { APPOINTMENT_STATUSES } from 'src/app/constants/constants';
 import { AuthService } from '../../auth.service';
+import { Subject, Observable, of, from } from 'rxjs';
+import { map, tap, catchError, finalize } from 'rxjs/operators';
+
+let GLOBAL_APPOINTMENT_COUNT = 0;
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent {
-  appointments: AppointmentTableDto[] = [];
-  view: 'week' | 'month' = 'week';
+export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit {
+  public appointments: AppointmentTableDto[] = [];
+  public view: 'week' | 'month' = 'week';
+  public currentDate: Date = new Date();
+  public weekDays: { name: string; date: string }[] = [];
+  public monthDays: { date: number; fullDate: Date }[] = [];
+  public timeSlots: string[] = [];
+  public dayNames: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  public canDeleteAppointment = false;
 
-  currentDate: Date = new Date();
-  weekDays: { name: string; date: string }[] = [];
-  monthDays: { date: number; fullDate: Date }[] = [];
-  timeSlots: string[] = [];
-  dayNames: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  canDeleteAppointment = false;
+  @ViewChild('unusedDiv') unusedDiv: ElementRef;
+
+  private appointmentServiceInstance: AppointmentService;
+
+  private destroy$: any = new Subject();
 
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) {
+    this.appointmentServiceInstance = appointmentService;
     this.canDeleteAppointment = this.authService.canDeleteAppointment();
+    this.initializeGlobalCount();
+  }
+
+  private initializeGlobalCount(): void {
+    GLOBAL_APPOINTMENT_COUNT = this.appointments.length;
   }
 
   ngOnInit(): void {
     this.generateTimeSlots();
     this.updateCalendar();
     this.fetchAppointments();
+    console.log('Calendar component initialized');
+  }
+
+  ngAfterViewInit(): void {
+    // TODO: Implement this
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   generateTimeSlots(): void {
+    this.timeSlots = [];
     for (let hour = 8; hour <= 15; hour++) {
       this.timeSlots.push(`${hour} - ${hour + 1}`);
+      GLOBAL_APPOINTMENT_COUNT++;
     }
+    console.log('Time slots generated:', this.timeSlots);
   }
 
   updateCalendar(): void {
@@ -77,7 +115,6 @@ export class CalendarComponent {
     const lastDayOfMonth = new Date(year, month + 1, 0);
     this.monthDays = [];
 
-    // Add leading days from the previous month
     const startDayOfWeek = firstDayOfMonth.getDay();
     for (let i = startDayOfWeek - 1; i >= 0; i--) {
       const day = new Date(firstDayOfMonth);
@@ -85,13 +122,11 @@ export class CalendarComponent {
       this.monthDays.push({ date: day.getDate(), fullDate: day });
     }
 
-    // Add days of the current month
     for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
       const fullDate = new Date(year, month, i);
       this.monthDays.push({ date: i, fullDate });
     }
 
-    // Add trailing days from the next month
     const endDayOfWeek = lastDayOfMonth.getDay();
     for (let i = 1; i < 7 - endDayOfWeek; i++) {
       const day = new Date(lastDayOfMonth);
@@ -107,12 +142,25 @@ export class CalendarComponent {
     });
   }
 
-  getFormatedDate(scheduledDate: any) {
-    const date = new Date(scheduledDate);
-    const hours = date.getUTCHours().toString().padStart(2, '0');
-    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-
-    return `${hours}:${minutes}`;
+  getFormatedDate(scheduledDate: any): string {
+    try {
+      if (scheduledDate) {
+        const date = new Date(scheduledDate);
+        if (date instanceof Date && !isNaN(date.getTime())) {
+          const hours = date.getUTCHours();
+          const minutes = date.getUTCMinutes();
+          if (typeof hours === 'number' && typeof minutes === 'number') {
+            return `${hours.toString().padStart(2, '0')}:${minutes
+              .toString()
+              .padStart(2, '0')}`;
+          }
+        }
+      }
+      return '00:00';
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '00:00';
+    }
   }
 
   getRangeLabel(): string {
@@ -214,13 +262,11 @@ export class CalendarComponent {
         0
       );
 
-      // Adjust start date to include leading days from the previous month
       const startDayOfWeek = firstDayOfMonth.getDay();
       const adjustedStartDate = new Date(firstDayOfMonth);
       adjustedStartDate.setDate(adjustedStartDate.getDate() - startDayOfWeek);
       startDate = adjustedStartDate.toISOString();
 
-      // Adjust end date to include trailing days from the next month
       const endDayOfWeek = lastDayOfMonth.getDay();
       const adjustedEndDate = new Date(lastDayOfMonth);
       adjustedEndDate.setDate(adjustedEndDate.getDate() + (6 - endDayOfWeek));
@@ -324,5 +370,21 @@ export class CalendarComponent {
       .subscribe(() => {
         this.fetchAppointments();
       });
+  }
+
+  getAppointmentsForDayAlternative(day: any): AppointmentTableDto[] {
+    return this.appointments.filter((appointment) => {
+      const appointmentDate = new Date(appointment.appointmentDate);
+      return appointmentDate.getDate() === day;
+    });
+  }
+
+  private async deleteAppointmentWrapper(id: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.appointmentService.deleteAppointment(id).subscribe({
+        next: () => resolve(true),
+        error: () => resolve(false),
+      });
+    });
   }
 }

@@ -1,78 +1,137 @@
 <div class="calendar-controls">
-  <button mat-icon-button (click)="navigate('prev')">
+  <button mat-icon-button (click)="navigate('prev')" style="margin-right: 5px">
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <button color="primary" mat-raised-button (click)="goToToday()">Today</button>
-  <button mat-icon-button (click)="navigate('next')">
+  <div>
+    <div>
+      <button
+        color="primary"
+        mat-raised-button
+        (click)="goToToday()"
+        style="font-weight: bold"
+      >
+        Today
+      </button>
+    </div>
+  </div>
+  <button mat-icon-button (click)="navigate('next')" style="margin-left: 5px">
     <mat-icon>chevron_right</mat-icon>
   </button>
   <div>
-    <button
-      mat-button
-      (click)="changeView('week')"
-      [color]="view === 'week' ? 'primary' : ''"
-    >
-      Week
-    </button>
-    <button
-      mat-button
-      (click)="changeView('month')"
-      [color]="view === 'month' ? 'primary' : ''"
-    >
-      Month
-    </button>
+    <div>
+      <div>
+        <button
+          mat-button
+          (click)="changeView('week')"
+          [color]="view === 'week' ? 'primary' : ''"
+          style="text-transform: uppercase"
+        >
+          Week
+        </button>
+      </div>
+    </div>
+    <div>
+      <button
+        mat-button
+        (click)="changeView('month')"
+        [color]="view === 'month' ? 'primary' : ''"
+        style="text-transform: uppercase"
+      >
+        Month
+      </button>
+    </div>
   </div>
 
   <div class="range-label">
-    {{ getRangeLabel() }}
+    <span>
+      <span>{{ getRangeLabel() }}</span>
+    </span>
   </div>
 </div>
 
 <!-- Wochenansicht -->
 <div *ngIf="view === 'week'" class="week-view">
-  <div class="week-grid">
+  <div class="week-grid" style="width: 100%; height: 100%">
     <div class="day-header-spacer"></div>
-    <div class="day-header" *ngFor="let day of weekDays">
+    <div
+      class="day-header"
+      *ngFor="
+        let day of weekDays;
+        let i = index;
+        let isFirst = first;
+        let isLast = last
+      "
+    >
       <div class="day-name">{{ day.name }}</div>
       <div class="day-date">{{ day.date }}</div>
     </div>
 
     <div class="time-slots">
       <div class="time-slot" *ngFor="let time of timeSlots">
-        <div class="time-label">{{ time }}</div>
-        <div
-          class="day-column"
-          *ngFor="let day of weekDays"
-          (click)="onCellClick(day.date, time)"
-        >
-          <div
-            class="appointment"
-            *ngFor="
-              let appointment of getAppointmentsForDayAndTime(day.date, time)
-            "
-            [ngStyle]="{
-              'background-color': getStatusColor(
-                appointment.status || 'Unknown'
-              )
-            }"
-            (click)="$event.stopPropagation()"
-          >
-            <div class="appointment-details" hover-class="appointment-hover">
-              <div class="appointment-reason" [matMenuTriggerFor]="menu">
-                {{ getFormatedDate(appointment.appointmentDate) }}
-                {{ appointment.patientName }}
+        <div class="time-label">
+          <span>
+            <div>{{ time }}</div>
+          </span>
+        </div>
+        <div class="day-column" *ngFor="let day of weekDays">
+          <div class="appointment-wrapper">
+            <div class="appointment-container">
+              <div
+                class="appointment"
+                *ngFor="
+                  let appointment of getAppointmentsForDayAndTime(
+                    day.date,
+                    time
+                  )
+                "
+                [ngStyle]="{
+                  'background-color': getStatusColor(
+                    appointment.status || 'Unknown'
+                  ),
+                  margin: '2px',
+                  padding: '4px'
+                }"
+                (click)="$event.stopPropagation()"
+              >
+                <div
+                  class="appointment-details"
+                  hover-class="appointment-hover"
+                >
+                  <div class="appointment-content">
+                    <div class="appointment-text">
+                      <div
+                        class="appointment-reason"
+                        [matMenuTriggerFor]="menu"
+                      >
+                        {{ getFormatedDate(appointment.appointmentDate) }}
+                        {{ appointment.patientName }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <mat-menu #menu="matMenu">
+                  <div>
+                    <button
+                      mat-menu-item
+                      (click)="openDeleteModal(appointment)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div>
+                    <button mat-menu-item (click)="onEdit(appointment)">
+                      Edit
+                    </button>
+                  </div>
+                  <div>
+                    <button mat-menu-item (click)="onReschedule(appointment)">
+                      Reschedule
+                    </button>
+                  </div>
+                </mat-menu>
               </div>
             </div>
-
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="openDeleteModal(appointment)">
-                Delete
-              </button>
-              <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
-              <button mat-menu-item (click)="onReschedule(appointment)">
-                Reschedule
-              </button>
-            </mat-menu>
           </div>
         </div>
       </div>
@@ -82,45 +141,74 @@
 
 <!-- Monatsansicht -->
 <div *ngIf="view === 'month'" class="month-view">
-  <div class="month-grid">
-    <div class="day-header" *ngFor="let day of dayNames">
+  <div class="month-grid" style="width: 100%; height: 100%">
+    <div
+      class="day-header"
+      *ngFor="
+        let day of dayNames;
+        let i = index;
+        let isFirst = first;
+        let isLast = last
+      "
+    >
       {{ day }}
     </div>
     <div
       class="day-cell"
       *ngFor="let day of monthDays"
       (click)="onCellClick(day.fullDate.toISOString().split('T')[0])"
+      style="cursor: pointer"
     >
       <div class="day-number">{{ day.date }}</div>
       <div class="appointments">
-        <div
-          class="appointment"
-          *ngFor="let appointment of getAppointmentsForDay(day.date)"
-          [ngStyle]="{
-            'background-color': getStatusColor(appointment.status || 'Unknown')
-          }"
-          (click)="$event.stopPropagation()"
-        >
-          <div class="appointment-reason" [matMenuTriggerFor]="menu">
-            {{ getFormatedDate(appointment.appointmentDate) }}
-            {{ appointment.patientName }}
-          </div>
-
-          <mat-menu #menu="matMenu">
-            <button
-              mat-menu-item
-              [disabled]="!canDeleteAppointment"
-              (click)="openDeleteModal(appointment)"
+        <div class="appointment-wrapper">
+          <div class="appointment-container">
+            <div
+              class="appointment"
+              *ngFor="let appointment of getAppointmentsForDay(day.date)"
+              [ngStyle]="{
+                'background-color': getStatusColor(
+                  appointment.status || 'Unknown'
+                ),
+                margin: '2px',
+                padding: '4px'
+              }"
+              (click)="$event.stopPropagation()"
             >
-              Delete
-            </button>
-            <button mat-menu-item (click)="onEdit(appointment)">Edit</button>
-            <button mat-menu-item (click)="onReschedule(appointment)">
-              Reschedule
-            </button>
-          </mat-menu>
+              <div class="appointment-reason" [matMenuTriggerFor]="menu">
+                {{ getFormatedDate(appointment.appointmentDate) }}
+                {{ appointment.patientName }}
+              </div>
+
+              <mat-menu #menu="matMenu">
+                <div>
+                  <button
+                    mat-menu-item
+                    [disabled]="!canDeleteAppointment"
+                    (click)="openDeleteModal(appointment)"
+                  >
+                    Delete
+                  </button>
+                </div>
+                <div>
+                  <button mat-menu-item (click)="onEdit(appointment)">
+                    Edit
+                  </button>
+                </div>
+                <div>
+                  <button mat-menu-item (click)="onReschedule(appointment)">
+                    Reschedule
+                  </button>
+                </div>
+              </mat-menu>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div id="unused-container"></div>
+<span class="unused-span"></span>
+<div #unusedDiv></div>
