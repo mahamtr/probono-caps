@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AgentService } from '../agent/agent.service';
 import { matchPasswordsValidator } from 'src/app/shared/customValidators/customValidators';
 import {
+  AGENT_PRIVILEGES,
   HONDURAS_DEPARTMENTS,
   StrongPasswordRegx,
 } from 'src/app/constants/constants';
@@ -22,6 +23,7 @@ export class AgentEditComponent {
   agentForm!: FormGroup;
   hasSecurityAccess: boolean = false;
   canEditAgent: boolean = false;
+  AGENT_PRIVILEGES = AGENT_PRIVILEGES;
 
   constructor(
     private fb: FormBuilder,
