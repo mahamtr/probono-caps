@@ -1,6 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -13,7 +14,9 @@ export class SideNavComponent {
   isMobile = true;
   isCollapsed = true;
 
-  constructor(private observer: BreakpointObserver) {}
+  constructor(private observer: BreakpointObserver, 
+    private authService: AuthService
+  ) {}
   ngOnInit(): void {
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
       if (screenSize.matches) {
@@ -32,5 +35,9 @@ export class SideNavComponent {
       this.sidenav.open();
       this.isCollapsed = !this.isCollapsed;
     }
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

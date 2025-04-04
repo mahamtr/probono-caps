@@ -95,6 +95,14 @@
           </span>
         </a>
       </div>
+      <div (click)="logout()">
+        <a mat-list-item>
+          <span class="entry">
+            <mat-icon class="row">logout</mat-icon>
+            <span *ngIf="!isCollapsed">Logout</span>
+          </span>
+        </a>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
