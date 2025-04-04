@@ -36,6 +36,18 @@
         </a>
       </div>
       <div
+      routerLink="/patients"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: false }"
+    >
+      <a mat-list-item>
+        <span class="entry">
+          <mat-icon class="row">accessible</mat-icon>
+          <span *ngIf="!isCollapsed">Patients</span>
+        </span>
+      </a>
+    </div>
+      <div
         routerLink="/appointments"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -71,22 +83,12 @@
           </span>
         </a>
       </div>
-      <div
-        routerLink="/patients"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: false }"
-      >
-        <a mat-list-item>
-          <span class="entry">
-            <mat-icon class="row">accessible</mat-icon>
-            <span *ngIf="!isCollapsed">Patients</span>
-          </span>
-        </a>
-      </div>
+     
       <div
         routerLink="/admin"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: false }"
+        *ngIf="canViewConfig"
       >
         <a mat-list-item>
           <span class="entry">

@@ -100,6 +100,10 @@ export class AuthService {
     return this.isAdmin();
   }
 
+  canViewConfig(): boolean {
+    return this.isAdmin();
+  }
+
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');

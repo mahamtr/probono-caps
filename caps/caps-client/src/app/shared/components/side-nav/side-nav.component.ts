@@ -13,11 +13,15 @@ export class SideNavComponent {
   sidenav!: MatSidenav;
   isMobile = true;
   isCollapsed = true;
+  canViewConfig = false;
 
   constructor(private observer: BreakpointObserver, 
     private authService: AuthService
   ) {}
   ngOnInit(): void {
+
+    this.canViewConfig = this.authService.canViewConfig();
+
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
       if (screenSize.matches) {
         this.isMobile = true;
