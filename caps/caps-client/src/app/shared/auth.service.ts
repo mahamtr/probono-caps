@@ -51,8 +51,8 @@ export class AuthService {
     return this.userRole === AgentRole.Professional;
   }
 
-  isIntern(): boolean {
-    return this.userRole === AgentRole.Intern;
+  isAgent(): boolean {
+    return this.userRole === AgentRole.Agent;
   }
 
   canDeleteAppointment(): boolean {
@@ -60,11 +60,11 @@ export class AuthService {
   }
 
   canEditAppointment(): boolean {
-    return this.isAdmin() || this.isProfessional() || this.isIntern();
+    return this.isAdmin() || this.isProfessional() || this.isAgent();
   }
 
   canCreateAppointment(): boolean {
-    return this.isAdmin() || this.isIntern() || this.isProfessional();
+    return this.isAdmin() || this.isAgent() || this.isProfessional();
   }
 
   canDeletePatient(): boolean {
@@ -72,11 +72,11 @@ export class AuthService {
   }
 
   canEditPatient(): boolean {
-    return this.isAdmin() || this.isProfessional() || this.isIntern();
+    return this.isAdmin() || this.isProfessional() || this.isAgent();
   }
 
   canCreatePatient(): boolean {
-    return this.isAdmin() || this.isProfessional() || this.isIntern();
+    return this.isAdmin() || this.isProfessional() || this.isAgent();
   }
 
   canEnablePatient(): boolean {
@@ -97,6 +97,10 @@ export class AuthService {
   }
 
   canUpdateSecurity(): boolean {
+    return this.isAdmin();
+  }
+
+  canViewConfig(): boolean {
     return this.isAdmin();
   }
 

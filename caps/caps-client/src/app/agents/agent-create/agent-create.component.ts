@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AgentService } from '../agent/agent.service';
 import { Agent } from '../agent/agent.interface';
-import { StrongPasswordRegx } from 'src/app/constants/constants';
+import { AGENT_PRIVILEGES, AgentRole, StrongPasswordRegx } from 'src/app/constants/constants';
 import { matchPasswordsValidator } from 'src/app/shared/customValidators/customValidators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -14,6 +14,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AgentCreateComponent {
   agentForm!: FormGroup;
+  AGENT_PRIVILEGES = AGENT_PRIVILEGES;
+  
   constructor(
     private fb: FormBuilder,
     private agentService: AgentService,
@@ -29,7 +31,7 @@ export class AgentCreateComponent {
         idNumber: ['', [Validators.required, Validators.minLength(13)]],
         email: ['', [Validators.required, Validators.email]],
         dateOfBirth: ['', Validators.required],
-        privilege: ['Intern', Validators.required],
+        privilege: [AgentRole.Agent, Validators.required],
         contactInformation: this.fb.group({
           phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
           city: ['', Validators.required],

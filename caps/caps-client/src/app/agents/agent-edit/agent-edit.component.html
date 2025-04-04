@@ -28,8 +28,9 @@
         <mat-form-field appearance="outline">
           <mat-label>Privilege</mat-label>
           <mat-select formControlName="privilege">
-            <mat-option value="Agent">Agent</mat-option>
-            <mat-option value="Admin">Admin</mat-option>
+            <mat-option *ngFor="let privilege of AGENT_PRIVILEGES" [value]="privilege">
+              {{ privilege }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>

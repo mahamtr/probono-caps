@@ -16,10 +16,7 @@ public class GetAppointmentsTable(CapsDbContext dbContext, IMapper mapper) : End
     {
         try
         {
-            
-            var userId = User.Claims.FirstOrDefault(c=> c.Type == "UserId")?.Value; 
-            var role = User.Claims.FirstOrDefault(c=> c.Type == "role")?.Value;
-            var appointments = role == "Admin" ? dbContext.Appointments : dbContext.Appointments.Where(a=> a.AgentId.ToString()== userId);
+            var appointments = dbContext.Appointments;
             var appoint = new List<AppointmentTableDto>();
                 
             foreach (var app in appointments)

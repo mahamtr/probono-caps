@@ -18,6 +18,8 @@ export class PhoneInputComponent implements ControlValueAccessor {
   formattedValue: string = '';
   onChange = (_: string) => {};
   onTouched = () => {};
+  isDisabled: boolean = false;
+
 
   writeValue(value: string | null): void {
     if (value !== null && value !== undefined) {
@@ -64,5 +66,9 @@ export class PhoneInputComponent implements ControlValueAccessor {
 
   onBlur(): void {
     this.onTouched();
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
   }
 }
