@@ -48,7 +48,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Guardian Phone</mat-label>
-            <input matInput formControlName="guardianShipPhone" required />
+            <app-phone-input formControlName="guardianShipPhone"></app-phone-input>
           </mat-form-field>
         </div>
 
@@ -114,10 +114,7 @@
         </div>
 
         <div class="row smallerRow" formGroupName="contactInformation">
-          <mat-form-field appearance="outline">
-            <mat-label>Phone</mat-label>
-            <input matInput formControlName="phoneNumber" />
-          </mat-form-field>
+          <app-phone-input formControlName="phoneNumber"></app-phone-input>
 
           <mat-form-field appearance="outline">
             <mat-label>City</mat-label>

@@ -58,6 +58,11 @@ export class PatientsListComponent {
     return age;
   }
 
+  getFormattedPhone(phone: string | undefined): string {
+    if (!phone) return '';
+    return phone.length === 8 ? `${phone.slice(0, 4)}-${phone.slice(4)}` : phone;
+  }
+
   loadFetch(): void {
     this.patientService.getPatients().subscribe(
       (patients) => (this.dataSource.data = patients),
