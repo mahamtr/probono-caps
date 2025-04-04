@@ -10,7 +10,6 @@ public class FetchConfigs(CapsDbContext dbContext, IMapper mapper) : EndpointWit
     public override void Configure()
     {
         Get("/api/config/all");
-        Roles("Admin", "Professional");
     }
 
     public override async Task HandleAsync(CancellationToken ct)
