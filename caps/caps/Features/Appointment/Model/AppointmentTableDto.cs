@@ -8,6 +8,8 @@ public class AppointmentTableDto
     [Required]
     public string Reason { get; set; }
 
+    public string AppointmentId { get; set; } // Human-readable ID for the appointment
+
     public string PatientName { get; set; }
 
     public int Age { get; set; }
@@ -21,6 +23,4 @@ public class AppointmentTableDto
     public string? Location { get; set; }
 
     public string? Status { get; set; }
-
-   
 }

@@ -5,7 +5,10 @@ import { Router } from '@angular/router';
 import { DeleteConfirmationModalComponent } from 'src/app/shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppointmentService } from '../appointment.service';
-import { CONFIG_TYPES, APPOINTMENT_STATUSES } from 'src/app/constants/constants';
+import {
+  CONFIG_TYPES,
+  APPOINTMENT_STATUSES,
+} from 'src/app/constants/constants';
 import { AuthService } from 'src/app/shared/auth.service';
 import { AdminService } from 'src/app/admin/admin.service';
 
@@ -48,7 +51,9 @@ export class AppointmentListComponent {
     this.canDeleteAppointment = this.authService.canDeleteAppointment();
 
     this.adminService.fetchConfigs().subscribe((configs) => {
-      this.programs = configs.filter(config => config.type === CONFIG_TYPES.PROGRAM).map(config => config.name);
+      this.programs = configs
+        .filter((config) => config.type === CONFIG_TYPES.PROGRAM)
+        .map((config) => config.name);
     });
   }
 

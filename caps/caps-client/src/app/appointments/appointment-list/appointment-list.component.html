@@ -46,7 +46,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Appointment ID</th>
       <td mat-cell *matCellDef="let appointment">
         <a [routerLink]="['/appointments/edit/', appointment.id]" class="link">
-          {{ appointment.id }}
+          {{ appointment.appointmentId }}
         </a>
       </td>
     </ng-container>

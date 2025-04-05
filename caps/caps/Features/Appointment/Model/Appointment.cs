@@ -9,7 +9,7 @@ public class Appointment
     public ObjectId Id { get; set; }
 
     [Required]
-    public string Reason { get; set; }
+    public string Reason { get; set; } = null!;
 
     public string? FamilyComposition { get; set; }
 
@@ -62,7 +62,23 @@ public class Appointment
     [ForeignKey("Agent")]
     public ObjectId AgentId { get; set; }
 
-    public Agent.Model.Agent Agent { get; set; }
+    public Agent.Model.Agent Agent { get; set; } = null!;
 
     public List<string> BlobUrls { get; set; } = [];
+
+    public string AppointmentId { get; set; } // Human-readable ID for the appointment
+
+    public Appointment(string idNumber, int counter)
+    {
+        // Format the IDNumber into "0501-1999-00492"
+        var formattedIdNumber = $"{idNumber.Substring(0, 4)}-{idNumber.Substring(4, 4)}-{idNumber.Substring(8)}";
+
+        // Combine with the counter to create the AppointmentId
+        AppointmentId = $"{formattedIdNumber}.{counter:D3}";
+    }
+
+    public Appointment()
+    {
+        
+    }
 }

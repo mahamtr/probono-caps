@@ -56,10 +56,10 @@ public class AppointmentDto
     [ForeignKey("Patient")]
     public string PatientId { get; set; }
 
-
     [ForeignKey("Agent")]
     public string AgentId { get; set; }
 
+    public string AppointmentId { get; set; } // Human-readable ID for the appointment
 
     public List<string> BlobUrls { get; set; }
     public PatientDto? NewPatient { get; set; }

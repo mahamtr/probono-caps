@@ -16,24 +16,43 @@ public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoi
     {
         try
         {
-            var newAppointment = new Model.Appointment();
-            mapper.Map(req, newAppointment);
+            Patient.Model.Patient patient;
 
             if (string.IsNullOrEmpty(req.PatientId) && req.NewPatient != null)
             {
                 // Create new patient
-                var newPatient = new Patient.Model.Patient
+                patient = new Patient.Model.Patient
                 {
                     FirstName = req.NewPatient.FirstName,
                     LastName = req.NewPatient.LastName,
-                    IDNumber = req.NewPatient.IDNumber
+                    IDNumber = req.NewPatient.IDNumber,
                 };
-                dbContext.Patients.Add(newPatient);
+                dbContext.Patients.Add(patient);
                 await dbContext.SaveChangesAsync(ct);
-                newAppointment.PatientId = newPatient.Id;
             }
+            else
+            {
+                // Fetch existing patient
+                patient = dbContext.Patients.FirstOrDefault(p=>  p.Id.ToString() == req.PatientId)
+                          ?? throw new BadHttpRequestException("Patient not found.");
+            }
+            
+
+            // Increment the patient's appointment counter
+            patient.NumberOfAppointments++;
+            dbContext.Patients.Update(patient);
+
+            await dbContext.SaveChangesAsync(ct);
+            // TODO reafactor all this logic, maybe use some event for decoupling this. also remove this save changes, and allow transcations. need to move mongodb to replica
+
+
+            // Create new appointment using the constructor
+            var newAppointment = new Model.Appointment(patient.IDNumber, patient.NumberOfAppointments);
+            mapper.Map(req, newAppointment);
+            newAppointment.PatientId = patient.Id;
 
             dbContext.Appointments.Add(newAppointment);
+
             if (await dbContext.SaveChangesAsync(ct) > 0)
             {
                 await SendAsync(newAppointment.Id.ToString(), cancellation: ct);
