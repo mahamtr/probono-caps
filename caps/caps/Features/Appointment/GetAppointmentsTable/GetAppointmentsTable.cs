@@ -34,7 +34,7 @@ public class GetAppointmentsTable(CapsDbContext dbContext, IMapper mapper) : End
                     Location = app.Destination,
                     Mode = app.Mode,
                     PatientName = patient.FirstName + ' ' + patient.LastName,
-
+                    AppointmentId = app.AppointmentId
                 });
             }
             

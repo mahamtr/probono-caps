@@ -8,6 +8,7 @@ export interface Appointment {
   medication?: string;
   treatingDoctor?: string;
   historyOfMentalIllness?: string;
+  appointmentId?: string;
   mentalIllnessDetail?: string;
   interventionOne?: string;
   interventionTwo?: string;
@@ -42,4 +43,5 @@ export interface AppointmentTableDto {
   mode?: string;
   location?: string;
   status?: string;
+  appointmentId?: string;
 }

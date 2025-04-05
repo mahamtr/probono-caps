@@ -24,7 +24,7 @@ public class Patient
 
     public string? EducationLevel { get; set; }
 
-    public GuardianShipSection? GuardianShipSection { get; set; } 
+    public GuardianShipSection? GuardianShipSection { get; set; }
 
     public StudentSection? StudentSection { get; set; }
 
@@ -32,7 +32,7 @@ public class Patient
 
     public string? HouseZone { get; set; }
 
-    [NotMapped] 
+    [NotMapped]
     public int Age => DateTime.Now.Year - DateOfBirth?.Year ?? DateTime.Now.Year;
 
     [EmailAddress]
@@ -49,18 +49,20 @@ public class Patient
     public string? Gender { get; set; }
 
     public string? Status { get; set; }
+
+    public int NumberOfAppointments { get; set; }
 }
 
 public class GuardianShipSection
 {
-    public string? GuardianShipName { get; set; } 
+    public string? GuardianShipName { get; set; }
 
     public string? GuardianShipPhone { get; set; }
 }
 
 public class StudentSection
 {
-    public string? Major { get; set; } 
+    public string? Major { get; set; }
 
     public int StudyYear { get; set; }
 }
