@@ -1,3 +1,4 @@
+using caps;
 using caps.Configuration;
 using caps.Features.Agent.Service;
 using caps.Features.ScheduledJobs;
@@ -9,6 +10,7 @@ using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
@@ -70,4 +72,10 @@ RecurringJob.AddOrUpdate<ExpireOldAppointments>(
 app
     .UseAuthentication().UseAuthorization()
     .UseFastEndpoints().UseSwaggerGen();
+
+var chunks = Chunker.ExtractChunks("./");
+
+var json = JsonConvert.SerializeObject(chunks, Formatting.Indented);
+
+File.WriteAllText("chunks_data.json", json);
 app.Run();
