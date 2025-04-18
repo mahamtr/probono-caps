@@ -26,6 +26,7 @@ public class CreateAppointment(CapsDbContext dbContext, IMapper mapper) : Endpoi
                     FirstName = req.NewPatient.FirstName,
                     LastName = req.NewPatient.LastName,
                     IDNumber = req.NewPatient.IDNumber,
+                    Status = PatientStatus.Active.ToString() 
                 };
                 dbContext.Patients.Add(patient);
                 await dbContext.SaveChangesAsync(ct);
