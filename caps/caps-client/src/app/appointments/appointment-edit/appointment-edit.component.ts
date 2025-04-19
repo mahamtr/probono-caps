@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,9 +11,27 @@ import {
   INTERVENTION_OPTIONS,
   TASK_OPTIONS,
   APPOINTMENT_STATUSES,
+  FAMILYCORE_OPTIONS,
+  REMISSION_OPTIONS,
 } from 'src/app/constants/constants';
 import { saveAs } from 'file-saver';
 import { AuthService } from 'src/app/shared/auth.service';
+
+@Component({
+  selector: 'app-info-dialog',
+  template: `
+    <h1 mat-dialog-title>Family Information</h1>
+    <div mat-dialog-content>
+      <p>{{ data.info }}</p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </div>
+  `,
+})
+export class InfoDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { info: string }) {}
+}
 
 @Component({
   selector: 'app-appointment-edit',
@@ -27,6 +46,8 @@ export class AppointmentEditComponent {
   taskOptions = TASK_OPTIONS;
   interventionOptions = INTERVENTION_OPTIONS;
   canEditAppointment = false;
+  familyCoreOptions = FAMILYCORE_OPTIONS;
+  remissionOptions = REMISSION_OPTIONS;
 
   file1: File | null = null;
   file2: File | null = null;
@@ -36,6 +57,7 @@ export class AppointmentEditComponent {
   file2Id: string = '';
 
   constructor(
+    private dialog: MatDialog,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -168,7 +190,7 @@ export class AppointmentEditComponent {
           this.snackBar.open('File uploaded successfully', 'Close', {
             duration: 3000,
           });
-        },
+        },  
         (error) => {
           this.snackBar.open('File upload failed', 'Close', {
             duration: 3000,
@@ -225,5 +247,11 @@ export class AppointmentEditComponent {
         });
       }
     );
+  }
+
+  openDialog(): void {
+    this.dialog.open(InfoDialogComponent, {
+      data: { info: 'Details about family composition and related information.' },
+    });
   }
 }

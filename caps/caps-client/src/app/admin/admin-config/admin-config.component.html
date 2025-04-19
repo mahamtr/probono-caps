@@ -11,35 +11,7 @@
   <div class="sections-container">
     <!-- Majors Section -->
     <div class="section">
-      <h3>Majors</h3>
-      <mat-table [dataSource]="majors$" >
-        <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
-        </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            <button
-              mat-icon-button
-              [routerLink]="['edit', CONFIG_TYPES.MAJOR, element.id]"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="openDeleteDialog(CONFIG_TYPES.MAJOR, element.id)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
-    </div>
 
     <!-- Programs Section -->
     <div class="section">
@@ -73,7 +45,40 @@
       </mat-table>
     </div>
 
-    <!-- Diagnoses Section -->
+
+<!--      <h3>Majors</h3>
+      <mat-table [dataSource]="majors$" >
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              [routerLink]="['edit', CONFIG_TYPES.MAJOR, element.id]"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="openDeleteDialog(CONFIG_TYPES.MAJOR, element.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+
+
+
+ - Diagnoses Section
     <div class="section">
       <h3>Diagnoses</h3>
       <mat-table [dataSource]="diagnoses$" >
@@ -104,5 +109,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
     </div>
+    -->
+
   </div>
 </div>

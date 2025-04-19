@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import { formatDateToInput } from 'src/app/shared/utils/utils';
 import { AuthService } from 'src/app/shared/auth.service';
 import { AdminService } from 'src/app/admin/admin.service';
+import { MAJOR_OPTIONS } from 'src/app/constants/constants';
+
 
 @Component({
   selector: 'app-patient-form',
@@ -23,7 +25,7 @@ export class PatientFormComponent {
   programs: string[] = [];
   showStudentSection = false;
   canEditPatient = false;
-  majors: string[] = [];
+  majors = MAJOR_OPTIONS;
 
   constructor(
     private fb: FormBuilder,
@@ -59,8 +61,8 @@ export class PatientFormComponent {
       referral: [''],
       diagnostic: [''],
       secondDiagnostic: [''],
-      gender: ['', Validators.required],
-      status: ['Active'],
+      gender: [''],
+      status: ['Active', Validators.required],
       guardianShipSection: this.fb.group({
         guardianShipName: [''],
         guardianShipPhone: [''],
@@ -86,7 +88,6 @@ export class PatientFormComponent {
     }
 
     this.adminService.fetchConfigs().subscribe((configs) => {
-      this.majors = configs.filter(config => config.type === CONFIG_TYPES.MAJOR).map(config => config.name);
       this.programs = configs.filter(config => config.type === CONFIG_TYPES.PROGRAM).map(config => config.name);
     });
   }

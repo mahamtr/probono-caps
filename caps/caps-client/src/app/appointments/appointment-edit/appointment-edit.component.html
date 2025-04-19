@@ -104,11 +104,23 @@
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Family Composition</mat-label>
-            <input matInput formControlName="familyComposition" />
+            <mat-select formControlName="familyComposition">
+              <mat-option *ngFor="let option of familyCoreOptions" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
+
+          <button mat-icon-button (click)="openDialog()">
+          <mat-icon>info</mat-icon>
+        </button>
+
           <mat-form-field appearance="outline">
-            <mat-label>Mode</mat-label>
-            <input matInput formControlName="mode" />
+            <mat-label>Mode Attention</mat-label>
+              <mat-select formControlName="mode">
+              <mat-option value="On Site">On Site</mat-option>
+              <mat-option value="Virtual">Virtual</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
 
@@ -299,7 +311,7 @@
 
         <div class="form-row">
           <mat-form-field appearance="outline">
-            <mat-label>Tracing</mat-label>
+            <mat-label>Tracing [seguimiento]</mat-label>
             <input matInput formControlName="tracing" />
           </mat-form-field>
         </div>
@@ -309,10 +321,20 @@
             <mat-label>Remission Applies</mat-label>
             <input matInput formControlName="remissionApplies" />
           </mat-form-field>
+
           <mat-form-field appearance="outline">
-            <mat-label>Destination</mat-label>
-            <input matInput formControlName="destination" />
+            <mat-label>Remission Destination</mat-label>
+            <select matNativeControl formControlName="remission">
+              <option value="">Select a remission center</option>
+              <option *ngFor="let option of remissionOptions" [value]="option">
+                {{ option }}
+              </option>
+            </select>
           </mat-form-field>
+          
+
+
+          
         </div>
 
         <div class="form-row">
