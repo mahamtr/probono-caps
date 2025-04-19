@@ -18,7 +18,7 @@
         </div>
 
         <div class="row smallerRow">
-          <app-id-input formControlName="idNumber"></app-id-input>
+          <app-id-input formControlName="idNumber" [disabled]="isEditMode"></app-id-input>
 
           <mat-form-field appearance="outline">
             <mat-label>Date of Birth</mat-label>
@@ -61,15 +61,32 @@
               <mat-option value="Urban">Urban</mat-option>
             </mat-select>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Education Level</mat-label>
+            <mat-select formControlName="educationLevel">
+              <mat-option value="None">None</mat-option>
+              <mat-option value="Pre School">Preschool</mat-option>
+              <mat-option value="Primary">Primary 1-6</mat-option>
+              <mat-option value="Primary Unfinished">Unfinished Primary</mat-option>
+              <mat-option value="Secondary">Secondary 7-9</mat-option>
+              <mat-option value="Secondary Unfinished">Unfinished Secondary</mat-option>
+              <mat-option value="High School">High School 10-12</mat-option>
+              <mat-option value="Technical">Technical</mat-option>
+              <mat-option value="University">University</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <div class="row smallerRow">
           <mat-form-field appearance="outline">
             <mat-label>Civil Status</mat-label>
             <mat-select formControlName="civilStatus">
-              <mat-option value="single">Single</mat-option>
-              <mat-option value="married">Married</mat-option>
-              <mat-option value="divorced">Divorced</mat-option>
+              <mat-option value="Single">Single</mat-option>
+              <mat-option value="Cohabitation">Cohabitation[UL]</mat-option>
+              <mat-option value="Married">Married</mat-option>
+              <mat-option value="Divorced">Divorced</mat-option>
+              <mat-option value="Windower">Window/er</mat-option>
+              <mat-option value="Separated">Separated</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="outline">
@@ -81,10 +98,21 @@
             </mat-select>
           </mat-form-field>
 
+
+
+
+
           <mat-form-field appearance="outline">
             <mat-label>Referral</mat-label>
-            <input matInput formControlName="referral" />
-          </mat-form-field>
+              <mat-select formControlName="referral">
+              <mat-option value="Students">Students</mat-option>
+              <mat-option value="Teachers">Teacher</mat-option>
+              <mat-option value="Socials Networks">Socials Networks</mat-option>
+              <mat-option *ngFor="let program of programs" [value]="program">{{
+                program
+              }}</mat-option>
+            </mat-select>
+         </mat-form-field>
         </div>
 
         <div
@@ -98,6 +126,7 @@
               <mat-option *ngFor="let major of majors" [value]="major">{{ major }}</mat-option>
             </mat-select>
           </mat-form-field>
+
 
           <mat-form-field appearance="outline">
             <mat-label>Study Year</mat-label>
@@ -132,8 +161,8 @@
         </div>
 
         <div class="row">
-          <mat-radio-group formControlName="status">
-            <mat-label>Status</mat-label>
+          <mat-radio-group formControlName="status" [value]="!isEditMode ? 'Active' : null">
+            <mat-label>Status*</mat-label>
             <mat-radio-button value="Active">Active</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
           </mat-radio-group>
@@ -141,7 +170,7 @@
 
         <div class="row">
           <mat-radio-group formControlName="gender">
-            <mat-label>Gender</mat-label>
+            <mat-label>Gender*</mat-label>
             <mat-radio-button value="Male">Male</mat-radio-button>
             <mat-radio-button value="Female">Female</mat-radio-button>
           </mat-radio-group>
@@ -190,3 +219,15 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+
+<div class="patient-form-container2">
+    <mat-card class="patient-card">
+  <mat-card-content>
+   <div class="row">
+ 
+        </div>
+    </mat-card-content>
+      </mat-card>
+</div>
+
